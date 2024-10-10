@@ -1,5 +1,5 @@
 function SunjuPage() {
-  return <main>SunjuPage</main>;
+  return <main>SunjuPage test</main>;
 }
 
 export default SunjuPage;
