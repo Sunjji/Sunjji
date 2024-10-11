@@ -21,7 +21,7 @@ function SignUpPage() {
 
     if (!SignUpResult) return alert("회원가입 정보를 다시 확인해주세요");
 
-    router.push("/log-in");
+    router.push("/log-in"); //회원가입이 성공하면 log-in으로 push
 
     return alert("회원가입에 성공하셨습니다");
   };
