@@ -16,7 +16,7 @@ export default function HTMLLayout({
       <head>
         <title>슬기로운 집사 생활</title>
       </head>
-      <body>{children}</body>
+      <body className="bg-#FFF8E8">{children}</body>
     </html>
   );
 }
