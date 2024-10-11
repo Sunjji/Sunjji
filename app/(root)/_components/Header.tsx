@@ -3,7 +3,7 @@
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
