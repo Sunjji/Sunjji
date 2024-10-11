@@ -1,12 +1,14 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function LogInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const router = useRouter();
 
   const handleClickLogInPage = async () => {
@@ -14,10 +16,12 @@ function LogInPage() {
       email,
       password,
     }); //슈파베이스 로그인
-    if (!loginResult) return alert("로그인 실패");
+    if (loginResult.error) return alert("로그인 실패"); // !data로도 사용 가능
+    if (!email) return alert("이메일이 없습니다");
+    if (!password) return alert("패스워드가 없습니다");
 
     alert("로그인에 성공하셨습니다");
-
+    setIsLoggedIn(true);
     router.push("/");
   };
 
