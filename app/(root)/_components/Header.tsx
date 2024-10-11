@@ -19,20 +19,21 @@ function Header() {
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
-    alert("로그아웃 성공");
+    alert("로그아웃 성공"); //슈파베이스 로그아웃
   };
 
   console.log(isAuthInitialized);
 
   return (
     <header>
-      {isAuthInitialized ? (
+      {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
         <div>
-          {isLoggedIn ? (
+          {isLoggedIn ? ( // isLoggedIn이 true일때 출력
             <>
               <button onClick={handleClickLogOut}>로그아웃</button>
             </>
           ) : (
+            // isLoggedIn이 false일때 출력
             <div>
               <button>
                 <Link href={"/log-in"} className="font-bold text-2xl pb-3 pt-3">
@@ -51,6 +52,7 @@ function Header() {
           )}
         </div>
       ) : null}
+      {/* isAuthInitialized가 false일때 null을 출력 */}
     </header>
   );
 }
