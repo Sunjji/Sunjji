@@ -1,5 +1,9 @@
 function HomePage() {
-  return <main>슬기로운 집사생활</main>;
+  return (
+    <>
+      <div className="w-[400px] h-[400px] bg-point"></div>
+    </>
+  );
 }
 
 export default HomePage;
