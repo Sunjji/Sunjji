@@ -14,13 +14,14 @@ function LogInModal() {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const handleClickLogInPage = async () => {
+    if (!email) return alert("이메일을 입력해주세요");
+    if (!password) return alert("비밀번호를 입력해주세요");
+
     const loginResult = await supabase.auth.signInWithPassword({
       email,
       password,
     }); //슈파베이스 로그인
     if (loginResult.error) return alert("로그인 실패"); // !data로도 사용 가능
-    if (!email) return alert("이메일이 없습니다");
-    if (!password) return alert("패스워드가 없습니다");
 
     alert("로그인에 성공하셨습니다");
     setIsLoggedIn(true);
@@ -34,6 +35,7 @@ function LogInModal() {
       <div>
         <input
           value={email}
+          type="text"
           onChange={(e) => setEmail(e.target.value)}
           placeholder="비밀번호를 입력해주세요"
         />
@@ -43,6 +45,7 @@ function LogInModal() {
       <div>
         <input
           value={password}
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호를 입력해주세요"
         />
