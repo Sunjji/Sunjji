@@ -3,12 +3,10 @@ import SideBar from "./_components/SideBar";
 
 function Layout({ children }: PropsWithChildren) {
   return (
-    <>
-      <body className="bg-beige flex">
-        <SideBar />
-        <main className="w-full">{children}</main>
-      </body>
-    </>
+    <div className="bg-beige flex">
+      <SideBar />
+      <main className="w-full">{children}</main>
+    </div>
   );
 }
 
