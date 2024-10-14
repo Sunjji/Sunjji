@@ -5,7 +5,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import Link from "next/link";
 import { useEffect } from "react";
 
-function Header() {
+function SideBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
@@ -25,7 +25,7 @@ function Header() {
   console.log(isAuthInitialized);
 
   return (
-    <header>
+    <nav className="bg-point w-[70px] min-h-screen">
       {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
         <div>
           {isLoggedIn ? ( // isLoggedIn이 true일때 출력
@@ -53,8 +53,8 @@ function Header() {
         </div>
       ) : null}
       {/* isAuthInitialized가 false일때 null을 출력 */}
-    </header>
+    </nav>
   );
 }
 
-export default Header;
+export default SideBar;

@@ -27,34 +27,39 @@ function SignUpPage() {
   };
 
   return (
-    <main>
-      <section>
-        <div>
+    <main className="flex justify-center">
+      <ul className="mt-[150px] bg-point w-[500px] p-10 text-center rounded-[8px]">
+        <li>
           <h2 className="font-bold">이메일</h2>
           <input
+            className="mb-5 p-2"
             value={email}
-            placeholder="이메일을 입력해주세요"
             onChange={(e) => setEmail(e.target.value)}
           />
-        </div>
-        <div>
+        </li>
+        <li>
           <h2 className="font-bold">비밀번호</h2>
           <input
+            className="mb-5 p-2"
             value={password}
-            placeholder="비밀번호 입력해주세요"
             onChange={(e) => setPassword(e.target.value)}
           />
-        </div>
-        <div>
+        </li>
+        <li>
           <h2 className="font-bold">비밀번호확인</h2>
           <input
+            className="mb-5 p-2"
             value={checkpassword}
-            placeholder="비밀번호를 확인해주세요"
             onChange={(e) => setCheckpassword(e.target.value)}
           />
-        </div>
-        <button onClick={handleClickSignUpPage}>회원가입하기</button>
-      </section>
+        </li>
+        <button
+          className="bg-Brown p-2 px-10 rounded-sm"
+          onClick={handleClickSignUpPage}
+        >
+          회원가입하기
+        </button>
+      </ul>
     </main>
   );
 }
