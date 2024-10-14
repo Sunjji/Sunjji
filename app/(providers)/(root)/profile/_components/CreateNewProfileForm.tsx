@@ -18,7 +18,7 @@ type CustomProfileFormEvent = FormEvent<HTMLFormElement> & {
   };
 };
 
-type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"]; // 타입지정
+type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"]; // 타입지정d
 
 function CreateNewProfileForm() {
   const router = useRouter;
