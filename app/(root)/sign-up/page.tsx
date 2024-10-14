@@ -2,7 +2,7 @@
 
 import { supabase } from "@/supabase/client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 function SignUpPage() {
   const [email, setEmail] = useState("");
