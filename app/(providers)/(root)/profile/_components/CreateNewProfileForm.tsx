@@ -5,7 +5,7 @@ import { Database } from "@/supabase/database.types";
 import { useMutation } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
-import React, { ComponentProps, FormEvent } from "react";
+import { ComponentProps, FormEvent } from "react";
 
 type CustomProfileFormEvent = FormEvent<HTMLFormElement> & {
   target: FormEvent<HTMLFormElement>["target"] & {
