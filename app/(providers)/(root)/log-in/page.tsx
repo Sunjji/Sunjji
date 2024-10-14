@@ -23,6 +23,7 @@ function LogInPage() {
     alert("로그인에 성공하셨습니다");
     setIsLoggedIn(true);
     router.push("/"); //로그인이 성공한다면 메인페이지로 push
+    
   };
 
   return (
