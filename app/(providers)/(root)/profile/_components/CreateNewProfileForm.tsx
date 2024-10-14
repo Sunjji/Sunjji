@@ -40,13 +40,13 @@ function CreateNewProfileForm() {
     const weight = e.target.weight.value;
     const comment = e.target.comment.value;
 
-    if (!image) return alert("이미지가 없어요"); // 이미지 없을시 alert를 출력
+    if (!image) return alert("이미지가 없어요"); // 이미지 없을시 alert를 출력dd
 
     const extension = image.name.split(".").slice(-1)[0]; // 확장자만 따로 배열에서 제외하기 위해 slice와 split를 사용
     const filename = nanoid(); // 이름에서 충돌 없게 무작위 수를 출력하는 nanoid를 사용
     const path = `${filename}.${extension}`; // 두개 합쳐서 파일의 이름이 filename.extension이 되게함
 
-    console.log()
+    console.log();
 
     const storage = await supabase.storage
       .from("pets")
