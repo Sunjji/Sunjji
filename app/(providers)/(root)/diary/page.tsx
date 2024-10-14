@@ -1,19 +1,39 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 function writePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+
+  const router = useRouter();
+
   const handleChangeButton = (e) => {
     setIsPublic(e.target.checked);
+    console.log(isPublic);
   };
-  const handleSubmitButton = (e) => {
+
+  const handleSubmitButton = async (e) => {
     e.preventDefault();
-    supabase.from("diaries").insert([{ title, content, is_public: isPublic }]);
+
+    const { data, error } = await supabase
+      .from("diaries")
+      .insert([{ title, content, isPublic }])
+      .select();
+
+    if (error) {
+      console.error("Error", error);
+    } else {
+      console.log("data", data);
+      alert("일기가 작성되었습니다");
+
+      router.push("/");
+    }
   };
+
   return (
     <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-4">
       <div>
@@ -21,7 +41,7 @@ function writePage() {
         <input type="file" />
       </div>
       <div>
-        <p>일기 제목ssss</p>
+        <p>일기 제목</p>
         <input
           type="text"
           className="border w-72"
