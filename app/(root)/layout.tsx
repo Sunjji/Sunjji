@@ -4,8 +4,10 @@ import Header from "./_components/Header";
 function Layout({ children }: PropsWithChildren) {
   return (
     <>
-      <Header />
-      {children}
+      <body className="bg-beige">
+        <Header />
+        {children}
+      </body>
     </>
   );
 }
