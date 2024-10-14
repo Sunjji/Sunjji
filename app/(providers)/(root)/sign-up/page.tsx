@@ -25,7 +25,12 @@ function SignUpPage() {
 
     if (!SignUpResult) return alert("회원가입 정보를 다시 확인해주세요");
 
-    router.push("/log-in"); //회원가입이 성공하면 log-in으로 push
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    }); // 회원가입 후 로그인
+
+    router.push("/"); // 홈으로 push
 
     return alert("회원가입에 성공하셨습니다");
   };
