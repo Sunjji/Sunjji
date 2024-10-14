@@ -35,6 +35,7 @@ function LogInModal() {
       <div>
         <input
           value={email}
+          type="text"
           onChange={(e) => setEmail(e.target.value)}
           placeholder="비밀번호를 입력해주세요"
         />
@@ -44,6 +45,7 @@ function LogInModal() {
       <div>
         <input
           value={password}
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호를 입력해주세요"
         />

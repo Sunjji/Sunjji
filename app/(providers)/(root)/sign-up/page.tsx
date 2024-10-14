@@ -14,10 +14,12 @@ function SignUpPage() {
     // 유효성 검사
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규 표현식
     if (!email) return alert("이메일을 입력해주세요");
-    if (!emailPattern.test(email)) return alert("유효한 이메일 형식이 아닙니다"); // 이메일 형식 확인
+    if (!emailPattern.test(email))
+      return alert("유효한 이메일 형식이 아닙니다"); // 이메일 형식 확인
     if (!password) return alert("비밀번호를 입력해주세요");
     if (password.length < 8) return alert("비밀번호는 8자 이상이어야 합니다"); // 비밀번호 길이 확인
-    if (!/[!@#$%^&*]/.test(password)) return alert("비밀번호는 특수문자를 포함해야 합니다"); // 특수문자 포함 확인
+    if (!/[!@#$%^&*]/.test(password))
+      return alert("비밀번호는 특수문자를 포함해야 합니다"); // 특수문자 포함 확인
     if (!checkPassword) return alert("비밀번호 확인을 입력해주세요");
     if (password !== checkPassword) return alert("비밀번호가 다릅니다");
 
@@ -42,6 +44,7 @@ function SignUpPage() {
           <h2 className="font-bold">이메일</h2>
           <input
             className="mb-5 p-2"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -50,6 +53,7 @@ function SignUpPage() {
           <h2 className="font-bold">비밀번호</h2>
           <input
             className="mb-5 p-2"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -58,6 +62,7 @@ function SignUpPage() {
           <h2 className="font-bold">비밀번호 확인</h2>
           <input
             className="mb-5 p-2"
+            type="password"
             value={checkPassword}
             onChange={(e) => setCheckPassword(e.target.value)}
           />
