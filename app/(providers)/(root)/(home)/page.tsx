@@ -1,6 +1,7 @@
 "use client";
 
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 
 function HomePage() {
@@ -8,18 +9,22 @@ function HomePage() {
     <>
       <div className="mt-[30px] ml-[50px] rounded-[8px] w-[600px] h-[400px] border bg-point">
         <FullCalendar
-          plugins={[dayGridPlugin]}
+          plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           height="400px"
           headerToolbar={{
-            start: "prev next",
+            start: "prev",
             center: "title",
-            end: "dayGridMonth dayGridWeek",
+            end: "next",
           }}
+          editable={true}
+          droppable={true}
           locale={"ko"}
+          eventBackgroundColor="pink"
+          eventBorderColor="pink"
           events={[
-            { title: "Event 1", date: "2024-06-01" },
-            { title: "Event 2", date: "2024-06-07" },
+            { title: "Event 1", date: "2024-10-14" },
+            { title: "Event 1", date: "2024-10-14" },
           ]}
         />
       </div>

@@ -21,7 +21,7 @@ function writePage() {
         <input type="file" />
       </div>
       <div>
-        <p>일기 제목ssss</p>
+        <p>일기 제목</p>
         <input
           type="text"
           className="border w-72"
