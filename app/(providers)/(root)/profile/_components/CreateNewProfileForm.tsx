@@ -9,21 +9,21 @@ import React, { ComponentProps, FormEvent } from "react";
 
 type CustomProfileFormEvent = FormEvent<HTMLFormElement> & {
   target: FormEvent<HTMLFormElement>["target"] & {
-    image: HTMLFormElement;
-    name: HTMLFormElement;
-    gender: HTMLFormElement;
-    age: HTMLFormElement;
-    weight: HTMLFormElement;
-    comment: HTMLFormElement;
+    image: HTMLInputElement;
+    name: HTMLInputElement;
+    gender: HTMLInputElement;
+    age: HTMLInputElement;
+    weight: HTMLInputElement;
+    comment: HTMLInputElement;
   };
 };
 
 type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"]; // 타입지정
 
 function CreateNewProfileForm() {
-  const router = useRouter;
+  const router = useRouter();
 
-  const { mutateSubmit } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: async (data: CreateProfileData) =>
       await supabase.from("pets").insert(data).select("*").single(), //슈파베이스의 pets 테이블로 정보를 넣음
   });
@@ -36,8 +36,8 @@ function CreateNewProfileForm() {
     const image = e.target.image.files?.[0];
     const name = e.target.name.value;
     const gender = e.target.gender.value;
-    const age = e.target.age.value;
-    const weight = e.target.weight.value;
+    const age = Number(e.target.age.value);
+    const weight = Number(e.target.weight.value);
     const comment = e.target.comment.value;
 
     if (!image) return alert("이미지가 없어요"); // 이미지 없을시 alert를 출력dd
@@ -53,7 +53,18 @@ function CreateNewProfileForm() {
       .upload(path, image, { upsert: true });
     if (storage.error) return alert("이미지 업로드에 실패하셨습니다");
 
-    // const imageUrl = storage.data.fullPath;
+    const imageUrl = storage.data.fullPath;
+    const data: CreateProfileData = {
+      image: imageUrl,
+      name,
+      gender,
+      age,
+      weight,
+      comment,
+    };
+
+    console.log(await mutateAsync(data));
+    const { data: pets, error } = await mutateAsync(data);
 
     console.log(storage.data.fullPath);
   };
