@@ -34,14 +34,14 @@ function SideBar() {
 
   return (
     <nav className="bg-point w-[70px] min-h-screen">
-      <div>
-        <Link href="/" className="font-bold text-2xl">홈</Link>
-      </div>
+      <Link href={"/"} className="font-bold text-2xl">
+        홈
+      </Link>
       {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
         <div>
           {isLoggedIn ? ( // isLoggedIn이 true일때 출력
             <>
-            <Link href="my-page">마이 페이지</Link>
+              <Link href={"/my-page"}>마이 페이지</Link>
               <button onClick={handleClickLogOut}>로그아웃</button>
             </>
           ) : (
