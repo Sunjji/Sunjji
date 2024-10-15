@@ -42,36 +42,53 @@ function DiaryEditPage(props: DiaryEditPageProps) {
 
       setTitle(response.data.title);
       setContent(response.data.content);
+      setIsPublic(response.data.isPublic);
     })();
   }, []);
 
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    const filename = nanoid();
-    const extension = file!.name.split(".").slice(-1)[0];
-    const path = `${filename}.${extension}`;
+    if (file === null) {
+      const updateResponse = await supabase
+        .from("diaries")
+        .update({
+          title: title,
+          content: content,
+          isPublic: isPublic,
+        })
+        .eq("id", Number(props.params.diaryId));
 
-    const result = await supabase.storage
-      .from("diaries")
-      .upload(path, file!, { upsert: true });
+      console.log(updateResponse);
 
-    console.log(result);
+      alert("수정이 완료되었습니다");
+      router.push("/");
+    } else {
+      const filename = nanoid();
+      const extension = file!.name.split(".").slice(-1)[0];
+      const path = `${filename}.${extension}`;
 
-    const updateResponse = await supabase
-      .from("diaries")
-      .update({
-        imageUrl: result.data?.fullPath,
-        title: title,
-        content: content,
-        isPublic: isPublic,
-      })
-      .eq("id", Number(props.params.diaryId));
+      const result = await supabase.storage
+        .from("diaries")
+        .upload(path, file!, { upsert: true });
 
-    console.log(updateResponse);
+      console.log(result);
 
-    alert("수정이 완료되었습니다");
-    router.push("/");
+      const updateResponse = await supabase
+        .from("diaries")
+        .update({
+          imageUrl: result.data?.fullPath,
+          title: title,
+          content: content,
+          isPublic: isPublic,
+        })
+        .eq("id", Number(props.params.diaryId));
+
+      console.log(updateResponse);
+
+      alert("수정이 완료되었습니다");
+      router.push("/");
+    }
   };
 
   return (
