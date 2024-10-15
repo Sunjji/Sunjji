@@ -36,7 +36,7 @@ async function PublicPage() {
                 <p>12</p>
               </div>
               <div className="text-center text-BrownPoint">
-                <p>{diary.title}</p>
+                <p>{diary.title}.</p>
               </div>
             </div>
           );
