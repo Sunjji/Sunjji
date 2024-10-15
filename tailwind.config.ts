@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         beige: "#FFF8E8",
         point: "#FEFBF2",
+        BrownPoint: "#A17762",
         Brown: "#EFDDC4",
         background: "var(--background)",
         foreground: "var(--foreground)",
