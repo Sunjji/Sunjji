@@ -7,6 +7,10 @@ import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
 type DiariesType = {
+  params: {
+    diaryId: string;
+  };
+
   id: number;
   title: string;
   content: string;
@@ -14,7 +18,7 @@ type DiariesType = {
   isPublic: boolean;
 };
 
-function DiaryWritePage() {
+function DiaryWritePage(props: DiariesType) {
   const [file, setFile] = useState<null | File>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -23,9 +27,13 @@ function DiaryWritePage() {
 
   const router = useRouter();
 
-  const handleChangeButton: ComponentProps<"input">["onChange"] = (e) => {
+  const handleChangeButton: ComponentProps<"input">["onChange"] = async (e) => {
     setIsPublic(e.target.checked);
-    console.log(isPublic);
+
+    await supabase
+      .from("diaries")
+      .update({ isPublic: isPublic })
+      .eq("id", props.params.diaryId);
   };
 
   useEffect(() => {
@@ -87,6 +95,7 @@ function DiaryWritePage() {
           className="border w-72 resize-none"
           placeholder="일기 제목을 적어주세요"
           onChange={(e) => setTitle(e.target.value)}
+          rows={2}
         />
 
         <label htmlFor="content">일기 내용</label>
@@ -95,9 +104,9 @@ function DiaryWritePage() {
           className="border w-72 h-44 resize-none"
           placeholder="일기 내용을 적어주세요"
           onChange={(e) => setContent(e.target.value)}
+          rows={10}
         />
 
-        {/* true: 비공개, false: 공개 */}
         <div className="flex gap-x-5">
           <label htmlFor="isPublic">공개</label>
           <input

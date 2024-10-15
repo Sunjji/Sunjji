@@ -24,6 +24,8 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
   const [data, setData] = useState(props);
   const [isUser, setIsUser] = useState(false);
 
+  // d09a1fd5-b8a1-4092-88d6-ef3c892f88df -> 1234
+  // 5d94e981-16c8-4403-8e89-c305a7152c16 -> test
   useEffect(() => {
     (async () => {
       const response = await supabase
@@ -34,16 +36,11 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
 
       setData(response.data);
 
-      const user = await supabase
-        .from("diaries")
-        .select("*")
-        .eq("authorId", response.data.authorId);
+      const userResponse = await supabase.auth.getUser();
+      const data = userResponse.data.user;
+      const userId = data!.id;
 
-      console.log("userId", user.data![user.data!.length - 1].authorId);
-      console.log(response.data.authorId);
-
-      if (user === response.data.authorId) return setIsUser(true);
-      console.log("isUser", isUser);
+      if (response.data.authorId === userId) return setIsUser(true);
     })();
   }, []);
 
