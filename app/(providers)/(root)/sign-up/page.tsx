@@ -34,7 +34,7 @@ function SignUpPage() {
     const filename = nanoid();
     const profilePath = `${filename}.${extension}`;
     const baseURL =
-      "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+      "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/profile-image";
 
     if (!imageFile) return alert("이미지를 선택해주세요");
 
@@ -53,7 +53,7 @@ function SignUpPage() {
 
     await supabase.from("profiles").insert({
       nickname: nickname,
-      imageUrl: `${baseURL}${profilePath}`,
+      imageUrl: `${baseURL}/${profilePath}`,
     });
 
     return alert("회원가입에 성공하셨습니다");
