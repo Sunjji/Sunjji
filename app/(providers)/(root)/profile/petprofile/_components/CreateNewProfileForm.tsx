@@ -42,8 +42,8 @@ function CreateNewProfileForm() {
 
     if (!image) return alert("이미지가 없어요"); // 이미지 없을시 alert를 출력dd
 
-    const extension = image.name.split(".").slice(-1)[0]; // 확장자만 따로 배열에서 제외하기 위해 slice와 split를 사용
-    const filename = nanoid(); // 이름에서 충돌 없게 무작위 수를 출력하는 nanoid를 사용
+    const extension = image.name.split(".").slice(-1)[0]; // extension이라는 변수에 .jpg .png 이런거만 따로 저장하는 코드
+    const filename = nanoid(); // 이름에서 충돌 없게 무작위 수를 출력하는 nanoid를 사용(filename에 담음)
     const path = `${filename}.${extension}`; // 두개 합쳐서 파일의 이름이 filename.extension이 되게함
 
     console.log();
@@ -55,7 +55,7 @@ function CreateNewProfileForm() {
 
     const imageUrl = storage.data.fullPath;
     const data: CreateProfileData = {
-      image: imageUrl,
+      imageUrl,
       name,
       gender,
       age,
