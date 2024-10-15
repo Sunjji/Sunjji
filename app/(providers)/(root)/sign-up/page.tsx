@@ -8,6 +8,7 @@ function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const router = useRouter(); // router.push
 
   const handleClickSignUpPage = async () => {
@@ -32,6 +33,12 @@ function SignUpPage() {
       password,
     }); // 회원가입 후 로그인
 
+    await supabase.from("profiles").insert([
+      {
+        nickname: nickname,
+      },
+    ]);
+
     router.push("/"); // 홈으로 push
 
     return alert("회원가입에 성공하셨습니다");
@@ -40,6 +47,15 @@ function SignUpPage() {
   return (
     <main className="flex justify-center">
       <ul className="mt-[150px] bg-point w-[500px] p-10 text-center rounded-[8px]">
+        <li>
+          <h2 className="font-bold">사용자 이름</h2>
+          <input
+            className="mb-5 p-2"
+            type="text"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+        </li>
         <li>
           <h2 className="font-bold">이메일</h2>
           <input
