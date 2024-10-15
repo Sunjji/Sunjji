@@ -59,7 +59,7 @@ function MyPage() {
 
     // 이미지 파일이 있을 경우, 스토리지에 업로드
     if (imageFile) {
-      const uniqueFileName = `${nanoid()}-${imageFile.name}`;
+      const uniqueFileName = `${nanoid()}`;
       await supabase.storage
         .from("profile-image")
         .upload(uniqueFileName, imageFile);
