@@ -1,6 +1,7 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -9,6 +10,7 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [imageFile, setImageFile] = useState<File>();
   const router = useRouter(); // router.push
 
   const handleClickSignUpPage = async () => {
@@ -28,18 +30,31 @@ function SignUpPage() {
 
     if (!SignUpResult) return alert("회원가입 정보를 다시 확인해주세요");
 
+    const extension = imageFile?.name.split(".").slice(-1)[0];
+    const filename = nanoid();
+    const profilePath = `${filename}.${extension}`;
+    const baseURL =
+      "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+
+    if (!imageFile) return alert("이미지를 선택해주세요");
+
+    const storage = await supabase.storage
+      .from("profile-image")
+      .upload(profilePath, imageFile, { upsert: true });
+
+    if (storage.error) return alert("대 실 패");
+
+    console.log(storage.data.fullPath);
+
     await supabase.auth.signInWithPassword({
       email,
       password,
     }); // 회원가입 후 로그인
 
-    await supabase.from("profiles").insert([
-      {
-        nickname: nickname,
-      },
-    ]);
-
-    router.push("/"); // 홈으로 push
+    await supabase.from("profiles").insert({
+      nickname: nickname,
+      imageUrl: `${baseURL}${profilePath}`,
+    });
 
     return alert("회원가입에 성공하셨습니다");
   };
@@ -47,6 +62,14 @@ function SignUpPage() {
   return (
     <main className="flex justify-center">
       <ul className="mt-[150px] bg-point w-[500px] p-10 text-center rounded-[8px]">
+        <li>
+          <h2 className="font-bold">이미지</h2>
+          <input
+            className="mb-5 p-2"
+            type="file"
+            onChange={(e) => setImageFile(e.target.files?.[0])}
+          />
+        </li>
         <li>
           <h2 className="font-bold">사용자 이름</h2>
           <input
