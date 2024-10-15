@@ -30,8 +30,6 @@ function SideBar() {
     alert("로그아웃 성공"); //슈파베이스 로그아웃
   };
 
-  console.log(isAuthInitialized);
-
   return (
     <nav className="bg-point w-[70px] min-h-screen">
       <Link href={"/"} className="font-bold text-2xl">
