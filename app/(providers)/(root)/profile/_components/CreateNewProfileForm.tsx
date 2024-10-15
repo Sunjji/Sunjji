@@ -55,7 +55,7 @@ function CreateNewProfileForm() {
 
     const imageUrl = storage.data.fullPath;
     const data: CreateProfileData = {
-      image: imageUrl,
+      imageUrl,
       name,
       gender,
       age,
