@@ -71,19 +71,32 @@ function CreateNewProfileForm() {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1 className="text-3xl">반려동물 등록</h1>
+      <h2 className="text-2xl">이미지 첨부</h2>
       <input name="image" type="file" />
-      <input name="name" type="text" />
-      <label>
-        <input name="gender" value="male" type="radio" />
-      </label>
-      <label>
-        <input name="gender" value="female" type="radio" />
-      </label>
+
+      <h2 className="text-2xl">이름</h2>
+      <input name="name" id="name" type="text" autoFocus />
+
+      <div>
+        <h2 className="text-2xl">성별</h2>
+        <label htmlFor="male">수컷</label>
+        <input name="gender" id="male" value="male" type="radio" />
+        <label htmlFor="female">암컷</label>
+        <input name="gender" id="female" value="female" type="radio" />
+      </div>
+
+      <h2 className="text-2xl">나이</h2>
       <input name="age" type="number" />
+
+      <h2 className="text-2xl">몸무게</h2>
       <input name="weight" type="number" />
+
+      <h2 className="text-2xl">한 줄 소개</h2>
       <input name="comment" type="text" />
 
-      <button>제출하기</button>
+      <br />
+      <button className="text-2xl bg-white">제출하기</button>
     </form>
   );
 }
