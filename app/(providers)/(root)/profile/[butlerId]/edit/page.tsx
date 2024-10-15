@@ -15,6 +15,7 @@ type PetProfileEditProps = {
   comment: string;
 };
 
+
 function PetProfileEditPage(props: PetProfileEditProps) {
   const [weight, setWeight] = useState(1);
   const [age, setAge] = useState(1);
@@ -41,6 +42,8 @@ function PetProfileEditPage(props: PetProfileEditProps) {
     e
   ) => {
     e.preventDefault();
+    
+    
 
     await supabase
       .from("pets")
@@ -51,7 +54,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         name: name,
         comment: comment,
       })
-      .eq("id", Number(props.params.butlerId));
+      .eq("butlerId", props.params.butlerId);
 
     alert("수정이 완료되었습니다");
   };
