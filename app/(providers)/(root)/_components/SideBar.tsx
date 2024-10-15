@@ -40,6 +40,7 @@ function SideBar() {
           {isLoggedIn ? ( // isLoggedIn이 true일때 출력
             <>
               <Link href={"/my-page"}>마이 페이지</Link>
+              <Link href={"/views/publicView"}>공개일기</Link>
               <button onClick={handleClickLogOut}>로그아웃</button>
             </>
           ) : (

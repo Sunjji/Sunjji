@@ -42,7 +42,11 @@ function MyPage() {
         {profile ? (
           <>
             <p className="text-xl">이름: {profile.nickname}</p>
-            <img className="w-32 inline rounded-xl" src={profile.imageUrl} alt="Profile" />
+            <img
+              className="w-32 inline rounded-xl"
+              src={profile.imageUrl}
+              alt="Profile"
+            />
             <p className="text-xl">한 줄 소개: {profile.comment}</p>
             <p className="text-xl">
               계정 생성 날짜:{" "}
