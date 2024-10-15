@@ -53,7 +53,7 @@ export type Database = {
           butlerId: string
           comment: string
           created_at: string
-          gender: boolean
+          gender: string
           id: number
           imageUrl: string
           name: string
@@ -64,7 +64,7 @@ export type Database = {
           butlerId?: string
           comment?: string
           created_at?: string
-          gender: boolean
+          gender: string
           id?: number
           imageUrl: string
           name: string
@@ -75,7 +75,7 @@ export type Database = {
           butlerId?: string
           comment?: string
           created_at?: string
-          gender?: boolean
+          gender?: string
           id?: number
           imageUrl?: string
           name?: string
@@ -86,6 +86,38 @@ export type Database = {
             foreignKeyName: "pets_butlerId_fkey"
             columns: ["butlerId"]
             isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          comment: string
+          createdAt: string
+          id: string
+          imageUrl: string
+          nickname: string
+        }
+        Insert: {
+          comment: string
+          createdAt?: string
+          id: string
+          imageUrl: string
+          nickname: string
+        }
+        Update: {
+          comment?: string
+          createdAt?: string
+          id?: string
+          imageUrl?: string
+          nickname?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

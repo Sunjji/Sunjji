@@ -66,7 +66,10 @@ function CreateNewProfileForm() {
     console.log(await mutateAsync(data));
     const { data: pets, error } = await mutateAsync(data);
 
-    console.log(storage.data.fullPath);
+    if (error) return alert("페이지 작성 실패");
+
+    alert("프로필 등록 성공 ");
+    // router.push("/");
   };
 
   return (
