@@ -5,6 +5,7 @@ import { supabase } from "@/supabase/client";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import Link from "next/link";
 
 type Profile = {
   id: string;
@@ -20,6 +21,12 @@ function MyPage() {
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isProfileEditing, setIsProfileEditing] = useState(false);
+
+  const { data } = supabase.auth.getUser() 
+   //   const getButlerId = async () => {
+  //   const { data } = await supabase.from("pets").select("butlerId").single();
+  // };
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -54,8 +61,16 @@ function MyPage() {
     setIsEditing(true);
   };
 
+  const handleEditPetProfileButton = () => {
+    setIsProfileEditing(true);
+  };
+
   const handleSave = async () => {
-    const updatedProfile: { nickname: string; comment: string; imageUrl?: string } = { nickname, comment };
+    const updatedProfile: {
+      nickname: string;
+      comment: string;
+      imageUrl?: string;
+    } = { nickname, comment };
 
     // 이미지 파일이 있을 경우, 스토리지에 업로드
     if (imageFile) {
@@ -68,7 +83,10 @@ function MyPage() {
       updatedProfile.imageUrl = imageUrl;
     }
 
-    await supabase.from("profiles").update(updatedProfile).eq("id", profile?.id);
+    await supabase
+      .from("profiles")
+      .update(updatedProfile)
+      .eq("id", profile?.id);
 
     setProfile((prev) => (prev ? { ...prev, ...updatedProfile } : null));
     setIsEditing(false);
@@ -140,6 +158,26 @@ function MyPage() {
               >
                 사용자 정보 수정
               </button>
+            )}
+
+            {isProfileEditing ? (
+              <>
+                <Link href={"/profile/petprofile"}>
+                  <button
+                    className="border border-black px-2 py-1 rounded-lg"
+                    onClick={handleEditPetProfileButton}
+                  >
+                    펫 프로필 등록
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href={`/profile/${realButlerId}/edit`}>
+                  <button className="border border-black px-2 py-1 rounded-lg"></button>
+                  펫 프로필 수정
+                </Link>
+              </>
             )}
           </>
         ) : (

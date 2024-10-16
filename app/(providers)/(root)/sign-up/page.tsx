@@ -41,7 +41,7 @@ function SignUpPage() {
     const storage = await supabase.storage
       .from("profile-image")
       .upload(profilePath, imageFile, { upsert: true });
-
+  
     if (storage.error) return alert("대 실 패");
 
     console.log(storage.data.fullPath);
@@ -56,6 +56,7 @@ function SignUpPage() {
       imageUrl: `${baseURL}/${profilePath}`,
     });
 
+    router.push("/");
     return alert("회원가입에 성공하셨습니다");
   };
 

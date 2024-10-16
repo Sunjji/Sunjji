@@ -1,6 +1,8 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
 import React, { ComponentProps, useEffect, useState } from "react";
 
 type PetProfileEditProps = {
@@ -15,13 +17,14 @@ type PetProfileEditProps = {
   comment: string;
 };
 
-
 function PetProfileEditPage(props: PetProfileEditProps) {
   const [weight, setWeight] = useState(1);
   const [age, setAge] = useState(1);
   const [gender, setGender] = useState("");
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
+  const [imageFile, setImageFile] = useState<File>();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -42,8 +45,20 @@ function PetProfileEditPage(props: PetProfileEditProps) {
     e
   ) => {
     e.preventDefault();
-    
-    
+
+    const extension = imageFile?.name.split(".").slice(-1)[0];
+    const filename = nanoid();
+    const imageFixPath = `${filename}.${extension}`;
+
+    if (!imageFile) return alert("이미지 파일이 없습니다");
+
+    const storage = await supabase.storage
+      .from("pets")
+      .upload(imageFixPath, imageFile, { upsert: true });
+
+    if (!storage.data) alert("사진 수정에 실패하셨어요");
+
+    console.log(storage.data?.fullPath);
 
     await supabase
       .from("pets")
@@ -53,9 +68,11 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         gender: gender,
         name: name,
         comment: comment,
+        imageUrl: `${filename}.${extension}`,
       })
       .eq("butlerId", props.params.butlerId);
 
+    router.push("/my-page");
     alert("수정이 완료되었습니다");
   };
 
@@ -63,7 +80,11 @@ function PetProfileEditPage(props: PetProfileEditProps) {
     <form onSubmit={handleFormSubmitButton}>
       <h1 className="text-3xl">반려동물 프로필 수정</h1>
       <h2 className="text-2xl">이미지 첨부</h2>
-      <input name="image" type="file" />
+      <input
+        name="image"
+        type="file"
+        onChange={(e) => setImageFile(e.target.files?.[0])}
+      />
 
       <h2 className="text-2xl">이름</h2>
       <input

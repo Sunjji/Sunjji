@@ -46,8 +46,6 @@ function CreateNewProfileForm() {
     const filename = nanoid(); // 이름에서 충돌 없게 무작위 수를 출력하는 nanoid를 사용(filename에 담음)
     const path = `${filename}.${extension}`; // 두개 합쳐서 파일의 이름이 filename.extension이 되게함
 
-    console.log();
-
     const storage = await supabase.storage
       .from("pets")
       .upload(path, image, { upsert: true });
@@ -63,13 +61,12 @@ function CreateNewProfileForm() {
       comment,
     };
 
-    console.log(await mutateAsync(data));
     const { data: pets, error } = await mutateAsync(data);
 
     if (error) return alert("페이지 작성 실패");
 
     alert("프로필 등록 성공 ");
-    // router.push("/");
+    router.push("/my-page");
   };
 
   return (
