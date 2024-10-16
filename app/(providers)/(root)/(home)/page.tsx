@@ -25,13 +25,6 @@ function HomePage() {
           events={[
             { title: "Event 1", date: "2024-10-14" },
             { title: "Event 1", date: "2024-10-14" },
-            {
-              title: "고양이 밥 주기",
-              start: "2024-10-15",
-              end: "2024-10-17",
-              backgroundColor: "skyblue",
-              borderColor: "skyblue",
-            },
           ]}
         />
       </div>
