@@ -23,15 +23,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   const [isPublic, setIsPublic] = useState(false);
   const router = useRouter();
 
-  const handleChangeButton: ComponentProps<"input">["onChange"] = async (e) => {
-    setIsPublic(e.target.checked);
-
-    await supabase
-      .from("diaries")
-      .update({ isPublic: isPublic })
-      .eq("id", props.params.diaryId);
-  };
-
+  // diaries 정보 가져오기
   useEffect(() => {
     (async () => {
       const response = await supabase
@@ -46,6 +38,17 @@ function DiaryEditPage(props: DiaryEditPageProps) {
     })();
   }, []);
 
+  // 공개/비공개 버튼
+  const handleTogglePublic: ComponentProps<"input">["onChange"] = async (e) => {
+    setIsPublic(e.target.checked);
+
+    await supabase
+      .from("diaries")
+      .update({ isPublic: isPublic })
+      .eq("id", Number(props.params.diaryId));
+  };
+
+  // form 제출 버튼
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
@@ -62,7 +65,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       console.log(updateResponse);
 
       alert("수정이 완료되었습니다");
-      router.push("/diaries/card");
+      router.push("/views/publicView");
     } else {
       const filename = nanoid();
       const extension = file!.name.split(".").slice(-1)[0];
@@ -87,7 +90,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       console.log(updateResponse);
 
       alert("수정이 완료되었습니다");
-      router.push("/diaries/card");
+      router.push("/views/publicView");
     }
   };
 
@@ -119,7 +122,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       <div className="flex gap-x-5">
         <label htmlFor="isPublic">공개</label>
         <input
-          onChange={handleChangeButton}
+          onChange={handleTogglePublic}
           id="isPublic"
           checked={isPublic}
           type="checkbox"
