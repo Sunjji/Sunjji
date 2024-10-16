@@ -17,7 +17,6 @@ type DiariesType = {
   imageUrl: string;
   isPublic: boolean;
 };
-
 function DiariesCardPage() {
   const [diaries, setDiaries] = useState<DiariesType[]>([]);
   const [isUser, setIsUser] = useState(false);
@@ -28,35 +27,27 @@ function DiariesCardPage() {
         console.error("error", error);
       } else {
         setDiaries(data);
-        // console.log(data);
       }
 
-      // 모든 유저의 authorId 가져오기
       const dataUsersId = data?.map((user) => user.authorId);
 
-      // 로그인한 유저의 authorId 가져오기
       const userData = await supabase.auth.getUser();
       const userId = userData.data.user?.id;
-      // console.log(userId);
+
       const getDiariesByUserId = await supabase
         .from("diaries")
         .select("*")
         .eq("authorId", userId);
-      // console.log(getDiariesByUserId);
 
-      // 모든 유저의 authorId와 로그인한 유저의 authorId를 비교하기
-      // const a = dataUsersId?.includes(userId);
       const a = dataUsersId?.map((authorId) =>
         authorId === userId ? getDiariesByUserId : "NO"
       );
       const b = a?.filter((c) => c !== "NO");
       console.log("a", a);
       console.log("b", b![1]);
-
       setIsUser(false);
     })();
   }, [isUser]);
-
   return (
     <div>
       <ul>
