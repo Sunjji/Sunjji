@@ -5,9 +5,14 @@ export const revalidate = 0;
 async function PublicPage() {
   const response = await supabase.from("diaries").select();
   const diaries = response.data;
-  console.log(response);
+
+  const response2 = await supabase.from("profiles").select();
+  const profiles = response2.data;
+
+  console.log(response2);
+
   const baseURL =
-    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public";
+    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
   return (
     <>
@@ -19,17 +24,29 @@ async function PublicPage() {
       <div className="ml-[50px] grid grid-cols-4">
         {diaries?.map((diary) => {
           return (
-            <Link href={`/diaries/${diary.id}/detail`}>
+            <Link key={diary.id} href={`/diaries/${diary.id}/detail`}>
               <div className="relative group mt-[30px] rounded-[8px] w-[280px] h-[370px] bg-point border-2 border-transparent">
                 {/* 바깥쪽 테두리 쉐도우 */}
                 <div className="absolute inset-0 rounded-[8px] group-hover:shadow-[0_0_20px_rgba(161,119,98,0.5)] transition duration-300"></div>
 
-                <div className="flex items-center">
-                  <div className="m-2 inline-block rounded-full bg-white w-[40px] h-[40px]"></div>
-                  <span className="inline-block text-sm font-semibold text-BrownPoint">
-                    jjugguming
-                  </span>
-                </div>
+                {profiles?.map((profile) => {
+                  if (diary.authorId === profile.id) {
+                    return (
+                      <ul key={profile.id} className="flex items-center">
+                        <li>
+                          <img
+                            src={profile.imageUrl}
+                            className="m-2 inline-block rounded-full bg-white w-[40px] h-[40px] object-cover"
+                          />
+                        </li>
+                        <li className="inline-block text-sm font-semibold text-BrownPoint">
+                          {profile.nickname}
+                        </li>
+                      </ul>
+                    );
+                  }
+                })}
+
                 <div className="flex flex-col items-center justify-center">
                   <img
                     className="w-[300px] h-[200px] object-cover"
