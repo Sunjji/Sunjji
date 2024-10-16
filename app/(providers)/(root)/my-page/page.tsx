@@ -23,19 +23,6 @@ function MyPage() {
   const [comment, setComment] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
-  const [butlerId, setButlerId] = useState<string | undefined>("");
-
-  const getButlerId = async () => {
-    const { data } = await supabase.auth.getUser();
-
-    const getId = data.user?.id;
-
-    setButlerId(getId);
-  };
-
-  useEffect(() => {
-    getButlerId();
-  }, []);
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -171,12 +158,10 @@ function MyPage() {
 
             {isProfileEditing ? (
               <>
-                <Link href={`/profile/${butlerId}/edit`}>
-                  <button
-                    onClick={getButlerId}
-                    className="border border-black px-2 py-1 rounded-lg"
-                  ></button>
-                  펫 프로필 추가등록
+                <Link href={"/profile/petprofile"}>
+                  <button className="border border-black px-2 py-1 rounded-lg">
+                    펫 프로필 추가등록
+                  </button>
                 </Link>
               </>
             ) : (
