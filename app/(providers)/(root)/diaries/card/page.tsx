@@ -50,8 +50,8 @@ function DiariesCardPage() {
         authorId === userId ? getDiariesByUserId : "NO"
       );
       const b = a?.filter((c) => c !== "NO");
-      // console.log("a", a);
-      // console.log("b", b![1]);
+      console.log("a", a);
+      console.log("b", b![1]);
 
       setIsUser(false);
     })();
