@@ -20,6 +20,7 @@ type DiaryDetailPageProps = {
 
   nickname: string;
 };
+
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
