@@ -2,7 +2,7 @@
 
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { ComponentProps, useEffect, useState } from "react";
 
 type PetProfileEditProps = {
@@ -18,6 +18,7 @@ type PetProfileEditProps = {
 };
 
 function PetProfileEditPage(props: PetProfileEditProps) {
+  const params = useParams();
   const [weight, setWeight] = useState(1);
   const [age, setAge] = useState(1);
   const [gender, setGender] = useState("");
@@ -58,8 +59,6 @@ function PetProfileEditPage(props: PetProfileEditProps) {
 
     if (!storage.data) alert("사진 수정에 실패하셨어요");
 
-    console.log(storage.data?.fullPath);
-
     await supabase
       .from("pets")
       .update({
@@ -68,9 +67,10 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         gender: gender,
         name: name,
         comment: comment,
-        imageUrl: `${filename}.${extension}`,
+        imageUrl: storage.data!.fullPath,
       })
-      .eq("butlerId", props.params.butlerId);
+      .eq("id", params.butlerId);
+    console.log(params.butlerId);
 
     router.push("/my-page");
     alert("수정이 완료되었습니다");
