@@ -40,6 +40,20 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
     })();
   }, []);
 
+  const handleClickDeleteButton = async () => {
+    const deleteResponse = await supabase
+      .from("diaries")
+      .select("*")
+      .eq("id", Number(props.params.diaryId))
+      .single();
+
+    const deleteData = await supabase
+      .from("diaries")
+      .delete()
+      .eq("id", deleteResponse.data);
+    console.log(deleteData);
+  };
+
   return (
     <div>
       <p>
@@ -54,13 +68,18 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
       <p>내용: {data.content}</p>
       <p>글쓴이: {data.authorId}</p>
 
+      {/* 자기가 작성한 일기라면 편집, 삭제버튼 띄우고, 아니라면 null */}
       {isUser ? (
-        <Link
-          className="border w-72 inline-block text-center active:brightness-75"
-          href={`/diaries/${data.id}/detail/edit`}
-        >
-          편집하기
-        </Link>
+        <>
+          <Link
+            className="border w-72 inline-block text-center active:brightness-75"
+            href={`/diaries/${data.id}/detail/edit`}
+          >
+            편집하기
+          </Link>
+
+          <button onClick={handleClickDeleteButton}>삭제하기</button>
+        </>
       ) : null}
     </div>
   );

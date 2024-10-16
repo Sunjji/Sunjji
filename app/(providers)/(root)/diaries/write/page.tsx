@@ -9,6 +9,14 @@ type PropsType = {
   params: {
     diaryId: string;
   };
+
+  id: number;
+  authorId: string;
+  title: string;
+  content: string;
+  imageUrl: string;
+  createdAt: string;
+  isPublic: boolean;
 };
 
 function DiaryWritePage(props: PropsType) {
