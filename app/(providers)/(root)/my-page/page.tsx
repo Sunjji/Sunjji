@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import Link from "next/link";
+import AllPet from "../_components/AllPet";
 
 type Profile = {
   id: string;
@@ -22,11 +23,19 @@ function MyPage() {
   const [comment, setComment] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
+  const [butlerId, setButlerId] = useState<string | undefined>("");
 
-  const { data } = supabase.auth.getUser() 
-   //   const getButlerId = async () => {
-  //   const { data } = await supabase.from("pets").select("butlerId").single();
-  // };
+  const getButlerId = async () => {
+    const { data } = await supabase.auth.getUser();
+
+    const getId = data.user?.id;
+
+    setButlerId(getId);
+  };
+
+  useEffect(() => {
+    getButlerId();
+  }, []);
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -162,6 +171,16 @@ function MyPage() {
 
             {isProfileEditing ? (
               <>
+                <Link href={`/profile/${butlerId}/edit`}>
+                  <button
+                    onClick={getButlerId}
+                    className="border border-black px-2 py-1 rounded-lg"
+                  ></button>
+                  펫 프로필 추가등록
+                </Link>
+              </>
+            ) : (
+              <>
                 <Link href={"/profile/petprofile"}>
                   <button
                     className="border border-black px-2 py-1 rounded-lg"
@@ -171,18 +190,12 @@ function MyPage() {
                   </button>
                 </Link>
               </>
-            ) : (
-              <>
-                <Link href={`/profile/${realButlerId}/edit`}>
-                  <button className="border border-black px-2 py-1 rounded-lg"></button>
-                  펫 프로필 수정
-                </Link>
-              </>
             )}
           </>
         ) : (
           <p>사용자 정보를 불러오는 중입니다...</p>
         )}
+        <AllPet />
       </section>
     </main>
   );
