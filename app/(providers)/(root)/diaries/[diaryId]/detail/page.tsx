@@ -58,7 +58,7 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
     <div>
       <p>
         {/* 임시로 사진 사이즈 조절함 */}
-        사진:
+        사진:{" "}
         <img
           className="w-32"
           src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${data.imageUrl}`}
