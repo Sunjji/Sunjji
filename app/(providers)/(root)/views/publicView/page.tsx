@@ -71,7 +71,12 @@ async function PublicPage() {
                   <p>{diary.title}.</p>
                 </div>
                 <div className="text-center text-BrownPoint mt-[10px]">
-                  <p>{diary.content}.</p>
+                  {/* 18글자까지만 보여주고, 글자가 길면 "..." 표시 */}
+                  <p>
+                    {diary.content.length > 18
+                      ? diary.content.slice(0, 18) + "..."
+                      : diary.content}
+                  </p>
                 </div>
               </div>
             </Link>

@@ -5,19 +5,12 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
-import { useEffect } from "react";
 
 function SideBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
-  const initializeAuth = useAuthStore((state) => state.initializeAuth);
   const openModal = useModalStore((state) => state.openModal);
-
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
-  //isAuthInitialized를 useEffect를 사용해서 true로 바꿔주는 코드
 
   // 로그인 모달 띄워주는 함수
   const handleClickLogInButton = async () => {
