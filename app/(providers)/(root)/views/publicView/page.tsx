@@ -1,4 +1,5 @@
 import { supabase } from "@/supabase/client";
+import dayjs from "dayjs";
 import Link from "next/link";
 
 export const revalidate = 0;
@@ -23,12 +24,12 @@ async function PublicPage() {
       {/* 클릭하면 일기 상세페이지로 들어감 */}
       <div className="ml-[50px] grid grid-cols-4">
         {diaries?.map((diary) => {
-          return (
+          return diary.isPublic ? (
             <Link key={diary.id} href={`/diaries/${diary.id}/detail`}>
               <div className="relative group mt-[30px] rounded-[8px] w-[280px] h-[370px] bg-point border-2 border-transparent">
                 {/* 바깥쪽 테두리 쉐도우 */}
                 <div className="absolute inset-0 rounded-[8px] group-hover:shadow-[0_0_20px_rgba(161,119,98,0.5)] transition duration-300"></div>
-
+                {/* 프로필+닉네임+날짜 */}
                 {profiles?.map((profile) => {
                   if (diary.authorId === profile.id) {
                     return (
@@ -36,12 +37,18 @@ async function PublicPage() {
                         <li>
                           <img
                             src={profile.imageUrl}
-                            className="m-2 inline-block rounded-full bg-white w-[40px] h-[40px] object-cover"
+                            className="m-2 inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
+                            alt="프로필 이미지"
                           />
                         </li>
-                        <li className="inline-block text-sm font-semibold text-BrownPoint">
-                          {profile.nickname}
-                        </li>
+                        <div className="grow flex justify-between">
+                          <li className="text-sm font-semibold text-BrownPoint">
+                            {profile.nickname}
+                          </li>
+                          <li className="text-sm  text-BrownPoint pr-2">
+                            {dayjs(diary.createdAt).format("YYYY년 MM월 DD일")}
+                          </li>
+                        </div>
                       </ul>
                     );
                   }
@@ -51,6 +58,7 @@ async function PublicPage() {
                   <img
                     className="w-[300px] h-[200px] object-cover"
                     src={`${baseURL}/${diary.imageUrl}`}
+                    alt="일기 사진"
                   />
                 </div>
                 <div className="ml-5 flex gap-2">
@@ -67,7 +75,7 @@ async function PublicPage() {
                 </div>
               </div>
             </Link>
-          );
+          ) : null;
         })}
       </div>
     </>
