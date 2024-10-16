@@ -62,7 +62,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       console.log(updateResponse);
 
       alert("수정이 완료되었습니다");
-      router.push("/");
+      router.push("/diaries/card");
     } else {
       const filename = nanoid();
       const extension = file!.name.split(".").slice(-1)[0];
@@ -87,7 +87,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       console.log(updateResponse);
 
       alert("수정이 완료되었습니다");
-      router.push("/");
+      router.push("/diaries/card");
     }
   };
 

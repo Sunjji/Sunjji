@@ -4,7 +4,6 @@ import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
-import DiariesCardPage from "../card/page";
 
 type PropsType = {
   params: {
@@ -54,7 +53,7 @@ function DiaryWritePage(props: PropsType) {
       console.log("data", data);
 
       alert("일기를 작성했습니다");
-      router.push("/");
+      router.push("./card");
     }
   };
 
@@ -96,8 +95,6 @@ function DiaryWritePage(props: PropsType) {
       </div>
 
       <button className="border w-72 active:brightness-75">작성하기</button>
-
-      <DiariesCardPage />
     </form>
   );
 }

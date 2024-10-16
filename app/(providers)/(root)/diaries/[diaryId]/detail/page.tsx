@@ -10,11 +10,11 @@ type DiaryDetailPageProps = {
   };
 
   id: number;
-  authorId: number;
+  authorId: string;
   title: string;
   content: string;
   imageUrl: string;
-  createAt: string;
+  createdAt: string;
   isPublic: boolean;
 };
 
@@ -47,7 +47,7 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
         사진:{" "}
         <img
           className="w-32"
-          src={`"https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public"/${data.imageUrl}`}
+          src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${data.imageUrl}`}
         />
       </p>
       <p>제목: {data.title}</p>
