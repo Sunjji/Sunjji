@@ -9,9 +9,10 @@ type Comments = {
   like: boolean;
 };
 
-function CreateCommentsPage() {
+function WriteCommentsPage() {
   const [comments, setComments] = useState("");
   const [commentsData, setCommentsData] = useState<Comments[]>([]);
+  const [isUser, setIsUser] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -36,6 +37,7 @@ function CreateCommentsPage() {
       .insert([{ comment: comments }])
       .select();
 
+    // 댓글 작성하면 바로 보이게 하기
     const { data: commentsResponse, error: responseError } = await supabase
       .from("comments")
       .select("*");
@@ -80,4 +82,4 @@ function CreateCommentsPage() {
   );
 }
 
-export default CreateCommentsPage;
+export default WriteCommentsPage;
