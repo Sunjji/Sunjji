@@ -9,13 +9,34 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      comments: {
+        Row: {
+          comment: string
+          commentId: string
+          createdAt: string
+          id: number
+        }
+        Insert: {
+          comment: string
+          commentId?: string
+          createdAt?: string
+          id?: number
+        }
+        Update: {
+          comment?: string
+          commentId?: string
+          createdAt?: string
+          id?: number
+        }
+        Relationships: []
+      }
       diaries: {
         Row: {
           authorId: string
           content: string
           createdAt: string
           id: number
-          imageUrl: string | null
+          imageUrl: string
           isPublic: boolean
           title: string
         }
@@ -24,7 +45,7 @@ export type Database = {
           content: string
           createdAt?: string
           id?: number
-          imageUrl?: string | null
+          imageUrl: string
           isPublic: boolean
           title: string
         }
@@ -33,19 +54,11 @@ export type Database = {
           content?: string
           createdAt?: string
           id?: number
-          imageUrl?: string | null
+          imageUrl?: string
           isPublic?: boolean
           title?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "diaries_authorId_fkey"
-            columns: ["authorId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       pets: {
         Row: {
@@ -81,15 +94,7 @@ export type Database = {
           name?: string
           weight?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "pets_butlerId_fkey"
-            columns: ["butlerId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -100,10 +105,10 @@ export type Database = {
           nickname: string
         }
         Insert: {
-          comment: string
+          comment?: string
           createdAt?: string
-          id: string
-          imageUrl: string
+          id?: string
+          imageUrl?: string
           nickname: string
         }
         Update: {
@@ -113,15 +118,7 @@ export type Database = {
           imageUrl?: string
           nickname?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
@@ -219,4 +216,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

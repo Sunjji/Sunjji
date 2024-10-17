@@ -17,7 +17,6 @@ type CustomProfileFormEvent = FormEvent<HTMLFormElement> & {
     comment: HTMLInputElement;
   };
 };
-
 type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"]; // 타입지정
 
 function CreateNewProfileForm() {
