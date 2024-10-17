@@ -7,14 +7,13 @@ import DiariesWriteButton from "./_components/DiariesWriteButton";
 import HeartButton from "./_components/HeartButton";
 
 export const revalidate = 0;
+
 async function PublicPage() {
   const response = await supabase.from("diaries").select();
   const diaries = response.data;
 
   const response2 = await supabase.from("profiles").select();
   const profiles = response2.data;
-
-  console.log(response2);
 
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -66,8 +65,8 @@ async function PublicPage() {
                 </div>
 
                 {/* 좋아요 댓글 버튼 */}
-                <div className="ml-5 flex gap-2 mt-1">
-                  <HeartButton />
+                <div className="ml-5 flex gap-2 mt-1 z-0 relative">
+                  <HeartButton diaryId={diary.id} />
                   <CommentButton />
                 </div>
                 <div className="text-center text-BrownPoint mt-[10px] font-semibold">
