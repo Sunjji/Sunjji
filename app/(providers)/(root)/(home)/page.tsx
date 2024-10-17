@@ -35,7 +35,7 @@ function HomePage() {
       const events = diaries?.map((diary) => ({
         title: diary.title,
         date: dayjs(diary.createdAt).format("YYYY-MM-DD"),
-        url: `/diaries/${diary.id}/detail`,
+        url: `/diaries/${diary.id}`,
       }));
       if (!events) return;
 
@@ -43,34 +43,26 @@ function HomePage() {
     })();
   }, [isLoggedIn]);
 
-  // // 드래그앤드롭 이벤트 핸들러
-  // const handleDropEvent = async (info: EventDragStopArg) => {
-  //   // 드래그 후 변경된 날짜를 YYYY-MM-DD 형식으로 가져오기
-  //   const newDate = dayjs(info.event..end).format("YYYY-MM-DD");
+  // 드래그앤드롭 이벤트 핸들러
+  const handleDropEvent = async (info: EventDragStopArg) => {
+    // 드래그 후 변경된 날짜를 YYYY-MM-DD 형식으로 가져오기
+    const newDate = info.event.startStr;
+    const splitedUrl = info.event._def.url.split("/");
+    const diaryId = splitedUrl[splitedUrl.length - 1];
+    try {
+      const { error } = await supabase
+        .from("diaries")
+        .update({ createdAt: newDate })
+        .eq("id", diaryId); // event.id로 해당 일기 업데이트
 
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("diaries")
-  //       .update({ createdAt: `${newDate}T00:00:00Z` }) // 시간을 00:00:00으로 고정해서 저장
-  //       .eq("id", info.event.id); // event.id로 해당 일기 업데이트
+      if (error) {
+        throw error;
+      }
 
-  //     if (error) {
-  //       throw error;
-  //     }
-
-  //     console.log("드래그 후 변경된 날짜:", newDate);
-  //   } catch (error) {
-  //     console.error("날짜 업데이트 오류:", error);
-  //   }
-  // };
-
-  const handleDropEvent = (info) => {
-    console.log(info.event); // 전체 이벤트 객체를 콘솔에 출력
-
-    // 추가로 이벤트 속성을 개별적으로 보고 싶다면:
-    console.log("Event Title:", info.event.title); // 이벤트 제목
-    console.log("Event Start:", info.event.start); // 시작 시간
-    console.log("Event End:", info.event.end); // 종료 시간
+      console.log("드래그 후 변경된 날짜:", newDate);
+    } catch (error) {
+      console.error("날짜 업데이트 오류:", error);
+    }
   };
 
   return (
@@ -91,8 +83,7 @@ function HomePage() {
           eventBackgroundColor="pink"
           eventBorderColor="pink"
           events={events}
-          // 로그인 상태일 때만 드롭 이벤트 핸들러를 활성화
-          eventDrop={isLoggedIn ? handleDropEvent : undefined}
+          eventDrop={handleDropEvent}
         />
       </div>
     </>
