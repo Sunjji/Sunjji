@@ -5,12 +5,14 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function SideBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
   const openModal = useModalStore((state) => state.openModal);
+  const router = useRouter();
 
   // 로그인 모달 띄워주는 함수
   const handleClickLogInButton = async () => {
@@ -21,6 +23,7 @@ function SideBar() {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
     alert("로그아웃 성공"); //슈파베이스 로그아웃
+    router.push("/");
   };
 
   return (

@@ -36,7 +36,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
       console.log(params);
       console.log(petId);
 
-      setWeight(response.data[0].weight); // 빨간줄 떠도 실행은 잘됨, 나중에 수정예정
+      setWeight(response.data[0].weight);
       setAge(response.data[0].age);
       setGender(response.data[0].gender);
       setName(response.data[0].name);
@@ -61,7 +61,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
 
     if (!storage.data) alert("사진 수정에 실패하셨어요");
 
-    const response = await supabase //response를 사용하지 않아서 생기는 빨간 밑줄
+    const response = await supabase
       .from("pets")
       .update({
         weight: weight,
