@@ -61,7 +61,7 @@ function CreateNewProfileForm() {
       comment,
     };
 
-    const { data: pets, error } = await mutateAsync(data);
+    const { data: pets, error } = await mutateAsync(data); //pets를 사용하지 않아서 생기는 오류, 나중에 수정예정(사용에는 지장없음)
 
     if (error) return alert("페이지 작성 실패");
 

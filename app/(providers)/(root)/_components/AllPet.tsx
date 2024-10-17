@@ -1,10 +1,8 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import { Tables } from "@/supabase/database.types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Router } from "next/router";
 import React, { useEffect, useState } from "react";
 
 function AllPet() {
@@ -40,7 +38,7 @@ function AllPet() {
             <button className="border border-black px-2 py-1 rounded-lg"></button>
             <img
               className="w-48 h-auto"
-              src={`${baseURL}${pets.imageUrl}`}
+              src={`${baseURL}${pets.imageUrl}`} //img를 소문자로 써서 생기는것
             ></img>
           </Link>
 
