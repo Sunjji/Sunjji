@@ -27,7 +27,7 @@ async function PublicPage() {
       <div className="mx-[50px] mb-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
         {diaries?.map((diary) => {
           return diary.isPublic ? (
-            <Link key={diary.id} href={`/diaries/${diary.id}/detail`}>
+            <Link key={diary.id} href={`/diaries/${diary.id}`}>
               <div className="relative group mt-[30px] rounded-[8px] bg-point border-2 border-transparent">
                 {/* 바깥쪽 테두리 쉐도우 */}
                 <div className="absolute inset-0 rounded-[8px] group-hover:shadow-[0_0_20px_rgba(161,119,98,0.5)] transition duration-300"></div>

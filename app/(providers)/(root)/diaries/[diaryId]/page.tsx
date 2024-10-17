@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { supabase } from "@/supabase/client";
@@ -96,7 +97,7 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
         <>
           <Link
             className="border w-72 inline-block text-center active:brightness-75"
-            href={`/diaries/${diaryData.id}/detail/edit`}
+            href={`/diaries/${diaryData.id}/edit`}
           >
             편집하기
           </Link>
