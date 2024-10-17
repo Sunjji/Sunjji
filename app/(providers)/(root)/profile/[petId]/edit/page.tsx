@@ -26,13 +26,15 @@ function PetProfileEditPage(props: PetProfileEditProps) {
   const [comment, setComment] = useState("");
   const [imageFile, setImageFile] = useState<File>();
   const router = useRouter();
+  const petId = Number(params.petId);
 
   useEffect(() => {
     (async () => {
-      const response = await supabase
-        .from("pets")
-        .select("*")
-        .eq("butlerId", props.params.butlerId);
+      const response = await supabase.from("pets").select("*").eq("id", petId);
+
+      console.log(response);
+      console.log(params);
+      console.log(petId);
 
       setWeight(response.data[0].weight);
       setAge(response.data[0].age);
@@ -40,7 +42,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
       setName(response.data[0].name);
       setComment(response.data[0].comment);
     })();
-  }, []);
+  }, [petId]);
 
   const handleFormSubmitButton: ComponentProps<"form">["onSubmit"] = async (
     e
@@ -59,7 +61,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
 
     if (!storage.data) alert("사진 수정에 실패하셨어요");
 
-    await supabase
+    const response = await supabase
       .from("pets")
       .update({
         weight: weight,
@@ -69,8 +71,8 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         comment: comment,
         imageUrl: storage.data!.fullPath,
       })
-      .eq("id", params.butlerId);
-    console.log(params.butlerId);
+      .eq("id", petId)
+      .select("*");
 
     router.push("/my-page");
     alert("수정이 완료되었습니다");

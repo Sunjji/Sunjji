@@ -4,35 +4,29 @@ import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { Router } from "next/router";
 import React, { useEffect, useState } from "react";
 
-interface AllPetProps {
-  pets: Tables<"pets">[];
-}
-
-function AllPet({ pets: passedPets }: AllPetProps) {
-  const [butlerId, setButlerId] = useState<string | undefined>("");
-  const getButlerId = async () => {
-    const { data } = await supabase.auth.getUser();
-
-    const getId = data.user?.id;
-
-    setButlerId(getId);
-  };
+function AllPet() {
+  const [currentUserId, setCurrentUserId] = useState<string>();
 
   useEffect(() => {
-    getButlerId();
+    supabase.auth
+      .getUser()
+      .then((response) => setCurrentUserId(response.data.user?.id));
   }, []);
+
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
   const { data: pets } = useQuery({
     queryKey: ["pets"],
+    enabled: !!currentUserId,
     queryFn: async () =>
       await supabase
         .from("pets")
         .select()
+        .eq("butlerId", currentUserId)
         .then((response) => response.data),
-    initialData: passedPets,
   });
 
   return (
@@ -42,17 +36,14 @@ function AllPet({ pets: passedPets }: AllPetProps) {
         <li key={pets.id}>
           <h2>{pets.name}</h2>
 
-          <Link href={`/profile/${butlerId}/edit`}>
-            <button
-              onClick={getButlerId}
-              className="border border-black px-2 py-1 rounded-lg"
-            ></button>
-            펫 프로필 추가등록
+          <Link href={`/profile/${pets.id}/edit`}>
+            <button className="border border-black px-2 py-1 rounded-lg"></button>
             <img
               className="w-48 h-auto"
               src={`${baseURL}${pets.imageUrl}`}
             ></img>
           </Link>
+
           <p>몸무게 : {pets.weight}</p>
           <p>나이 : {pets.age}</p>
           <p>성별 : {pets.gender}</p>
