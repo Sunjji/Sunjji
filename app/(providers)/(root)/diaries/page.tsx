@@ -67,7 +67,7 @@ async function PublicPage() {
                 {/* 좋아요 댓글 버튼 */}
                 <div className="ml-5 flex gap-2 mt-1 z-0 relative">
                   <HeartButton diaryId={diary.id} />
-                  <CommentButton />
+                  <CommentButton diaryId={diary.id} />
                 </div>
                 <div className="text-center text-BrownPoint mt-[10px] font-semibold">
                   <p>{diary.title}</p>

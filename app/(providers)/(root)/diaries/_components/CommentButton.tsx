@@ -1,10 +1,32 @@
 "use client";
 
-import { ComponentProps } from "react";
+import { supabase } from "@/supabase/client";
+import { ComponentProps, useEffect, useState } from "react";
 import { RiMessage3Line } from "react-icons/ri";
 
-function CommentButton() {
-  const handleClickCommentButton: ComponentProps<"button">["onClick"] = (
+interface CommentButtonProps {
+  diaryId: string;
+}
+
+function CommentButton({ diaryId }: CommentButtonProps) {
+  const [commentCount, setCommentCount] = useState<number>(0);
+
+  useEffect(() => {
+    // 댓글 수를 가져오는 함수
+    const fetchCommentCount = async () => {
+      const { count } = await supabase
+        .from("comments")
+        .select("id", { count: "exact" })
+        .eq("diaryId", diaryId);
+
+      setCommentCount(count || 0);
+    };
+
+    fetchCommentCount();
+  }, [diaryId]);
+
+  // 댓글 버튼 클릭
+  const handleCommentButtonClick: ComponentProps<"button">["onClick"] = (
     event
   ) => {
     event.stopPropagation();
@@ -15,10 +37,10 @@ function CommentButton() {
   return (
     <button
       className="flex items-center z-20"
-      onClick={handleClickCommentButton}
+      onClick={handleCommentButtonClick}
     >
       <RiMessage3Line className="w-[30px] h-[30px] text-BrownPoint" />
-      <p>12</p>
+      <p>{commentCount}</p>
     </button>
   );
 }
