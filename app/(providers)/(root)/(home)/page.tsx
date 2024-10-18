@@ -3,11 +3,11 @@
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import "../(home)/style/Calendar.css";
+import "../(home)/_style/Calendar.css";
 
 type FullCalendarEvent = {
   title: string;
@@ -71,7 +71,7 @@ function HomePage() {
   };
   return (
     <>
-      <div className="mt-[30px] ml-[50px] rounded-[8px]  bg-point absolute z-0 w-[600px] h-[400px] ">
+      <div className="mt-[30px] ml-[50px] rounded-[8px] bg-point w-[600px] h-[400px] ">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
