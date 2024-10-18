@@ -32,7 +32,7 @@ function AllPets() {
 
   return (
     <ul>
-      <h1 className="bold">사진을 누르면 수정페이지로 갈수 있습니다</h1>
+      <h1 className="bold">펫의 사진을 누르면 수정페이지로 갈수 있습니다</h1>
       {pets?.map((pet) => (
         <li key={pet.id}>
           <h2>{pet.name}</h2>
