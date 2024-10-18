@@ -5,29 +5,20 @@ import { supabase } from "@/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import HeartButton from "../_components/HeartButton";
 
 type DiaryDetailPageProps = {
   params: {
     diaryId: string;
   };
-
-  id: number;
-  authorId: string;
-  title: string;
-  content: string;
-  imageUrl: string;
-  createdAt: string;
-  isPublic: boolean;
-
-  nickname: string;
 };
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryDetailPage(props: DiaryDetailPageProps) {
-  const [diaryData, setDiaryData] = useState(props);
-  const [profileData, setProfileData] = useState(props);
+  const [diaryData, setDiaryData] = useState<any>(null); // diaryData의 타입을 any로 변경
+  const [profileData, setProfileData] = useState<any>(null); // profileData의 타입을 any로 변경
   const [isUser, setIsUser] = useState(false);
   const router = useRouter();
 
@@ -67,11 +58,10 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
       .eq("id", Number(props.params.diaryId))
       .single();
 
-    const { data: deleteData, error: deleteDataError } = await supabase
+    const { error: deleteDataError } = await supabase
       .from("diaries")
       .delete()
       .eq("id", deleteResponse.data.id);
-    console.log(deleteData);
 
     if (deleteDataError) {
       console.log("error", deleteDataError);
@@ -81,16 +71,21 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
     }
   };
 
+  if (!diaryData || !profileData) {
+    return <p>로딩 중...</p>; // 로딩 상태 처리
+  }
+
   return (
     <div>
       <p>
         {/* 임시로 사진 사이즈 조절함 */}
         사진:
-        <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
+        <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} alt="Diary" />
       </p>
       <p>제목: {diaryData.title}</p>
       <p>내용: {diaryData.content}</p>
       <p>글쓴이: {profileData.nickname}</p>
+      <HeartButton diaryId={diaryData.id.toString()} />
 
       {/* 자기가 작성한 일기라면 편집, 삭제버튼 띄우고, 아니라면 아무것도 띄우지 않는다 */}
       {isUser ? (
