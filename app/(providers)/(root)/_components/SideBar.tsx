@@ -36,7 +36,7 @@ function SideBar() {
         <div>
           {isLoggedIn ? ( // isLoggedIn이 true일때 출력
             <>
-              <Link className="mt-5 block text-sm mb-5" href={"/my-page"}>
+              <Link className="block text-sm mb-5" href={"/my-page"}>
                 마이페이지
               </Link>
               <Link className="block mb-5" href={"/diaries"}>
@@ -50,6 +50,9 @@ function SideBar() {
           ) : (
             // isLoggedIn이 false일때 출력
             <div>
+              <Link className="font-bold text-2xl mb-5" href={"/diaries"}>
+                공개일기
+              </Link>
               <button
                 onClick={handleClickLogInButton}
                 className="font-bold text-2xl pb-3 pt-3"
