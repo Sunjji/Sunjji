@@ -28,7 +28,7 @@ function SideBar() {
 
   return (
     <>
-    <nav className="bg-point w-[70px] min-h-screen fixed z-50">
+    <nav className="bg-point w-[70px] min-h-screen fixed z-10">
       <Link href={"/"} className="font-bold text-2xl">
         홈
       </Link>
