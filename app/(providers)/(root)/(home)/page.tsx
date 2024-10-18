@@ -7,6 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import "../(home)/style/Calendar.css";
 
 type FullCalendarEvent = {
   title: string;
@@ -64,10 +65,13 @@ function HomePage() {
       console.error("날짜 업데이트 오류:", error);
     }
   };
-
+  const handleDayCellContent = (arg) => {
+    const dayNumber = arg.dayNumberText.replace("일", "");
+    return dayNumber;
+  };
   return (
     <>
-      <div className="mt-[30px] ml-[50px] rounded-[8px] border bg-point absolute z-0 w-[600px] h-[400px]">
+      <div className="mt-[30px] ml-[50px] rounded-[8px]  bg-point absolute z-0 w-[600px] h-[400px] ">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -77,13 +81,16 @@ function HomePage() {
             center: "title",
             end: "next",
           }}
-          editable={true}
+          dayMaxEventRows={true}
+          expandRows={true}
+          navLinks={true}
           droppable={true}
           locale={"ko"}
           eventBackgroundColor="pink"
           eventBorderColor="pink"
           events={events}
           eventDrop={handleDropEvent}
+          dayCellContent={handleDayCellContent}
         />
       </div>
     </>

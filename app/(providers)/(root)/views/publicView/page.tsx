@@ -14,8 +14,6 @@ async function PublicPage() {
   const response2 = await supabase.from("profiles").select();
   const profiles = response2.data;
 
-  console.log(response2);
-
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
