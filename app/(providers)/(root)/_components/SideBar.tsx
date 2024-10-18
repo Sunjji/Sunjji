@@ -27,7 +27,8 @@ function SideBar() {
   };
 
   return (
-    <nav className="bg-point w-[70px] min-h-screen">
+    <>
+    <nav className="bg-point w-[70px] min-h-screen fixed z-50">
       <Link href={"/"} className="font-bold text-2xl">
         홈
       </Link>
@@ -69,6 +70,8 @@ function SideBar() {
       ) : null}
       {/* isAuthInitialized가 false일때 null을 출력 */}
     </nav>
+    <div className="w-[75px]" />
+    </>
   );
 }
 
