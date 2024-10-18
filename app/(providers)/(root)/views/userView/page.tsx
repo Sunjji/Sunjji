@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import DiariesWriteButton from "../publicView/_components/DiariesWriteButton";
+import DiariesWriteButton from "../../diaries/_components/DiariesWriteButton";
 
 async function UserViewPage() {
   const { data } = await supabase.auth.getUser();
