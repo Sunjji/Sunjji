@@ -61,7 +61,7 @@ function DiaryWritePage(props: PropsType) {
       console.log("data", data);
 
       alert("일기를 작성했습니다");
-      router.push("/views/publicView");
+      router.push("/diaries");
     }
   };
 

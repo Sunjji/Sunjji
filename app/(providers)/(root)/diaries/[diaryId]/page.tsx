@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeartButton from "../_components/HeartButton";
+import WriteCommentsPage from "./comments/page";
 
 type DiaryDetailPageProps = {
   params: {
@@ -77,16 +78,31 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
 
   return (
     <div>
-      <p>
-        {/* 임시로 사진 사이즈 조절함 */}
-        사진:
-        <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} alt="Diary" />
-      </p>
-      <p>제목: {diaryData.title}</p>
-      <p>내용: {diaryData.content}</p>
-      <p>글쓴이: {profileData.nickname}</p>
-      <HeartButton diaryId={diaryData.id.toString()} />
+      <div className="flex">
+        <div>
+          <p>
+            {/* 임시로 사진 사이즈 조절함 */}
+            사진:
+            <img
+              className="w-32"
+              src={`${baseURL}${diaryData.imageUrl}`}
+              alt="Diary"
+            />
+          </p>
+          <p>제목: {diaryData.title}</p>
+          <p>내용: {diaryData.content}</p>
+          <p>글쓴이: {profileData.nickname}</p>
+          <HeartButton diaryId={diaryData.id.toString()} />
+        </div>
 
+        <div className="ml-auto">
+          <WriteCommentsPage
+            params={{ diaryId: diaryData.id.toString() }}
+            id={Number(diaryData.id)}
+            content={diaryData.content}
+          />
+        </div>
+      </div>
       {/* 자기가 작성한 일기라면 편집, 삭제버튼 띄우고, 아니라면 아무것도 띄우지 않는다 */}
       {isUser ? (
         <>

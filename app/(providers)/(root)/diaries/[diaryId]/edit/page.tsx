@@ -16,6 +16,9 @@ type DiaryEditPageProps = {
   isPublic: boolean;
 };
 
+const baseURL =
+  "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+
 function DiaryEditPage(props: DiaryEditPageProps) {
   const [file, setFile] = useState<null | File>(null);
   const [title, setTitle] = useState("");
@@ -31,7 +34,6 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         .select("*")
         .eq("id", Number(props.params.diaryId))
         .single();
-
       setTitle(response.data.title);
       setContent(response.data.content);
       setIsPublic(response.data.isPublic);
@@ -65,10 +67,8 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         })
         .eq("id", Number(props.params.diaryId));
 
-      console.log(updateResponse);
-
       alert("수정이 완료되었습니다");
-      router.push("/views/publicView");
+      router.push("/diaries");
     } else {
       const filename = nanoid();
       const extension = file!.name.split(".").slice(-1)[0];
@@ -77,8 +77,6 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       const result = await supabase.storage
         .from("diaries")
         .upload(path, file!, { upsert: true });
-
-      console.log(result);
 
       const updateResponse = await supabase
         .from("diaries")
@@ -90,21 +88,23 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         })
         .eq("id", Number(props.params.diaryId));
 
-      console.log(updateResponse);
-
       alert("수정이 완료되었습니다");
-      router.push("/views/publicView");
+      router.push("/diaries");
     }
   };
 
   return (
     <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-5">
-      <label htmlFor="file">사진이나 동영상을 선택해주세요</label>
-      <input
-        id="file"
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
+      <div className="flex gap-x-5">
+        <div className="flex flex-col gap-y-2">
+          <label htmlFor="file">사진을 선택해주세요</label>
+          <input
+            id="file"
+            type="file"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
+        </div>
+      </div>
 
       <label htmlFor="title">일기 제목</label>
       <textarea
