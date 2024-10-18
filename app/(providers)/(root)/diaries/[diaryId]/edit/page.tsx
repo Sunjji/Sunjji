@@ -39,9 +39,12 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   }, []);
 
   // 공개/비공개 버튼
-  const handleTogglePublic: ComponentProps<"input">["onChange"] = async (e) => {
-    setIsPublic(e.target.checked);
-
+  const handleToggleIsPublic = async () => {
+    if (isPublic) {
+      setIsPublic(false);
+    } else {
+      setIsPublic(true);
+    }
     await supabase
       .from("diaries")
       .update({ isPublic: isPublic })
@@ -119,17 +122,30 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         rows={10}
       />
 
-      <div className="flex gap-x-5">
-        <label htmlFor="isPublic">공개</label>
-        <input
-          onChange={handleTogglePublic}
-          id="isPublic"
-          checked={isPublic}
-          type="checkbox"
-        />
-      </div>
+      <button
+        type="button"
+        onClick={handleToggleIsPublic}
+        className="flex gap-x-5"
+      >
+        <div
+          className={`${
+            isPublic ? "bg-blue-500" : "bg-gray-500"
+          } w-14 h-7 rounded-3xl`}
+        >
+          <div
+            className={`flex items-center bg-white w-5 h-5 m-1  rounded-3xl ${
+              isPublic ? "ml-auto" : null
+            } transition`}
+          ></div>
+        </div>
+        <p className={`${isPublic ? "text-red-500" : "text-black"}`}>
+          {isPublic ? "공개 일기" : "비공개 일기"}
+        </p>
+      </button>
 
-      <button className="border w-72 active:brightness-75">수정하기</button>
+      <button type="submit" className="border w-72 active:brightness-75">
+        수정하기
+      </button>
     </form>
   );
 }
