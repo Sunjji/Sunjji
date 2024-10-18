@@ -11,7 +11,7 @@ function Backdrop({ children }: PropsWithChildren) {
   return (
     <div
       onClick={handleClickBackdrop}
-      className="bg-black/40 fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center"
+      className="bg-black/40 fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center z-10"
     >
       {children}
     </div>

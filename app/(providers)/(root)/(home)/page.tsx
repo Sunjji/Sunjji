@@ -71,7 +71,7 @@ function HomePage() {
   };
   return (
     <>
-      <div className="mt-[30px] ml-[50px] rounded-[8px]  bg-point absolute z-0 w-[600px] h-[400px] ">
+      <div className="mt-[30px] ml-[50px] rounded-[8px] bg-point w-[600px] h-[400px] ">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
