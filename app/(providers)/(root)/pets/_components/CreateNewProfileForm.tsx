@@ -62,10 +62,14 @@ function CreateNewProfileForm() {
       comment,
     };
 
-    console.log(await mutateAsync(data));
     const { data: pets, error } = await mutateAsync(data);
 
     if (error) return alert("페이지 작성 실패");
+    if (!name) return alert("이름을 입력해주세요");
+    if (!gender) return alert("성별을 입력해주세요");
+    if (!age) return alert("나이를 입력해주세요");
+    if (!weight) return alert("무게를 입력해주세요");
+    if (!comment) return alert("댓글을 입력해주세요");
 
     alert("프로필 등록 성공 ");
     router.push("/my-page");

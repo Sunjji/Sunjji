@@ -54,7 +54,7 @@ function MyPage() {
             {isProfileEditing ? (
               <Link href={"/pets"}>
                 <button className="border border-black px-2 py-1 rounded-lg">
-                  펫 프로필 추가등록
+                  반려동물 프로필 추가등록
                 </button>
               </Link>
             ) : (
@@ -63,7 +63,7 @@ function MyPage() {
                   className="border border-black px-2 py-1 rounded-lg"
                   onClick={handleEditPetProfileButton}
                 >
-                  펫 프로필 등록
+                  반려동물 프로필 등록
                 </button>
               </Link>
             )}
