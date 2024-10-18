@@ -19,6 +19,3 @@ const petsApi = {
 
 export default petsApi;
 
-// supabase.auth
-// .getUser()
-//  .then((response) => setCurrentUserId(response.data.user?.id));

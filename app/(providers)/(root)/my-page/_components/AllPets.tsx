@@ -4,7 +4,6 @@ import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -27,6 +26,8 @@ function AllPets() {
 
   const handleClickDeletePets = async (petId: number) => {
     deletePets(petId);
+
+    if (pets) return alert("반려동물 삭제에 성공하셨습니다");
   };
 
   return (
@@ -41,7 +42,7 @@ function AllPets() {
           >
             반려동물 삭제
           </button>
-          <Link href={`/profile/${pet.id}/edit`}>
+          <Link href={`/pets/${pet.id}/edit`}>
             <img
               className="w-48 h-auto"
               src={`${baseURL}${pet.imageUrl}`} //img를 소문자로 써서 생기는것
