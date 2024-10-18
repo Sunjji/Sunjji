@@ -3,7 +3,7 @@
 import { supabase } from "@/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import AllPet from "../_components/AllPet";
+import AllPets from "./_components/AllPets";
 import UserProfile from "./_components/UserProfile";
 
 type Profile = {
@@ -49,15 +49,16 @@ function MyPage() {
         <h1 className="text-3xl mb-5 font-bold">마이 페이지</h1>
         {profile ? (
           <>
-            <UserProfile profile={profile} updateProfile={updateProfile} /> {/* updateProfile 함수를 props로 전달 */}
+            <UserProfile profile={profile} updateProfile={updateProfile} />{" "}
+            {/* updateProfile 함수를 props로 전달 */}
             {isProfileEditing ? (
-              <Link href={"/profile/petprofile"}>
+              <Link href={"/pets"}>
                 <button className="border border-black px-2 py-1 rounded-lg">
                   펫 프로필 추가등록
                 </button>
               </Link>
             ) : (
-              <Link href={"/profile/petprofile"}>
+              <Link href={"/pets"}>
                 <button
                   className="border border-black px-2 py-1 rounded-lg"
                   onClick={handleEditPetProfileButton}
@@ -70,7 +71,7 @@ function MyPage() {
         ) : (
           <p>사용자 정보를 불러오는 중입니다...</p>
         )}
-        <AllPet />
+        <AllPets />
       </section>
     </main>
   );

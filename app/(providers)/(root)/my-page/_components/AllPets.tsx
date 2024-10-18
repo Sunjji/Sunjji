@@ -1,43 +1,32 @@
 "use client";
 
-import { supabase } from "@/supabase/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import api from "@/api/api";
+import { useAuthStore } from "@/zustand/auth.store";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-function AllPet() {
-  const queryClient = useQueryClient();
-  const [currentUserId, setCurrentUserId] = useState<string>();
+const baseURL =
+  "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
-  useEffect(() => {
-    supabase.auth
-      .getUser()
-      .then((response) => setCurrentUserId(response.data.user?.id));
-  }, []);
-  console.log("currentUserId", currentUserId);
-  const baseURL =
-    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
-  const { data: pets } = useQuery({
+function AllPets() {
+  const queryClient = useQueryClient();
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+
+  const { mutate: deletePets } = useMutation({
+    mutationFn: api.pets.deleteMyPets,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["pets"], exact: true }),
+    mutationKey: ["blabla"],
+  });
+  const { data: pets = [] } = useQuery({
     queryKey: ["pets"],
     enabled: !!currentUserId,
-    queryFn: async () =>
-      await supabase
-        .from("pets")
-        .select()
-        .eq("butlerId", currentUserId)
-        .then((response) => response.data),
+    queryFn: () => api.pets.getMyPets(currentUserId!),
   });
 
   const handleClickDeletePets = async (petId: number) => {
-    const { data, error } = await supabase
-      .from("pets")
-      .delete()
-      .eq("id", petId);
-    console.log(1);
-    await queryClient.invalidateQueries({ queryKey: ["pets"], exact: true });
-    console.log(2);
-    console.log(error);
-    if (!error) return alert("삭제에 성공하셨습니다");
+    deletePets(petId);
   };
 
   return (
@@ -69,4 +58,4 @@ function AllPet() {
   );
 }
 
-export default AllPet;
+export default AllPets;

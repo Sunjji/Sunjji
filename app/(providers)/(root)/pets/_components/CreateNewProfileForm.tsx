@@ -68,7 +68,7 @@ function CreateNewProfileForm() {
     if (error) return alert("페이지 작성 실패");
 
     alert("프로필 등록 성공 ");
-    // router.push("/");
+    router.push("/my-page");
   };
 
   return (
