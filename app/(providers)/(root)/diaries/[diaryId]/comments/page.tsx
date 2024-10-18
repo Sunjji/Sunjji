@@ -15,7 +15,6 @@ type Comments = {
 function WriteCommentsPage(props: Comments) {
   const [content, setComment] = useState("");
   const [commentsData, setCommentsData] = useState<Comments[]>([]);
-  const [diaryData, setDiaryData] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -31,20 +30,6 @@ function WriteCommentsPage(props: Comments) {
       } else {
         // console.log("commentsResponse", commentsResponse);
         setCommentsData(commentsResponse);
-      }
-
-      // 일기 제목 가져오기
-      const { data: diaryResponse, error: diaryResponseError } = await supabase
-        .from("diaries")
-        .select("*")
-        .eq("id", Number(props.params.diaryId));
-
-      if (diaryResponseError) {
-        return console.log("diaryResponseError", diaryResponseError);
-      } else {
-        // console.log("diaryResponse", diaryResponse);
-        const diaryTitle = diaryResponse.map((diary) => diary.title);
-        setDiaryData(diaryTitle[0]);
       }
     })();
   }, []);
@@ -77,7 +62,7 @@ function WriteCommentsPage(props: Comments) {
   // 디자인은 임시임
   return (
     <div className="flex flex-col items-center">
-      <h2>{diaryData} 댓글창</h2>
+      <h2>이 일기의 댓글을 남겨주세요</h2>
 
       <div className="h-96 border w-[368px]">
         <ul className="mt-2">
