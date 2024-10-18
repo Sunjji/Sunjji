@@ -4,6 +4,7 @@ import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
+import IsPublicToggle from "../../_components/IsPublicToggle";
 
 type DiaryEditPageProps = {
   params: {
@@ -22,6 +23,7 @@ const baseURL =
 function DiaryEditPage(props: DiaryEditPageProps) {
   const [file, setFile] = useState<null | File>(null);
   const [title, setTitle] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [content, setContent] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const router = useRouter();
@@ -37,21 +39,15 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       setTitle(response.data.title);
       setContent(response.data.content);
       setIsPublic(response.data.isPublic);
+      setImageUrl(baseURL + response.data.imageUrl);
     })();
   }, []);
 
-  // 공개/비공개 버튼
-  const handleToggleIsPublic = async () => {
-    if (isPublic) {
-      setIsPublic(false);
-    } else {
-      setIsPublic(true);
+  useEffect(() => {
+    if (file) {
+      setImageUrl(URL.createObjectURL(file));
     }
-    await supabase
-      .from("diaries")
-      .update({ isPublic: isPublic })
-      .eq("id", Number(props.params.diaryId));
-  };
+  }, [file]);
 
   // form 제출 버튼
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
@@ -96,6 +92,8 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   return (
     <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-5">
       <div className="flex gap-x-5">
+        <img className="w-32" src={imageUrl} />
+
         <div className="flex flex-col gap-y-2">
           <label htmlFor="file">사진을 선택해주세요</label>
           <input
@@ -122,26 +120,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         rows={10}
       />
 
-      <button
-        type="button"
-        onClick={handleToggleIsPublic}
-        className="flex gap-x-5"
-      >
-        <div
-          className={`${
-            isPublic ? "bg-blue-500" : "bg-gray-500"
-          } w-14 h-7 rounded-3xl`}
-        >
-          <div
-            className={`flex items-center bg-white w-5 h-5 m-1  rounded-3xl ${
-              isPublic ? "ml-auto" : null
-            } transition`}
-          ></div>
-        </div>
-        <p className={`${isPublic ? "text-red-500" : "text-black"}`}>
-          {isPublic ? "공개 일기" : "비공개 일기"}
-        </p>
-      </button>
+      <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
 
       <button type="submit" className="border w-72 active:brightness-75">
         수정하기

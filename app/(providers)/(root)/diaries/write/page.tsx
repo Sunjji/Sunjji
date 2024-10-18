@@ -3,7 +3,8 @@
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
+import IsPublicToggle from "../_components/IsPublicToggle";
 
 type PropsType = {
   params: {
@@ -21,20 +22,17 @@ type PropsType = {
 
 function DiaryWritePage(props: PropsType) {
   const [file, setFile] = useState<null | File>(null);
+  const [isPublic, setIsPublic] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
-
+  const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
 
-  const handleChangeButton: ComponentProps<"input">["onChange"] = async (e) => {
-    setIsPublic(e.target.checked);
-
-    await supabase
-      .from("diaries")
-      .update({ isPublic: isPublic })
-      .eq("id", props.params.diaryId);
-  };
+  useEffect(() => {
+    if (file) {
+      setImageUrl(URL.createObjectURL(file));
+    }
+  }, [file]);
 
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
@@ -60,19 +58,30 @@ function DiaryWritePage(props: PropsType) {
     } else {
       console.log("data", data);
 
-      alert("일기를 작성했습니다");
-      router.push("/diaries");
+      if (isPublic) {
+        alert("공개 일기를 작성했습니다");
+        router.push("/diaries");
+      } else {
+        alert("비공개 일기를 작성했습니다");
+        router.push("/diaries");
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-2">
-      <label htmlFor="file">사진이나 동영상을 선택해주세요</label>
-      <input
-        id="file"
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
+      <div className="flex gap-x-5">
+        <img className={imageUrl !== "" ? "w-32" : ""} src={imageUrl} />
+
+        <div className="flex flex-col gap-y-2">
+          <label htmlFor="file">사진을 선택해주세요</label>
+          <input
+            id="file"
+            type="file"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
+        </div>
+      </div>
 
       <label htmlFor="title">일기 제목</label>
       <textarea
@@ -92,17 +101,11 @@ function DiaryWritePage(props: PropsType) {
         rows={10}
       />
 
-      <div className="flex gap-x-5">
-        <label htmlFor="isPublic">공개</label>
-        <input
-          onChange={handleChangeButton}
-          id="isPublic"
-          checked={isPublic}
-          type="checkbox"
-        />
-      </div>
+      <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
 
-      <button className="border w-72 active:brightness-75">작성하기</button>
+      <button type="submit" className="border w-72 active:brightness-75">
+        작성하기
+      </button>
     </form>
   );
 }
