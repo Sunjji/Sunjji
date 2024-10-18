@@ -3,18 +3,18 @@
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 
-type Comments = {
+type CommentsPageProps = {
   params: {
     diaryId: string;
   };
 
-  id: number;
+  id: string;
   content: string;
 };
 
-function WriteCommentsPage(props: Comments) {
+function CommentsPage(props: CommentsPageProps) {
   const [content, setComment] = useState("");
-  const [commentsData, setCommentsData] = useState<Comments[]>([]);
+  const [commentsData, setCommentsData] = useState<CommentsPageProps[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -59,17 +59,16 @@ function WriteCommentsPage(props: Comments) {
     }
   };
 
-  // 디자인은 임시임
   return (
-    <div className="flex flex-col items-center">
-      <h2>이 일기의 댓글을 남겨주세요</h2>
+    <div className="flex flex-col w-[340px]">
+      <h2 className="pb-2 font-semibold">이 일기의 댓글을 남겨주세요</h2>
 
-      <div className="h-96 border w-[368px]">
+      <div className="border h-[400px]">
         <ul className="mt-2">
-          {commentsData.map((contents) => (
-            <li className="flex px-2" key={contents.id}>
-              <p>{contents.content}</p>
-              <p className="ml-auto text-xs"></p>
+          {commentsData.map((comment) => (
+            <li className="flex px-2 py-1" key={comment.id}>
+              <p className="flex-grow">{comment.content}</p>
+              <p className="ml-2 text-xs text-gray-400"></p>
             </li>
           ))}
         </ul>
@@ -77,13 +76,13 @@ function WriteCommentsPage(props: Comments) {
 
       <div className="flex items-center">
         <textarea
-          className="resize-none w-80"
+          className="border rounded-bl-lg p-2 flex-grow resize-none hover:border-gray-400"
           rows={2}
           onChange={(e) => setComment(e.target.value)}
           value={content}
         />
         <button
-          className="border h-12 w-12 active:brightness-90"
+          className="border rounded-br-lg w-[65.6px] h-[65.6px] text-center hover:border-gray-400 active:brightness-50"
           onClick={handleClickCommentButton}
         >
           작성
@@ -93,4 +92,4 @@ function WriteCommentsPage(props: Comments) {
   );
 }
 
-export default WriteCommentsPage;
+export default CommentsPage;

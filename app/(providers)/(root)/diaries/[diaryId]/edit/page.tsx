@@ -11,7 +11,7 @@ type DiaryEditPageProps = {
     diaryId: string;
   };
 
-  id: number;
+  id: string;
   title: string;
   content: string;
   isPublic: boolean;
@@ -90,16 +90,20 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   };
 
   return (
-    <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-5">
-      <div className="flex gap-x-5">
+    <form
+      onSubmit={handleSubmitButton}
+      className="flex flex-col gap-y-5 p-5 w-[500px]"
+    >
+      <div className="flex gap-x-7">
         <img className="w-32" src={imageUrl} />
 
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 flex-grow">
           <label htmlFor="file">사진을 선택해주세요</label>
           <input
             id="file"
             type="file"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="px-1 py-2 border rounded-lg hover:border-gray-400"
           />
         </div>
       </div>
@@ -108,7 +112,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       <textarea
         onChange={(e) => setTitle(e.target.value)}
         value={title}
-        className="border w-72 resize-none"
+        className="border rounded-lg p-2 resize-none hover:border-gray-400"
         rows={2}
       />
 
@@ -116,13 +120,16 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       <textarea
         onChange={(e) => setContent(e.target.value)}
         value={content}
-        className="border w-72 resize-none"
+        className="border rounded-lg p-2 resize-none hover:border-gray-400"
         rows={10}
       />
 
       <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
 
-      <button type="submit" className="border w-72 active:brightness-75">
+      <button
+        type="submit"
+        className="border rounded-lg text-center py-2 hover:border-gray-400 active:brightness-50"
+      >
         수정하기
       </button>
     </form>

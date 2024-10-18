@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { supabase } from "@/supabase/client";
@@ -6,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeartButton from "../_components/HeartButton";
-import WriteCommentsPage from "./comments/page";
+import CommentsPage from "./comments/page";
 
 type DiaryDetailPageProps = {
   params: {
@@ -18,8 +17,8 @@ const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryDetailPage(props: DiaryDetailPageProps) {
-  const [diaryData, setDiaryData] = useState<any>(null); // diaryData의 타입을 any로 변경
-  const [profileData, setProfileData] = useState<any>(null); // profileData의 타입을 any로 변경
+  const [diaryData, setDiaryData] = useState<any>(null);
+  const [profileData, setProfileData] = useState<any>(null);
   const [isUser, setIsUser] = useState(false);
   const router = useRouter();
 
@@ -31,11 +30,9 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
         .eq("id", Number(props.params.diaryId))
         .single();
 
-      // profile 정보 가져오기
       const profilesResponse = await supabase.from("profiles").select("*");
       const profilesData = profilesResponse.data;
 
-      // profile id와 diary authorId를 찾아 비교해서 같은 것만 저장하기
       const profilesNicknameData = profilesData?.find(
         (data) => data.id === diariesResponse.data.authorId
       );
@@ -43,7 +40,6 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
       setDiaryData(diariesResponse.data);
       setProfileData(profilesNicknameData);
 
-      // 자기가 작성한 일기라면 isUser에 true를 주고 아니면 false를 준다.
       const userResponse = await supabase.auth.getUser();
       const data = userResponse.data.user;
       const userId = data?.id;
@@ -68,55 +64,54 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
       console.log("error", deleteDataError);
     } else {
       alert("삭제되었습니다");
-      router.push("/views/publicView");
+      router.push("/diaries");
     }
   };
 
   if (!diaryData || !profileData) {
-    return <p>로딩 중...</p>; // 로딩 상태 처리
+    return <p>로딩 중...</p>;
   }
 
   return (
-    <div>
-      <div className="flex">
-        <div>
-          <p>
-            {/* 임시로 사진 사이즈 조절함 */}
-            사진:
-            <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
-          </p>
-          <p>제목: {diaryData.title}</p>
-          <p>내용: {diaryData.content}</p>
+    <div className="p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-y-2">
+          <h2 className="text-lg font-bold">{diaryData.title}</h2>
           <p>글쓴이: {profileData.nickname}</p>
+
+          <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
+
+          <p className="text-sm">{diaryData.content}</p>
+
           <HeartButton diaryId={diaryData.id.toString()} />
+
+          {isUser && (
+            <div className="mt-10 flex flex-col lg:flex-row gap-2">
+              <Link
+                className="border rounded-lg w-72 text-center py-2 hover:brightness-90 active:brightness-50"
+                href={`/diaries/${diaryData.id}/edit`}
+              >
+                편집하기
+              </Link>
+
+              <button
+                className="border rounded-lg w-72 text-center py-2 hover:border-gray-400 active:brightness-50"
+                onClick={handleClickDeleteButton}
+              >
+                삭제하기
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className="ml-auto">
-          <WriteCommentsPage
+        <div className="flex md:justify-end sm:justify-start sm:pt-5">
+          <CommentsPage
             params={{ diaryId: diaryData.id.toString() }}
-            id={Number(diaryData.id)}
+            id={diaryData.id.toString()}
             content={diaryData.content}
           />
         </div>
       </div>
-      {/* 자기가 작성한 일기라면 편집, 삭제버튼 띄우고, 아니라면 아무것도 띄우지 않는다 */}
-      {isUser ? (
-        <>
-          <Link
-            className="border w-72 inline-block text-center active:brightness-75"
-            href={`/diaries/${diaryData.id}/edit`}
-          >
-            편집하기
-          </Link>
-
-          <button
-            className="border w-72 inline-block text-center active:brightness-75"
-            onClick={handleClickDeleteButton}
-          >
-            삭제하기
-          </button>
-        </>
-      ) : null}
     </div>
   );
 }
