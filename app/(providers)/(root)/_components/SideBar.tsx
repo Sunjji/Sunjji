@@ -38,7 +38,7 @@ function SideBar() {
               <Link className="mt-5 block text-sm mb-5" href={"/my-page"}>
                 마이페이지
               </Link>
-              <Link className="block mb-5" href={"/views/publicView"}>
+              <Link className="block mb-5" href={"/diaries"}>
                 공개일기
               </Link>
               <Link className="block mb-5" href={"/views/userView"}>
