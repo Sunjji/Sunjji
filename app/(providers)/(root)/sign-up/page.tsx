@@ -65,6 +65,7 @@ function SignUpPage() {
   return (
     <main className="flex justify-center">
       <ul className="mt-[150px] bg-point w-[500px] p-10 text-center rounded-[8px]">
+        <h1 className="text-3xl font-bold mb-3">회원가입</h1>
         <li>
           <h2 className="font-bold">이미지</h2>
           <input
