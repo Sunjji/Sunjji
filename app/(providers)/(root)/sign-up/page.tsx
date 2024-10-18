@@ -28,6 +28,8 @@ function SignUpPage() {
 
     const SignUpResult = await supabase.auth.signUp({ email, password }); //슈파베이스
 
+    console.log(SignUpResult.error);
+
     if (!SignUpResult) return alert("회원가입 정보를 다시 확인해주세요");
 
     const extension = imageFile?.name.split(".").slice(-1)[0];
@@ -41,7 +43,7 @@ function SignUpPage() {
     const storage = await supabase.storage
       .from("profile-image")
       .upload(profilePath, imageFile, { upsert: true });
-  
+
     if (storage.error) return alert("대 실 패");
 
     console.log(storage.data.fullPath);
