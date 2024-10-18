@@ -1,11 +1,12 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 function AllPet() {
+  const queryClient = useQueryClient();
   const [currentUserId, setCurrentUserId] = useState<string>();
 
   useEffect(() => {
@@ -13,7 +14,7 @@ function AllPet() {
       .getUser()
       .then((response) => setCurrentUserId(response.data.user?.id));
   }, []);
-
+  console.log("currentUserId", currentUserId);
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
   const { data: pets } = useQuery({
@@ -32,10 +33,11 @@ function AllPet() {
       .from("pets")
       .delete()
       .eq("id", petId);
-
-    if (error) alert("삭제에 실패하셨습니다");
-
-    if (data) return alert("삭제에 성공하셨습니다");
+    console.log(1);
+    await queryClient.invalidateQueries({ queryKey: ["pets"], exact: true });
+    console.log(2);
+    console.log(error);
+    if (!error) return alert("삭제에 성공하셨습니다");
   };
 
   return (
@@ -44,7 +46,10 @@ function AllPet() {
       {pets?.map((pet) => (
         <li key={pet.id}>
           <h2>{pet.name}</h2>
-          <button onClick={() => handleClickDeletePets(pet.id)}>
+          <button
+            className="border border-black px-2 py-1 rounded-lg"
+            onClick={() => handleClickDeletePets(pet.id)}
+          >
             반려동물 삭제
           </button>
           <Link href={`/profile/${pet.id}/edit`}>
