@@ -65,6 +65,7 @@ function SignUpPage() {
   return (
     <main className="flex justify-center">
       <ul className="mt-[150px] bg-point w-[500px] p-10 text-center rounded-[8px]">
+        <h1 className="text-3xl font-bold mb-3">회원가입</h1>
         <li>
           <h2 className="font-bold">이미지</h2>
           <input
@@ -94,11 +95,12 @@ function SignUpPage() {
         <li>
           <h2 className="font-bold">비밀번호</h2>
           <input
-            className="mb-5 p-2"
+            className="p-2"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <p className="mb-5">비밀번호는 8자 특수문자(!@#$%^&*) 포함입니다</p>
         </li>
         <li>
           <h2 className="font-bold">비밀번호 확인</h2>

@@ -31,6 +31,7 @@ function LogInModal() {
   return (
     // main을 Modal로 변경
     <Modal>
+      <h1 className="text-3xl font-bold mb-3">로그인</h1>
       <h2 className="font-bold">이메일</h2>
       <div>
         <input
