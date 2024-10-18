@@ -83,11 +83,7 @@ function DiaryDetailPage(props: DiaryDetailPageProps) {
           <p>
             {/* 임시로 사진 사이즈 조절함 */}
             사진:
-            <img
-              className="w-32"
-              src={`${baseURL}${diaryData.imageUrl}`}
-              alt="Diary"
-            />
+            <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
           </p>
           <p>제목: {diaryData.title}</p>
           <p>내용: {diaryData.content}</p>
