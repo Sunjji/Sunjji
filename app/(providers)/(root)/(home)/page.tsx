@@ -3,11 +3,11 @@
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import "../(home)/style/Calendar.css";
+import "../(home)/_style/Calendar.css";
 
 type FullCalendarEvent = {
   title: string;
