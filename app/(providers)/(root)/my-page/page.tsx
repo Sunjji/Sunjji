@@ -3,8 +3,8 @@
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";
-import UserProfile from "./_components/UserProfile";
 import PetProfile from "./_components/PetProfile";
+import UserProfile from "./_components/UserProfile";
 
 type Profile = {
   id: string;
@@ -39,18 +39,23 @@ function MyPage() {
   };
 
   return (
-    <main className="flex justify-center">
-      <section className="bg-white p-5 mt-10">
-        <h1 className="text-3xl mb-5 font-bold">마이 페이지</h1>
-        {profile ? (
-          <>
-            <UserProfile profile={profile} updateProfile={updateProfile} />{" "}
-            <PetProfile />
-          </>
-        ) : (
-          <p>사용자 정보를 불러오는 중입니다...</p>
-        )}
-        {profile && <AllPets />}
+    <main className="flex flex-col p-5">
+      <h1 className="text-3xl mb-5 font-bold">마이 페이지</h1>
+      <section className="flex gap-10">
+        <div className="w-[30%] bg-point p-10 rounded-3xl">
+          <h1 className="text-3xl font-bold mb-3">내 정보</h1>
+          {profile ? (
+            <UserProfile profile={profile} updateProfile={updateProfile} />
+          ) : (
+            <p>사용자 정보를 불러오는 중입니다...</p>
+          )}
+        </div>
+
+        <div className="w-[70%] bg-point p-10 rounded-3xl">
+          <h1 className="text-3xl font-bold mb-3">반려동물 정보</h1>
+          <PetProfile />
+          {profile && <AllPets />}
+        </div>
       </section>
     </main>
   );
