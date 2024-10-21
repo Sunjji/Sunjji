@@ -2,25 +2,15 @@
 
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import IsPublicToggle from "../../_components/IsPublicToggle";
-
-type DiaryEditPageProps = {
-  params: {
-    diaryId: string;
-  };
-
-  id: number;
-  title: string;
-  content: string;
-  isPublic: boolean;
-};
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
-function DiaryEditPage(props: DiaryEditPageProps) {
+function DiaryEditPage() {
+  const params = useParams();
   const [file, setFile] = useState<null | File>(null);
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -28,20 +18,23 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   const [isPublic, setIsPublic] = useState(false);
   const router = useRouter();
 
+  const { diaryId } = params;
+
   // diaries 정보 가져오기
   useEffect(() => {
     (async () => {
       const response = await supabase
         .from("diaries")
         .select("*")
-        .eq("id", Number(props.params.diaryId))
+        .eq("id", Number(diaryId))
         .single();
-      setTitle(response.data.title);
-      setContent(response.data.content);
-      setIsPublic(response.data.isPublic);
-      setImageUrl(baseURL + response.data.imageUrl);
+
+      setTitle(response.data!.title);
+      setContent(response.data!.content);
+      setIsPublic(response.data!.isPublic);
+      setImageUrl(baseURL + response.data!.imageUrl);
     })();
-  }, []);
+  }, [diaryId]);
 
   useEffect(() => {
     if (file) {
@@ -54,14 +47,14 @@ function DiaryEditPage(props: DiaryEditPageProps) {
     e.preventDefault();
 
     if (file === null) {
-      const updateResponse = await supabase
+      await supabase
         .from("diaries")
         .update({
           title: title,
           content: content,
           isPublic: isPublic,
         })
-        .eq("id", Number(props.params.diaryId));
+        .eq("id", Number(diaryId));
 
       alert("수정이 완료되었습니다");
       router.push("/diaries");
@@ -74,15 +67,12 @@ function DiaryEditPage(props: DiaryEditPageProps) {
         .from("diaries")
         .upload(path, file!, { upsert: true });
 
-      const updateResponse = await supabase
-        .from("diaries")
-        .update({
-          imageUrl: result.data?.fullPath,
-          title: title,
-          content: content,
-          isPublic: isPublic,
-        })
-        .eq("id", Number(props.params.diaryId));
+      await supabase.from("diaries").update({
+        imageUrl: result.data?.fullPath,
+        title: title,
+        content: content,
+        isPublic: isPublic,
+      });
 
       alert("수정이 완료되었습니다");
       router.push("/diaries");
@@ -90,16 +80,20 @@ function DiaryEditPage(props: DiaryEditPageProps) {
   };
 
   return (
-    <form onSubmit={handleSubmitButton} className="flex flex-col gap-y-5">
-      <div className="flex gap-x-5">
+    <form
+      onSubmit={handleSubmitButton}
+      className="flex flex-col gap-y-5 p-5 w-[500px]"
+    >
+      <div className="flex gap-x-7">
         <img className="w-32" src={imageUrl} />
 
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 flex-grow">
           <label htmlFor="file">사진을 선택해주세요</label>
           <input
             id="file"
             type="file"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="px-1 py-2 border rounded-lg hover:border-gray-400"
           />
         </div>
       </div>
@@ -108,7 +102,7 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       <textarea
         onChange={(e) => setTitle(e.target.value)}
         value={title}
-        className="border w-72 resize-none"
+        className="border rounded-lg p-2 resize-none hover:border-gray-400"
         rows={2}
       />
 
@@ -116,13 +110,16 @@ function DiaryEditPage(props: DiaryEditPageProps) {
       <textarea
         onChange={(e) => setContent(e.target.value)}
         value={content}
-        className="border w-72 resize-none"
+        className="border rounded-lg p-2 resize-none hover:border-gray-400"
         rows={10}
       />
 
       <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
 
-      <button type="submit" className="border w-72 active:brightness-75">
+      <button
+        type="submit"
+        className="border rounded-lg text-center py-2 hover:border-gray-400 active:brightness-50"
+      >
         수정하기
       </button>
     </form>

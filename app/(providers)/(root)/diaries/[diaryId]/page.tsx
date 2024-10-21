@@ -1,122 +1,117 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { Tables } from "@/supabase/database.types";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeartButton from "../_components/HeartButton";
-import WriteCommentsPage from "./comments/page";
-
-type DiaryDetailPageProps = {
-  params: {
-    diaryId: string;
-  };
-};
+import CommentsPage from "./comments/page";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
-function DiaryDetailPage(props: DiaryDetailPageProps) {
-  const [diaryData, setDiaryData] = useState<any>(null); // diaryData의 타입을 any로 변경
-  const [profileData, setProfileData] = useState<any>(null); // profileData의 타입을 any로 변경
+function DiaryDetailPage() {
+  const params = useParams();
+  const [diaryData, setDiaryData] = useState<Tables<"diaries">>();
+  const [profileData, setProfileData] = useState<Tables<"profiles">[]>();
   const [isUser, setIsUser] = useState(false);
   const router = useRouter();
 
+  const { diaryId } = params;
+
   useEffect(() => {
     (async () => {
-      const diariesResponse = await supabase
+      const { data: diaries, error } = await supabase
         .from("diaries")
         .select("*")
-        .eq("id", Number(props.params.diaryId))
+        .eq("id", Number(diaryId))
         .single();
 
-      // profile 정보 가져오기
-      const profilesResponse = await supabase.from("profiles").select("*");
-      const profilesData = profilesResponse.data;
+      const profiles = await supabase.from("profiles").select("*");
 
-      // profile id와 diary authorId를 찾아 비교해서 같은 것만 저장하기
-      const profilesNicknameData = profilesData?.find(
-        (data) => data.id === diariesResponse.data.authorId
-      );
+      const profilesData = profiles.data;
 
-      setDiaryData(diariesResponse.data);
-      setProfileData(profilesNicknameData);
+      if (error) {
+        return console.log("error", error);
+      } else {
+        const profiles = profilesData?.find(
+          (data) => data.id === diaries.authorId
+        );
+        console.log(profiles);
+        setDiaryData(diaries);
+        setProfileData([profiles!]);
+      }
 
-      // 자기가 작성한 일기라면 isUser에 true를 주고 아니면 false를 준다.
       const userResponse = await supabase.auth.getUser();
       const data = userResponse.data.user;
       const userId = data?.id;
 
-      if (diariesResponse.data.authorId === userId) return setIsUser(true);
+      if (diaries.authorId === userId) return setIsUser(true);
     })();
-  }, []);
+  }, [diaryId]);
 
   const handleClickDeleteButton = async () => {
-    const deleteResponse = await supabase
+    const response = await supabase
       .from("diaries")
       .select("*")
-      .eq("id", Number(props.params.diaryId))
+      .eq("id", Number(diaryId))
       .single();
+    console.log(response);
 
-    const { error: deleteDataError } = await supabase
+    const data = await supabase
       .from("diaries")
       .delete()
-      .eq("id", deleteResponse.data.id);
+      .eq("id", Number(diaryId));
 
-    if (deleteDataError) {
-      console.log("error", deleteDataError);
+    if (!data) {
+      console.log("error");
     } else {
       alert("삭제되었습니다");
-      router.push("/views/publicView");
+      router.push("/diaries");
     }
   };
 
   if (!diaryData || !profileData) {
-    return <p>로딩 중...</p>; // 로딩 상태 처리
+    return <p className="p-5">로딩 중...</p>;
   }
 
   return (
-    <div>
-      <div className="flex">
-        <div>
-          <p>
-            {/* 임시로 사진 사이즈 조절함 */}
-            사진:
-            <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
-          </p>
-          <p>제목: {diaryData.title}</p>
-          <p>내용: {diaryData.content}</p>
-          <p>글쓴이: {profileData.nickname}</p>
+    <div className="p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-y-2">
+          <h2 className="text-lg font-bold">{diaryData.title}</h2>
+          {profileData.map((profiles) => (
+            <p key={profiles.id}>글쓴이: {profiles.nickname}</p>
+          ))}
+          <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
+          <p className="text-sm">{diaryData.content}</p>
+
           <HeartButton diaryId={diaryData.id.toString()} />
+
+          {isUser && (
+            <div className="mt-10 flex flex-col lg:flex-row gap-2">
+              <Link
+                className="border rounded-lg w-72 text-center py-2 hover:brightness-90 active:brightness-50"
+                href={`/diaries/${diaryData.id}/edit`}
+              >
+                편집하기
+              </Link>
+
+              <button
+                className="border rounded-lg w-72 text-center py-2 hover:border-gray-400 active:brightness-50"
+                onClick={handleClickDeleteButton}
+              >
+                삭제하기
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className="ml-auto">
-          <WriteCommentsPage
-            params={{ diaryId: diaryData.id.toString() }}
-            id={Number(diaryData.id)}
-            content={diaryData.content}
-          />
+        <div className="flex md:justify-end sm:justify-start sm:pt-5">
+          <CommentsPage />
         </div>
       </div>
-      {/* 자기가 작성한 일기라면 편집, 삭제버튼 띄우고, 아니라면 아무것도 띄우지 않는다 */}
-      {isUser ? (
-        <>
-          <Link
-            className="border w-72 inline-block text-center active:brightness-75"
-            href={`/diaries/${diaryData.id}/edit`}
-          >
-            편집하기
-          </Link>
-
-          <button
-            className="border w-72 inline-block text-center active:brightness-75"
-            onClick={handleClickDeleteButton}
-          >
-            삭제하기
-          </button>
-        </>
-      ) : null}
     </div>
   );
 }
