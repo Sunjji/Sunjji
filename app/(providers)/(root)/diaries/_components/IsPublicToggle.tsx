@@ -20,22 +20,11 @@ function IsPublicToggle({ isPublic, setIsPublic }: IsPublicToggleProps) {
     <button
       type="button"
       onClick={handleToggleIsPublic}
-      className="flex gap-x-5"
+      className={`
+        ${isPublic ? "bg-[#A17762] text-point" : "text-[#A17762] bg-point"}
+        py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center transition duration-300`}
     >
-      <div
-        className={`${
-          isPublic ? "bg-blue-500" : "bg-gray-500"
-        } w-14 h-7 rounded-3xl`}
-      >
-        <div
-          className={`flex items-center bg-white w-5 h-5 m-1  rounded-3xl ${
-            isPublic ? "ml-auto" : null
-          } transition`}
-        ></div>
-      </div>
-      <p className={`${isPublic ? "text-red-500" : "text-black"}`}>
-        {isPublic ? "공개 일기" : "비공개 일기"}
-      </p>
+      {isPublic ? "공개 일기" : "비공개 일기"}
     </button>
   );
 }
