@@ -4,6 +4,8 @@ import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CommentButton from "./CommentButton";
+import HeartButton from "./HeartButton";
 
 function Comments() {
   const params = useParams();
@@ -49,10 +51,8 @@ function Comments() {
   };
 
   return (
-    <div className="flex flex-col w-[340px]">
-      <h2 className="pb-2 font-semibold">이 일기의 댓글을 남겨주세요</h2>
-
-      <div className="border h-[400px]">
+    <div className="flex flex-col w-[380px] bg-white rounded-lg shadow-xl">
+      <div className="h-[550px] relative">
         <ul className="mt-2">
           {content.map((comment) => (
             <li className="flex px-2 py-1" key={comment.id}>
@@ -60,20 +60,24 @@ function Comments() {
             </li>
           ))}
         </ul>
+        <div className="flex gap-2 absolute bottom-0 px-4 py-3 bg-white w-full z-5">
+          <HeartButton diaryId={diaryId.toString()} />
+          <CommentButton diaryId={diaryId.toString()} />
+        </div>
       </div>
-
-      <div className="flex items-center">
+      <div className="flex items-center z-10 shadow-[0_-4px_6px_rgba(0,0,0,0.05)]">
         <textarea
-          className="border rounded-bl-lg p-2 flex-grow resize-none hover:border-gray-400"
+          className="rounded-bl-lg p-4 flex-grow resize-none text-BrownPoint placeholder-BrownPoint text-2xl h-[65.6px] placeholder-opacity-75 focus:outline-none focus:ring-0"
           rows={2}
           onChange={(e) => setNewContent(e.target.value)}
           value={newContent}
+          placeholder="댓글 남기기..."
         />
         <button
-          className="border rounded-br-lg w-[65.6px] h-[65.6px] text-center hover:border-gray-400 active:brightness-50"
+          className="rounded-br-lg w-[65.6px] h-[65.6px] text-center hover:underline active:brightness-50 bg-white text-2xl text-BrownPoint focus:outline-none"
           onClick={handleClickCommentButton}
         >
-          작성
+          게시
         </button>
       </div>
     </div>

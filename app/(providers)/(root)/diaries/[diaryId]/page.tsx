@@ -87,8 +87,6 @@ function DiaryDetailPage() {
           <img className="w-32" src={`${baseURL}${diaryData.imageUrl}`} />
           <p className="text-sm">{diaryData.content}</p>
 
-          <HeartButton diaryId={diaryData.id.toString()} />
-
           {isUser && (
             <div className="mt-10 flex flex-col lg:flex-row gap-2">
               <Link
