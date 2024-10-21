@@ -25,41 +25,60 @@ function PetProfileEditPage(props: PetProfileEditProps) {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [imageFile, setImageFile] = useState<File>();
+  const [imageUrl, setImageUrl] = useState("");
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
   const router = useRouter();
   const petId = Number(params.petId);
+  const baseURL =
+    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
   useEffect(() => {
     (async () => {
-      const response = await supabase.from("pets").select("*").eq("id", petId);
+      const response = await supabase
+        .from("pets")
+        .select("*")
+        .eq("id", petId)
+        .single();
+      const pet = response.data;
 
-      console.log(response);
-      console.log(params);
-      console.log(petId);
+      console.log("response", response);
 
-      setWeight(response.data[0].weight);
-      setAge(response.data[0].age);
-      setGender(response.data[0].gender);
-      setName(response.data[0].name);
-      setComment(response.data[0].comment);
+      setWeight(pet.weight);
+      setAge(pet.age);
+      setGender(pet.gender);
+      setName(pet.name);
+      setComment(pet.comment);
+      setImageUrl(baseURL + pet.imageUrl);
+      // setCurrentImageUrl(response.data.currentImageUrl);
     })();
   }, [petId]);
+  useEffect(() => {
+    if (imageFile) {
+      setImageUrl(URL.createObjectURL(imageFile));
+    }
+  }, [imageFile]);
 
   const handleFormSubmitButton: ComponentProps<"form">["onSubmit"] = async (
     e
   ) => {
     e.preventDefault();
 
-    const extension = imageFile?.name.split(".").slice(-1)[0];
-    const filename = nanoid();
-    const imageFixPath = `${filename}.${extension}`;
+    let imageFixPath = currentImageUrl;
 
-    if (!imageFile) return alert("이미지 파일이 없습니다");
+    if (imageFile) {
+      const extension = imageFile?.name.split(".").slice(-1)[0];
+      const filename = nanoid();
+      imageFixPath = `${filename}.${extension}`;
 
-    const storage = await supabase.storage
-      .from("pets")
-      .upload(imageFixPath, imageFile, { upsert: true });
+      const storage = await supabase.storage
+        .from("pets")
+        .upload(imageFixPath, imageFile, { upsert: true });
 
-    if (!storage.data) alert("사진 수정에 실패하셨어요");
+      if (!storage.data) {
+        return alert("사진 수정에 실패하셨어요");
+      }
+      imageFixPath = storage.data.fullPath;
+    }
 
     const response = await supabase
       .from("pets")
@@ -69,7 +88,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         gender: gender,
         name: name,
         comment: comment,
-        imageUrl: storage.data!.fullPath,
+        imageUrl: imageFixPath,
       })
       .eq("id", petId)
       .select("*");
@@ -81,6 +100,15 @@ function PetProfileEditPage(props: PetProfileEditProps) {
   return (
     <form onSubmit={handleFormSubmitButton}>
       <h1 className="text-3xl">반려동물 프로필 수정</h1>
+      {imageUrl ? (
+        <img src={imageUrl} />
+      ) : (
+        currentImageUrl && (
+          <img
+            src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${currentImageUrl}`}
+          />
+        )
+      )}
       <h2 className="text-2xl">이미지 첨부</h2>
       <input
         name="image"
@@ -149,4 +177,5 @@ function PetProfileEditPage(props: PetProfileEditProps) {
     </form>
   );
 }
+
 export default PetProfileEditPage;

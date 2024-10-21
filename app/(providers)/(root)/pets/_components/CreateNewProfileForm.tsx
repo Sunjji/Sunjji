@@ -68,7 +68,7 @@ function CreateNewProfileForm() {
     if (!weight) return alert("무게를 입력해주세요");
     if (!comment) return alert("댓글을 입력해주세요");
 
-    const { data: pets, error } = await mutateAsync(data);
+    const { data:  error } = await mutateAsync(data);
 
     if (error) return alert("페이지 작성 실패");
 
