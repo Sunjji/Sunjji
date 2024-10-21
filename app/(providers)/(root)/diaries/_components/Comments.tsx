@@ -5,7 +5,7 @@ import { Tables } from "@/supabase/database.types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function CommentsPage() {
+function Comments() {
   const params = useParams();
   const [newContent, setNewContent] = useState("");
   const [content, setContent] = useState<Tables<"comments">[]>([]);
@@ -80,4 +80,4 @@ function CommentsPage() {
   );
 }
 
-export default CommentsPage;
+export default Comments;

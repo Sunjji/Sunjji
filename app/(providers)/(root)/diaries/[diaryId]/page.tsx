@@ -5,8 +5,8 @@ import { Tables } from "@/supabase/database.types";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Comments from "../_components/Comments";
 import HeartButton from "../_components/HeartButton";
-import CommentsPage from "./comments/page";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -109,7 +109,7 @@ function DiaryDetailPage() {
         </div>
 
         <div className="flex md:justify-end sm:justify-start sm:pt-5">
-          <CommentsPage />
+          <Comments />
         </div>
       </div>
     </div>
