@@ -32,7 +32,9 @@ function AllPets() {
 
   return (
     <ul>
-      <h1 className="bold">반려동물의 사진을 누르면 수정페이지로 갈수 있습니다</h1>
+      <h1 className="bold">
+        반려동물의 사진을 누르면 수정페이지로 갈수 있습니다
+      </h1>
       {pets?.map((pet) => (
         <li key={pet.id}>
           <h2>{pet.name}</h2>
@@ -45,7 +47,7 @@ function AllPets() {
           <Link href={`/pets/${pet.id}/edit`}>
             <img
               className="w-48 h-auto"
-              src={`${baseURL}${pet.imageUrl}`} //img를 소문자로 써서 생기는것
+              src={`${baseURL}${pet.imageUrl}`}
             ></img>
           </Link>
 
