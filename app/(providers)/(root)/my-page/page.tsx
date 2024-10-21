@@ -50,7 +50,6 @@ function MyPage() {
         {profile ? (
           <>
             <UserProfile profile={profile} updateProfile={updateProfile} />{" "}
-            {/* updateProfile 함수를 props로 전달 */}
             {isProfileEditing ? (
               <Link href={"/pets"}>
                 <button className="border border-black px-2 py-1 rounded-lg">
