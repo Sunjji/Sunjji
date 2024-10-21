@@ -1,10 +1,10 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";
 import UserProfile from "./_components/UserProfile";
+import PetProfile from "./_components/PetProfile";
 
 type Profile = {
   id: string;
@@ -16,7 +16,6 @@ type Profile = {
 
 function MyPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [isProfileEditing, setIsProfileEditing] = useState(false);
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -35,10 +34,6 @@ function MyPage() {
     getCurrentUser();
   }, []);
 
-  const handleEditPetProfileButton = () => {
-    setIsProfileEditing(true);
-  };
-
   const updateProfile = (newProfile: Profile) => {
     setProfile(newProfile);
   };
@@ -50,27 +45,12 @@ function MyPage() {
         {profile ? (
           <>
             <UserProfile profile={profile} updateProfile={updateProfile} />{" "}
-            {isProfileEditing ? (
-              <Link href={"/pets"}>
-                <button className="border border-black px-2 py-1 rounded-lg">
-                  반려동물 프로필 추가등록
-                </button>
-              </Link>
-            ) : (
-              <Link href={"/pets"}>
-                <button
-                  className="border border-black px-2 py-1 rounded-lg"
-                  onClick={handleEditPetProfileButton}
-                >
-                  반려동물 프로필 등록
-                </button>
-              </Link>
-            )}
+            <PetProfile />
           </>
         ) : (
           <p>사용자 정보를 불러오는 중입니다...</p>
         )}
-        <AllPets />
+        {profile && <AllPets />}
       </section>
     </main>
   );

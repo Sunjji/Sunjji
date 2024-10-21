@@ -49,7 +49,7 @@ function PetProfileEditPage(props: PetProfileEditProps) {
       setName(pet.name);
       setComment(pet.comment);
       setImageUrl(baseURL + pet.imageUrl);
-      // setCurrentImageUrl(response.data.currentImageUrl);
+      setCurrentImageUrl(response.data.currentImageUrl);
     })();
   }, [petId]);
   useEffect(() => {
