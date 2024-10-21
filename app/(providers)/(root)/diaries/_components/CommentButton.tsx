@@ -27,10 +27,7 @@ function CommentButton({ diaryId }: CommentButtonProps) {
 
   // 댓글 버튼 클릭
   const handleCommentButtonClick: ComponentProps<"button">["onClick"] = (
-    event
   ) => {
-    event.stopPropagation();
-    event.preventDefault();
     // 댓글 버튼 눌렀을 때 기능
   };
 
