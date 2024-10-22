@@ -1,6 +1,8 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";
 import PetProfile from "./_components/PetProfile";
@@ -16,8 +18,13 @@ type Profile = {
 
 function MyPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [currentDate, setCurrentDate] = useState<string>("");
 
   useEffect(() => {
+    dayjs.locale("ko");
+    const today = dayjs().format("DD dddd");
+    setCurrentDate(today);
+
     const getCurrentUser = async () => {
       const response = await supabase.auth.getUser();
       const user = response.data.user;
@@ -39,22 +46,24 @@ function MyPage() {
   };
 
   return (
-    <main className="flex flex-col p-5">
-      <h1 className="text-3xl mb-5 font-bold">마이 페이지</h1>
-      <section className="flex">
-        <div className="w-[30%] bg-point p-10 rounded-3xl">
-          <h1 className="text-3xl font-bold mb-3">내 프로필</h1>
-          {profile ? (
-            <UserProfile profile={profile} updateProfile={updateProfile} />
-          ) : (
-            <p>사용자 정보를 불러오는 중입니다...</p>
-          )}
-        </div>
+    <main className="flex flex-col p-[2.5vh]">
+      <section className="flex flex-col bg-point rounded-3xl h-[95vh]">
+        <h1 className="px-10 pt-14 pb-7 text-3xl font-bold">{currentDate}</h1>
+        <div className="flex flex-wrap gap-[5%] rounded-2xl bg-white p-8 w-[95%] ml-[2.5%]">
+          <div className="w-[30%]">
+            <h1 className="text-2xl font-bold mb-5">내 프로필</h1>
+            {profile ? (
+              <UserProfile profile={profile} updateProfile={updateProfile} />
+            ) : (
+              <p>사용자 정보를 불러오는 중입니다...</p>
+            )}
+          </div>
 
-        <div className="w-[70%] bg-point p-10">
-          <h1 className="text-3xl font-bold mb-3">반려동물 정보</h1>
-          <PetProfile />
-          {profile && <AllPets />}
+          <div className="w-[65%]">
+            <h1 className="text-2xl font-bold mb-5">반려동물 정보</h1>
+            <PetProfile />
+            {profile && <AllPets />}
+          </div>
         </div>
       </section>
     </main>
