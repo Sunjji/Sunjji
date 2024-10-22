@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Page from "@/page/Page";
 import { supabase } from "@/supabase/client";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -19,15 +20,19 @@ async function PublicPage() {
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
   return (
-    <>
+    <Page>
       {/* 일기쓰기 버튼 */}
-      <DiariesWriteButton />
+      <div className="absolute top-10 right-[58px]">
+        <DiariesWriteButton />
+      </div>
       {/* 클릭하면 일기 상세페이지로 들어감 */}
-      <div className="mx-[50px] mb-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
+      <div className="mx-10 mb-10 bg-whitePoint px-6 rounded-2xl">
+        <h2 className="mt-7 text-3xl font-bold text-BrownPoint text-opacity-50">공개 일기들을 읽을 수 있어요!</h2>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-20 gap-y-10 pt-[30px]">
         {diaries?.map((diary) => {
           return diary.isPublic ? (
             <Link key={diary.id} href={`/diaries/${diary.id}`}>
-              <div className="relative group mt-[30px] rounded-[8px] bg-point border-2 border-transparent">
+              <div className="relative group rounded-[8px] bg-whitePoint border-2 border-transparent">
                 {/* 바깥쪽 테두리 쉐도우 */}
                 <div className="absolute inset-0 rounded-[8px] group-hover:shadow-[0_0_20px_rgba(161,119,98,0.5)] transition duration-300"></div>
                 {/* 프로필+닉네임+날짜 */}
@@ -47,23 +52,23 @@ async function PublicPage() {
                             {profile.nickname}
                           </li>
                           <li className="text-sm  text-BrownPoint pr-2">
-                            {dayjs(diary.createdAt).format("YYYY년 MM월 DD일")}
+                            {dayjs(diary.createdAt).format(
+                              "YYYY년 MM월 DD일"
+                            )}
                           </li>
                         </div>
                       </ul>
                     );
                   }
                 })}
-
                 {/* 이미지를 비율에 맞춰서 표시 */}
-                <div className="aspect-w-1 aspect-h-1 w-full">
+                <div className="aspect-w-4 aspect-h-3 w-full">
                   <img
                     className="object-cover w-full h-full"
                     src={`${baseURL}/${diary.imageUrl}`}
                     alt="일기 사진"
                   />
                 </div>
-
                 {/* 좋아요 댓글 버튼 */}
                 <div className="ml-5 flex gap-2 mt-1 z-0 relative">
                   <HeartButton diaryId={diary.id} />
@@ -84,8 +89,9 @@ async function PublicPage() {
             </Link>
           ) : null;
         })}
+        </div>
       </div>
-    </>
+    </Page>
   );
 }
 
