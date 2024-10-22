@@ -31,30 +31,33 @@ function AllPets() {
   };
 
   return (
-    <ul>
-      <h1 className="bold">
-        반려동물의 사진을 누르면 수정페이지로 갈수 있습니다
-      </h1>
+    <ul className="flex flex-wrap gap-4 justify-between">
       {pets?.map((pet) => (
-        <li key={pet.id}>
+        <li key={pet.id} className="flex flex-col items-center border p-4 w-64">
           <h2>{pet.name}</h2>
-          <button
-            className="border border-black px-2 py-1 rounded-lg"
-            onClick={() => handleClickDeletePets(pet.id)}
-          >
-            반려동물 삭제
-          </button>
-          <Link href={`/pets/${pet.id}/edit`}>
-            <img
-              className="w-48 h-auto"
-              src={`${baseURL}${pet.imageUrl}`}
-            ></img>
-          </Link>
+
+          <img
+            className="w-full h-auto rounded-md mb-4"
+            src={`${baseURL}${pet.imageUrl}`}
+          ></img>
 
           <p>몸무게 : {pet.weight}</p>
           <p>나이 : {pet.age}</p>
           <p>성별 : {pet.gender}</p>
           <p>반려동물 한줄평가 : {pet.comment}</p>
+          <div className="flex justify-between gap-5">
+            <Link href={`/pets/${pet.id}/edit`}>
+              <button className="border border-black px-2 py-1 rounded-lg">
+                반려동물 수정
+              </button>
+            </Link>
+            <button
+              className="border border-black px-2 py-1 rounded-lg"
+              onClick={() => handleClickDeletePets(pet.id)}
+            >
+              반려동물 삭제
+            </button>
+          </div>
         </li>
       ))}
     </ul>
