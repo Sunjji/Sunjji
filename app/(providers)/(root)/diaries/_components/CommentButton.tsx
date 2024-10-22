@@ -26,8 +26,7 @@ function CommentButton({ diaryId }: CommentButtonProps) {
   }, [diaryId]);
 
   // 댓글 버튼 클릭
-  const handleCommentButtonClick: ComponentProps<"button">["onClick"] = (
-  ) => {
+  const handleCommentButtonClick: ComponentProps<"button">["onClick"] = () => {
     // 댓글 버튼 눌렀을 때 기능
   };
 
