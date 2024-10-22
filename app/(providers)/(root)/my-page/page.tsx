@@ -50,7 +50,7 @@ function MyPage() {
       <section className="flex flex-col bg-point rounded-3xl h-[95vh]">
         <h1 className="px-10 pt-10 pb-7 text-3xl font-bold text-BrownPoint">{currentDate}</h1>
         <div className="flex flex-wrap gap-[5%] rounded-2xl bg-whitePoint p-8 w-[95%] ml-[2.5%]">
-          <div className="w-[30%]">
+          <div className="w-[25%]">
             <h1 className="text-2xl font-bold mb-5 text-BrownPoint">내 프로필</h1>
             {profile ? (
               <UserProfile profile={profile} updateProfile={updateProfile} />
@@ -59,7 +59,7 @@ function MyPage() {
             )}
           </div>
 
-          <div className="w-[65%]">
+          <div className="w-[70%]">
             <h1 className="text-2xl font-bold mb-5 text-BrownPoint">반려동물</h1>
             <PetProfile />
             {profile && <AllPets />}

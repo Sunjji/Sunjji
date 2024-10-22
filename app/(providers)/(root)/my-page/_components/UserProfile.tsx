@@ -1,8 +1,9 @@
 import { supabase } from "@/supabase/client";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
 
 type Profile = {
   id: string;
@@ -24,7 +25,22 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (showEditButton && !target.closest(".edit-button-container")) {
+      setShowEditButton(false);
+    }
+  }, [showEditButton]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -66,17 +82,18 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     setPreviewUrl(null);
     setImageFile(null);
     setIsLoading(false);
+    setShowEditButton(false);
 
     alert("수정되었습니다");
   };
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    setShowEditButton(true);
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setPreviewUrl(null);
+  const handleConfirmEdit = () => {
+    setIsEditing(true);
+    setShowEditButton(false);
   };
 
   const handleImageClick = () => {
@@ -89,7 +106,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     <>
       {!isEditing ? (
         <>
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm">
+          <div className="bg-white shadow-lg rounded-lg px-3 py-5 max-w-sm relative">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -97,27 +114,35 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 alt="Profile"
               />
             </div>
-            <p className="bg-white p-4 text-gray-500 rounded-md shadow-lg mb-2">
+            <p className="bg-white p-4 text-BrownPoint rounded-md shadow-md mb-2">
               이름: {profile.nickname}
             </p>
-            <p className="bg-white p-4 rounded-md shadow-lg pb-16">
-              <h2 className="text-gray-500">집사 소개: {profile.comment}</h2>
+            <p className="bg-white p-4 rounded-md shadow-md pb-16">
+              <h2 className="text-BrownPoint">집사 소개: {profile.comment}</h2>
             </p>
-            <p className="bg-white p-4 text-gray-500 mt-2 rounded-md shadow-lg">
+            <p className="bg-white p-4 text-BrownPoint mt-2 rounded-md shadow-md">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
+            <IoIosMore
+              className="w-6 h-6 absolute top-3 right-4 cursor-pointer text-BrownPoint"
+              onClick={handleEditClick}
+            />
+            {showEditButton && (
+              <div className="edit-button-container absolute top-[10px] right-[-55px]">
+                <button
+                  className="text-BrownPoint bg-white border border-BrownPoint hover:bg-point rounded-md px-2 py-1"
+                  onClick={handleConfirmEdit}
+                >
+                  수정하기
+                </button>
+              </div>
+            )}
           </div>
-          <button
-            className="border border-black px-4 py-1 rounded-lg hover:bg-gray-100"
-            onClick={handleEditClick}
-          >
-            사용자 정보 수정
-          </button>
         </>
       ) : (
         <>
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm">
+          <div className="bg-white shadow-lg rounded-lg p-3 py-5 max-w-sm">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -127,7 +152,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
             </div>
             <div className="flex justify-center">
               <button
-                className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100"
+                className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 text-BrownPoint"
                 onClick={handleImageClick}
               >
                 사진 첨부하기
@@ -139,7 +164,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 onChange={handleChangeFile}
               />
             </div>
-            <p className="bg-white p-4 text-gray-500 rounded-md shadow-lg mb-2">
+            <p className="bg-white p-4 text-BrownPoint rounded-md shadow-md mb-2">
               <input
                 type="text"
                 value={nickname}
@@ -147,30 +172,30 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 className="border p-2 rounded-lg w-full"
               />
             </p>
-            <p className="bg-white p-4 rounded-md shadow-lg pb-16">
+            <p className="bg-white p-4 rounded-md shadow-md">
               <input
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="border p-2 rounded-lg w-full text-gray-500"
+                className="border p-2 rounded-lg w-full text-BrownPoint"
               />
             </p>
-            <p className="bg-white p-4 text-gray-500 mt-2 rounded-md shadow-lg">
+            <p className="bg-white p-4 text-BrownPoint my-2 rounded-md shadow-md">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
+            <button
+              className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 text-BrownPoint flex justify-center"
+              onClick={handleClickSave}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <FaSpinner className="animate-spin h-6 w-6 text-BrownPoint" />
+              ) : (
+                "저장"
+              )}
+            </button>
           </div>
-          <button
-            className="border border-black px-4 py-1 rounded-lg hover:bg-gray-100"
-            onClick={handleClickSave}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <FaSpinner className="animate-spin h-6 w-6 text-gray-500" />
-            ) : (
-              "저장"
-            )}
-          </button>
         </>
       )}
     </>
