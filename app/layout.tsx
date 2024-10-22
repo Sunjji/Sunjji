@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+
+dayjs.locale("ko");
 
 export const metadata: Metadata = {
   title: "Create Next App",

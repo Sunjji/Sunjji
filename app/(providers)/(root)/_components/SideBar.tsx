@@ -4,8 +4,12 @@ import LogInModal from "@/components/LoginModal";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+dayjs.locale("ko");
 
 function SideBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
