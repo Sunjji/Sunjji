@@ -103,15 +103,21 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     <>
       {!isEditing ? (
         <>
-          <div className="flex flex-col items-start mb-4 space-y-4">
-            <p className="text-xl w-full">이름: {profile.nickname}</p>
-            <img
-              className="w-32 h-32 object-cover inline rounded-xl"
-              src={profile.imageUrl}
-              alt="Profile"
-            />
-            <p className="text-xl w-full">한 줄 소개: {profile.comment}</p>
-            <p className="text-xl w-full">
+          <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm">
+            <div className="flex justify-center mb-4">
+              <img
+                className="w-32 h-32 object-cover inline rounded-xl"
+                src={profile.imageUrl}
+                alt="Profile"
+              />
+            </div>
+            <p className="bg-white p-4 text-gray-500 rounded-md shadow-lg rounded-lg mb-2">
+              이름: {profile.nickname}
+            </p>
+            <p className="bg-white p-4 rounded-md shadow-lg rounded-lg pb-16">
+              <h2 className="text-gray-500">집사 소개: {profile.comment}</h2>
+            </p>
+            <p className="bg-white p-4 text-gray-500 mt-2 rounded-md shadow-lg rounded-lg">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>

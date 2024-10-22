@@ -86,9 +86,9 @@ function CreateNewProfileForm() {
       <div>
         <h2 className="text-2xl">성별</h2>
         <label htmlFor="male">수컷</label>
-        <input name="gender" id="male" value="male" type="radio" />
+        <input name="gender" id="male" value="수컷" type="radio" />
         <label htmlFor="female">암컷</label>
-        <input name="gender" id="female" value="female" type="radio" />
+        <input name="gender" id="female" value="암컷" type="radio" />
       </div>
 
       <h2 className="text-2xl">나이</h2>

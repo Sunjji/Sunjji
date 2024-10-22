@@ -130,20 +130,20 @@ function PetProfileEditPage(props: PetProfileEditProps) {
         <h2 className="text-2xl">성별</h2>
         <label htmlFor="male">수컷</label>
         <input
-          checked={gender === "male"}
+          checked={gender === "수컷"}
           onChange={(e) => setGender(e.target.value)}
           name="gender"
-          id="male"
-          value="male"
+          id="수컷"
+          value="수컷"
           type="radio"
         />
         <label htmlFor="female">암컷</label>
         <input
-          checked={gender === "female"}
+          checked={gender === "암컷"}
           onChange={(e) => setGender(e.target.value)}
           name="gender"
-          id="female"
-          value="female"
+          id="암컷"
+          value="암컷"
           type="radio"
         />
       </div>
