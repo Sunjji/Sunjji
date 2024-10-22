@@ -27,7 +27,7 @@ function Comments() {
         setContent(response);
       }
     })();
-  }, []);
+  }, [content]);
 
   const handleClickCommentButton = async () => {
     if (!newContent) return alert("댓글을 적어주세요");
@@ -36,18 +36,17 @@ function Comments() {
       .from("comments")
       .insert({ content: newContent, diaryId: Number(diaryId) });
 
-    // 댓글 작성하면 바로 보이게 하기
-    const { data: comments, error } = await supabase
-      .from("comments")
-      .select("*")
-      .eq("diaryId", Number(diaryId));
+    setNewContent(""); // textarea 빈칸으로 바꾸기
+    // }
+  };
 
-    if (error) {
-      return console.log("error", error);
-    } else {
-      setContent(comments);
-      setNewContent(""); // textarea 빈칸으로 바꾸기
-    }
+  const handleClickDeleteButton = async (commentId: number) => {
+    const deleteComments = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", commentId);
+
+    console.log(deleteComments);
   };
 
   return (
@@ -56,7 +55,13 @@ function Comments() {
         <ul className="mt-2">
           {content.map((comment) => (
             <li className="flex px-2 py-1" key={comment.id}>
-              <p className="flex-grow">{comment.content}</p>
+              <p
+                onClick={() => handleClickDeleteButton(comment.id)}
+                // 미완성
+                className="flex-grow cursor-pointer hover:line-through"
+              >
+                {comment.content}
+              </p>
             </li>
           ))}
         </ul>
