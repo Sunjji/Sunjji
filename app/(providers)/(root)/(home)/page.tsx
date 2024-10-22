@@ -46,7 +46,6 @@ function HomePage() {
 
   // 드래그앤드롭 이벤트 핸들러
   const handleDropEvent = async (info: EventDragStopArg) => {
-    // 드래그 후 변경된 날짜를 YYYY-MM-DD 형식으로 가져오기
     const newDate = info.event.startStr;
     const splitedUrl = info.event._def.url.split("/");
     const diaryId = splitedUrl[splitedUrl.length - 1];
@@ -54,7 +53,7 @@ function HomePage() {
       const { error } = await supabase
         .from("diaries")
         .update({ createdAt: newDate })
-        .eq("id", diaryId); // event.id로 해당 일기 업데이트
+        .eq("id", diaryId);
 
       if (error) {
         throw error;
@@ -81,7 +80,6 @@ function HomePage() {
             center: "title",
             end: "next",
           }}
-          dayMaxEventRows={true}
           expandRows={true}
           navLinks={true}
           droppable={true}
