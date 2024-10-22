@@ -6,6 +6,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Profile from "./Profile";
 
 function SideBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -34,9 +35,9 @@ function SideBar() {
           src="http://localhost:3000/assets/img/logo.png"
           alt="logo"
         />
-        <Link href={"/my-page"} className="font-bold text-2xl">
-          프로필(대충 해놓은거임)
-        </Link>
+        <div>
+          <Profile />
+        </div>
         <br />
         <Link href={"/"} className="block mt-5 mb-5 font-bold text-2xl">
           홈

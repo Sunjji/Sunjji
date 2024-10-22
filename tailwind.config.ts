@@ -20,6 +20,7 @@ const config: Config = {
       colors: {
         beige: "#FFF8E8",
         point: "#FEFBF2",
+        point2: "#FFFEFA",
         BrownPoint: "#A17762",
         Brown: "#EFDDC4",
         background: "var(--background)",
@@ -29,7 +30,7 @@ const config: Config = {
   },
   plugins: [
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('@tailwindcss/aspect-ratio'),
+    require("@tailwindcss/aspect-ratio"),
   ],
-}
+};
 export default config;
