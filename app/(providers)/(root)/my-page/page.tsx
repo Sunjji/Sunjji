@@ -48,10 +48,10 @@ function MyPage() {
   return (
     <main className="flex flex-col p-[2.5vh]">
       <section className="flex flex-col bg-point rounded-3xl h-[95vh]">
-        <h1 className="px-10 pt-14 pb-7 text-3xl font-bold">{currentDate}</h1>
-        <div className="flex flex-wrap gap-[5%] rounded-2xl bg-white p-8 w-[95%] ml-[2.5%]">
+        <h1 className="px-10 pt-10 pb-7 text-3xl font-bold text-BrownPoint">{currentDate}</h1>
+        <div className="flex flex-wrap gap-[5%] rounded-2xl bg-whitePoint p-8 w-[95%] ml-[2.5%]">
           <div className="w-[30%]">
-            <h1 className="text-2xl font-bold mb-5">내 프로필</h1>
+            <h1 className="text-2xl font-bold mb-5 text-BrownPoint">내 프로필</h1>
             {profile ? (
               <UserProfile profile={profile} updateProfile={updateProfile} />
             ) : (
@@ -60,7 +60,7 @@ function MyPage() {
           </div>
 
           <div className="w-[65%]">
-            <h1 className="text-2xl font-bold mb-5">반려동물 정보</h1>
+            <h1 className="text-2xl font-bold mb-5 text-BrownPoint">반려동물</h1>
             <PetProfile />
             {profile && <AllPets />}
           </div>
