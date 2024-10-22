@@ -3,7 +3,7 @@ import Page from "@/page/Page";
 function HomePage() {
   return (
     <Page>
-      <div className="flex flex-wrap justify-between h-[77%] w-[69%] gap-5">
+      <div className="flex flex-wrap justify-between h-[80.9vh] pb-10 w-[69%] gap-5">
         <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full ml-[2.5%]">
           이달의 인기 일기
         </div>
