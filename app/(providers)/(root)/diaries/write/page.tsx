@@ -6,7 +6,6 @@ import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import IsPublicToggle from "../_components/IsPublicToggle";
-import Page from "@/app/_page/Page";
 
 function DiaryWritePage() {
   const [file, setFile] = useState<null | File>(null);
@@ -43,7 +42,7 @@ function DiaryWritePage() {
 
     const { error } = await supabase
       .from("diaries")
-      .insert({ title, content, isPublic, imageUrl })
+      .insert({ title, content, isPublic, imageUrl: result.data?.fullPath })
       .select();
 
     if (error) {
@@ -79,12 +78,15 @@ function DiaryWritePage() {
   const today = dayNames[now.day() + 1];
 
   return (
-    <Page>
     <form
       onSubmit={handleSubmitButton}
-      className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
+      className="flex flex-col m-5 p-5 bg-[#FEFBF2] rounded-[8px]"
     >
-      <div className="absolute top-[46px] ml-36">
+      <div className="flex items-center gap-x-4 mb-4">
+        <p className="text-[#A17762] text-2xl font-semibold">
+          {now.date()} <span className="text-xl font-medium">{today}</span>
+        </p>
+
         <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
       </div>
 
@@ -95,7 +97,7 @@ function DiaryWritePage() {
             type="submit"
             className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
           >
-            저장하기  
+            저장하기
           </button>
         </div>
 
@@ -150,7 +152,7 @@ function DiaryWritePage() {
               className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
               placeholder="한 줄 메모"
               onChange={(e) => setMemo(e.target.value)}
-              rows={13}
+              rows={14}
             />
           </div>
         </div>
@@ -185,7 +187,6 @@ function DiaryWritePage() {
         </div>
       </div>
     </form>
-    </Page>
   );
 }
 export default DiaryWritePage;
