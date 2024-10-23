@@ -1,11 +1,11 @@
 "use client";
 
+import Page from "@/app/_page/Page";
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";
 import PetProfile from "./_components/PetProfile";
 import UserProfile from "./_components/UserProfile";
-import Page from "@/page/Page";
 
 type Profile = {
   id: string;
