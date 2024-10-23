@@ -69,7 +69,23 @@ function DiaryWritePage() {
         });
         router.push("/diaries");
       } else {
-        alert("비공개 일기를 작성했습니다");
+        toast("💚 비공개 일기가 작성되었습니다", {
+          position: "top-right",
+          closeButton: false,
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          style: {
+            backgroundColor: "#E3F4E5",
+            color: "#2E7D32",
+            fontFamily: "MongxYamiyomiL",
+          },
+        });
         router.push("/diaries");
       }
     }
