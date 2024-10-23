@@ -1,5 +1,6 @@
 "use client";
 
+import Page from "@/app/_page/Page";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import Link from "next/link";
@@ -95,12 +96,9 @@ function DiaryDetailPage() {
   }
 
   return (
+    <Page>
     <div className="p-5 grid grid-cols-3 text-[#A17762]">
       <div className="flex gap-x-4 col-span-3">
-        <p className="text-[#A17762] text-2xl font-semibold">
-          만든 날짜 <span className="text-xl font-medium">만든 요일</span>
-        </p>
-
         <div className="flex gap-x-4 mb-4">
           <button
             onClick={() => handleClick(0)}
@@ -209,6 +207,7 @@ function DiaryDetailPage() {
         </p>
       </div>
     </div>
+    </Page>
   );
 }
 

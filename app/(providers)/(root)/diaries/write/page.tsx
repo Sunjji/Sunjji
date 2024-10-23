@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import IsPublicToggle from "../_components/IsPublicToggle";
+import Page from "@/app/_page/Page";
 
 function DiaryWritePage() {
   const [file, setFile] = useState<null | File>(null);
@@ -78,15 +79,12 @@ function DiaryWritePage() {
   const today = dayNames[now.day() + 1];
 
   return (
+    <Page>
     <form
       onSubmit={handleSubmitButton}
-      className="flex flex-col m-5 p-5 bg-[#FEFBF2] rounded-[8px]"
+      className="flex flex-col mx-10 bg-[#FEFBF2] rounded-[8px]"
     >
-      <div className="flex items-center gap-x-4 mb-4">
-        <p className="text-[#A17762] text-2xl font-semibold">
-          {now.date()} <span className="text-xl font-medium">{today}</span>
-        </p>
-
+      <div className="absolute top-[46px] ml-32">
         <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
       </div>
 
@@ -187,6 +185,7 @@ function DiaryWritePage() {
         </div>
       </div>
     </form>
+    </Page>
   );
 }
 export default DiaryWritePage;
