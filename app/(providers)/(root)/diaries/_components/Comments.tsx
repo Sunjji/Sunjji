@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
@@ -17,17 +18,14 @@ function Comments() {
   const [comments, setComments] = useState<CustomComment[]>([]);
 
   const currentUserId = useAuthStore((state) => state.currentUserId);
-
   useEffect(() => {
     (async () => {
       // 댓글 가져오기
-      const { data: comments } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("diaryId", Number(diaryId))
-        .order("createdAt", { ascending: false });
+      const { comments, error } = await api.comments.getComments(
+        diaryId.toString()
+      );
 
-      if (!comments) return console.log("comments error");
+      if (error) return console.log("comments error", error);
 
       // 프로필 가져오기
       const { data: profiles } = await supabase.from("profiles").select("*");
@@ -35,7 +33,7 @@ function Comments() {
       if (!profiles) return console.log("profiles error");
 
       // 댓글 단 유저의 프로필 정보 찾기
-      const match = comments.map((comment) => {
+      const match = comments!.map((comment) => {
         const profile = profiles.find(
           (profile) => comment.authorId === profile.id
         );
@@ -64,15 +62,13 @@ function Comments() {
 
   const refetchComments = async () => {
     // supabase에서 댓글 다시 가져와서
-    const { data: comments } = await supabase
-      .from("comments")
-      .select("*")
-      .eq("diaryId", Number(diaryId))
-      .order("createdAt", { ascending: false });
+    const { comments, error } = await api.comments.getComments(
+      diaryId.toString()
+    );
 
     // setComments에 다시 넣기
-    if (!comments) {
-      return console.log("error");
+    if (error) {
+      return console.log("comments error", error);
     }
     // 프로필 가져오기
     const { data: profiles } = await supabase.from("profiles").select("*");
@@ -80,7 +76,7 @@ function Comments() {
     if (!profiles) return console.log("profiles error");
 
     // 댓글 단 유저의 프로필 정보 찾기
-    const match = comments.map((comment) => {
+    const match = comments!.map((comment) => {
       const profile = profiles.find(
         (profile) => comment.authorId === profile.id
       );
@@ -94,7 +90,7 @@ function Comments() {
   };
 
   const handleClickDeleteButton = async (commentId: number) => {
-    await supabase.from("comments").delete().eq("id", commentId);
+    await api.comments.deleteComment(commentId);
     refetchComments();
   };
 
