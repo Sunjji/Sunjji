@@ -1,6 +1,7 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useKakaoLoginStore } from "@/zustand/auth.store";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,18 +63,23 @@ function SignUpPage() {
     return alert("회원가입에 성공하셨습니다");
   };
   const handleClickKakaoSignUp = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
-      // options: {
-      //   queryParams: {
-      //     access_type: "offline",
-      //     prompt: "consent",
-      //   },
-      // },
     });
 
-    // if (data) alert("로그인 성공");
-    if (error) alert("로그인실패");
+    if (data) alert("로그인 성공");
+    //   supabase.auth.onAuthStateChange((event, session) => {
+    //     if (session) {
+    //       const user = session.user;
+    //       const kakaoIdentity = user.identities?.find(
+    //         (identity) => identity.provider === "kakao"
+    //       );
+    //       const kakaoProfile = {
+    //         uuid: user_id,
+
+    //       };
+    //     }
+    //   });
   };
 
   return (

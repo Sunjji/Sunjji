@@ -1,4 +1,5 @@
 import { supabase } from "@/supabase/client";
+import { useKakaoLoginStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useRef, useState, useEffect, useCallback } from "react";
@@ -27,6 +28,13 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const kakaoLogin = () => {
+    const kakaoLogInState = useKakaoLoginStore((state) => state.kakaoLogin);
+    
+
+    
+  };
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
