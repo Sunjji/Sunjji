@@ -24,7 +24,8 @@ function Comments() {
       const { data: comments } = await supabase
         .from("comments")
         .select("*")
-        .eq("diaryId", Number(diaryId));
+        .eq("diaryId", Number(diaryId))
+        .order("createdAt", { ascending: false });
 
       if (!comments) return console.log("comments error");
 
