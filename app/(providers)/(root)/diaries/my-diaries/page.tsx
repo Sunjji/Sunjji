@@ -1,5 +1,7 @@
+import Page from "@/app/_page/Page";
 import { supabase } from "@/supabase/client";
-import DiariesWriteButton from "../../diaries/_components/DiariesWriteButton";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import DiariesWriteButton from "../_components/DiariesWriteButton";
 
 async function UserViewPage() {
   const { data } = await supabase.auth.getUser();
@@ -14,13 +16,26 @@ async function UserViewPage() {
 
   console.log(authorId);
   return (
-    <>
+    <Page>
       {/* 일기쓰기 버튼 */}
-      <DiariesWriteButton />
-      <div className="mx-[50px] mb-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
-        {/* {diaries?.map((diary) => {})} */}
+      <div className="absolute top-10 right-[58px]">
+        <DiariesWriteButton />
       </div>
-    </>
+      <div className="mx-10 mb-10 bg-whitePoint px-6 rounded-2xl">
+        <div className="mt-7 text-3xl font-bold text-BrownPoint text-center text-opacity-50 pb-[30px] flex justify-between mx-auto w-80">
+          {/* 버튼에 onClick 달아서 월 이동 */}
+          <button>
+            <FaAngleLeft />
+          </button>
+          {/* 이 안에 현재 선택된 월 함수 넣기 */}
+          <p>{}월</p>
+          <button>
+            <FaAngleRight />
+          </button>
+        </div>
+        {/* 이 밑으로 내 일기 목록 출력 */}
+      </div>
+    </Page>
   );
 }
 export default UserViewPage;
