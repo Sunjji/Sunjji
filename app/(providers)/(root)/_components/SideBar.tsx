@@ -55,7 +55,7 @@ function SideBar() {
                 <Link className="block mb-5" href={"/diaries"}>
                   공개일기
                 </Link>
-                <Link className="block mb-5" href={"/views/userView"}>
+                <Link className="block mb-5" href={"/diaries/my-diaries"}>
                   내 일기
                 </Link>
                 <button onClick={handleClickLogOut}>로그아웃</button>
