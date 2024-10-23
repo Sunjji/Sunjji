@@ -4,7 +4,7 @@ function HomePage() {
   return (
     <Page>
       <div className="flex flex-wrap justify-between h-[75vh] w-[69%] gap-5">
-        <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full ml-[2.5%]">
+        <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full">
           이달의 인기 일기
         </div>
         <div className="w-[47%] h-full flex flex-col gap-7">

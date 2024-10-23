@@ -97,7 +97,7 @@ function DiaryDetailPage() {
 
   return (
     <Page>
-    <div className="p-5 grid grid-cols-3 text-[#A17762]">
+    <div className="grid grid-cols-3 text-[#A17762]">
       <div className="flex gap-x-4 col-span-3">
         <div className="flex gap-x-4 mb-4">
           <button
