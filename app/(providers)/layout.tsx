@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AuthProvider from "./_components/AuthProvider";
 import ModalProvider from "./_components/ModalProvider";
 import TanstackQueryProvider from "./_components/TanstackQueryProvider";
