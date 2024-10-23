@@ -95,7 +95,7 @@ function DiaryWritePage() {
             type="submit"
             className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
           >
-            저장하기
+            저장하기  
           </button>
         </div>
 
@@ -150,7 +150,7 @@ function DiaryWritePage() {
               className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
               placeholder="한 줄 메모"
               onChange={(e) => setMemo(e.target.value)}
-              rows={14}
+              rows={13}
             />
           </div>
         </div>
