@@ -89,15 +89,20 @@ function DiaryDetailPage() {
     } else {
       toast("💚 일기가 삭제되었습니다", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 100000,
+        closeButton: false,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "colored",
-        style: { backgroundColor: "#28a745", color: "#fff" },
         transition: Bounce,
+        style: {
+          backgroundColor: "#E3F4E5",
+          color: "#fff",
+          fontFamily: "MongxYamiyomiL",
+        },
       });
       router.push("/diaries");
     }
