@@ -27,10 +27,10 @@ async function PublicPage() {
       </div>
       {/* 클릭하면 일기 상세페이지로 들어감 */}
       <div className="mx-10 mb-10 bg-whitePoint px-6 rounded-2xl">
-        <h2 className="mt-7 text-3xl font-bold text-BrownPoint text-opacity-50">
+        <h2 className="mt-7 text-3xl font-bold text-BrownPoint text-opacity-50 pb-[30px]">
           공개 일기들을 읽을 수 있어요!
         </h2>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-20 gap-y-10 pt-[30px]">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-20 gap-y-10">
           {diaries?.map((diary) => {
             return diary.isPublic ? (
               <Link key={diary.id} href={`/diaries/${diary.id}`}>
