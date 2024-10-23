@@ -87,10 +87,10 @@ function DiaryDetailPage() {
     if (!data) {
       console.log("error");
     } else {
-      toast("💚 일기가 삭제되었습니다", {
+      toast("❤️ 일기가 삭제되었습니다", {
         position: "top-right",
-        autoClose: 100000,
         closeButton: false,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -99,8 +99,8 @@ function DiaryDetailPage() {
         theme: "colored",
         transition: Bounce,
         style: {
-          backgroundColor: "#E3F4E5",
-          color: "#fff",
+          backgroundColor: "#F9C1BD",
+          color: "#D32F2F",
           fontFamily: "MongxYamiyomiL",
         },
       });

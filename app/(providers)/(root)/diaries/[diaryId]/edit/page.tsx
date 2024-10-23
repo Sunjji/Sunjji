@@ -4,6 +4,7 @@ import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useParams, useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
 import IsPublicToggle from "../../_components/IsPublicToggle";
 
 const baseURL =
@@ -55,8 +56,24 @@ function DiaryEditPage() {
           isPublic: isPublic,
         })
         .eq("id", Number(diaryId));
+      toast("💚 일기가 수정 되었습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#E3F4E5",
+          color: "#2E7D32",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
-      alert("수정이 완료되었습니다");
       router.push("/diaries");
     } else {
       const filename = nanoid();
@@ -69,12 +86,24 @@ function DiaryEditPage() {
 
       await supabase.from("diaries").update({
         imageUrl: result.data?.fullPath,
-        title: title,
-        content: content,
-        isPublic: isPublic,
       });
-
-      alert("수정이 완료되었습니다");
+      toast("💚 사진이 변경 되었습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#E3F4E5",
+          color: "#2E7D32",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       router.push("/diaries");
     }
   };
