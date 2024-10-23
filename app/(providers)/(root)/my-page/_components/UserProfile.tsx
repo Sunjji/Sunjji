@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { Bounce, toast } from "react-toastify";
 
 type Profile = {
   id: string;
@@ -66,7 +67,17 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     setPreviewUrl(null);
     setImageFile(null);
     setIsLoading(false);
-
+    toast("🦄 Wow so easy!", {
+      position: "top-right",
+      autoClose: false,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
     alert("수정되었습니다");
   };
 

@@ -8,8 +8,14 @@ import HeartButton from "./_components/HeartButton";
 
 export const revalidate = 0;
 
-async function PublicPage() {
-  const response = await supabase.from("diaries").select();
+async function PublicPage(props) {
+  console.log(props);
+  const category = props.searchParams.category;
+
+  const response = await supabase
+    .from("diaries")
+    .select()
+    .eq("category", category);
   const diaries = response.data;
 
   const response2 = await supabase.from("profiles").select();
