@@ -28,12 +28,15 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleClickOutside = useCallback((event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (showEditButton && !target.closest(".edit-button-container")) {
-      setShowEditButton(false);
-    }
-  }, [showEditButton]);
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showEditButton && !target.closest(".edit-button-container")) {
+        setShowEditButton(false);
+      }
+    },
+    [showEditButton]
+  );
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);

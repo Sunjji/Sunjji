@@ -61,6 +61,20 @@ function SignUpPage() {
     router.push("/");
     return alert("회원가입에 성공하셨습니다");
   };
+  const handleClickKakaoSignUp = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      // options: {
+      //   queryParams: {
+      //     access_type: "offline",
+      //     prompt: "consent",
+      //   },
+      // },
+    });
+
+    // if (data) alert("로그인 성공");
+    if (error) alert("로그인실패");
+  };
 
   return (
     <main className="flex justify-center">
@@ -116,6 +130,12 @@ function SignUpPage() {
           onClick={handleClickSignUpPage}
         >
           회원가입하기
+        </button>
+        <button
+          className="bg-yellow-400 p-2 px-10 rounded-sm"
+          onClick={handleClickKakaoSignUp}
+        >
+          카카오로 로그인하기
         </button>
       </ul>
     </main>
