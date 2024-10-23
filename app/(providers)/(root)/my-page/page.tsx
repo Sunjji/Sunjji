@@ -41,7 +41,7 @@ function MyPage() {
 
   return (
     <Page>
-      <div className="flex flex-wrap gap-[5%] rounded-2xl bg-whitePoint p-8 w-[95%] ml-[2.5%]">
+      <div className="flex flex-wrap gap-[5%] rounded-2xl bg-whitePoint p-8 w-full">
         <div className="w-[25%]">
           <h1 className="text-2xl font-bold mb-5 text-BrownPoint">내 프로필</h1>
           {profile ? (

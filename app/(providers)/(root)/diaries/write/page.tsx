@@ -82,9 +82,9 @@ function DiaryWritePage() {
     <Page>
     <form
       onSubmit={handleSubmitButton}
-      className="flex flex-col mx-10 bg-[#FEFBF2] rounded-[8px]"
+      className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
     >
-      <div className="absolute top-[46px] ml-32">
+      <div className="absolute top-[46px] ml-36">
         <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
       </div>
 
