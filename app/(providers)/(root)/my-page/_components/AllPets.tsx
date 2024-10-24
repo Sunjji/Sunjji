@@ -9,8 +9,15 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 
-const baseURL =
-  "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+type Pet = {
+  id: number;
+  weight: number;
+  age: number;
+  gender: string;
+  name: string;
+  comment: string;
+  imageUrl: string;
+};
 
 function AllPets() {
   const queryClient = useQueryClient();
@@ -24,7 +31,7 @@ function AllPets() {
   });
 
   const { mutate: updatePet } = useMutation({
-    mutationFn: async ({ id, ...data }) => {
+    mutationFn: async ({ id, ...data }: { id: number } & Partial<Pet>) => {
       const response = await supabase.from("pets").update(data).eq("id", id);
       return response.data;
     },
@@ -71,7 +78,7 @@ function AllPets() {
     imageUrl: "",
   });
 
-  const handleEditClick = (pet) => {
+  const handleEditClick = (pet: Pet) => {
     setEditingPetId(pet.id);
     setFormState({
       weight: pet.weight,
@@ -80,11 +87,14 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       imageFile: undefined,
-      imageUrl: `${baseURL}${pet.imageUrl}`,
+      imageUrl: `https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`,
     });
   };
 
-  const handleFormSubmit = async (e, petId) => {
+  const handleFormSubmit = async (
+    e: React.FormEvent,
+    petId: number
+  ) => {
     e.preventDefault();
 
     let imageFixPath = formState.imageUrl;
@@ -116,11 +126,10 @@ function AllPets() {
         });
       }
 
-      // 저장된 파일의 전체 경로 설정
       imageFixPath = data?.fullPath || "";
     }
 
-    const updatedPet = {
+    const updatedPet: Partial<Pet> = {
       weight: formState.weight,
       age: formState.age,
       gender: formState.gender,
@@ -260,7 +269,7 @@ function AllPets() {
             <h2>{pet.name}</h2>
             <img
               className="w-32 h-32 object-cover rounded-md mb-4"
-              src={`${baseURL}${pet.imageUrl}`}
+              src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`}
               alt={pet.name}
             />
             <p>몸무게 : {pet.weight}</p>
