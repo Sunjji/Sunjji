@@ -20,7 +20,7 @@ async function PublicPage() {
   return (
     <Page>
       {/* 일기쓰기 버튼 */}
-      <div className="absolute top-10 right-[58px]">
+      <div className="absolute top-20 right-[84px]">
         <DiariesWriteButton />
       </div>
       {/* 클릭하면 일기 상세페이지로 들어감 */}
