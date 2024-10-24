@@ -1,10 +1,10 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import { useKakaoLoginStore } from "@/zustand/auth.store";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -17,21 +17,150 @@ function SignUpPage() {
   const handleClickSignUpPage = async () => {
     // 유효성 검사
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규 표현식
-    if (!email) return alert("이메일을 입력해주세요");
+    if (!nickname)
+      return toast("💛 이름을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    if (!email)
+      return toast("💛 이메일을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
     if (!emailPattern.test(email))
-      return alert("유효한 이메일 형식이 아닙니다"); // 이메일 형식 확인
-    if (!password) return alert("비밀번호를 입력해주세요");
-    if (password.length < 8) return alert("비밀번호는 8자 이상이어야 합니다"); // 비밀번호 길이 확인
+      return toast("💛 올바른 이메일 형식이 아닙니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      }); // 이메일 형식 확인
+    if (!password)
+      return toast("💛 비밀번호를 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    if (password.length < 6)
+      return toast("💛 비밀번호는 6자 이상이어야 합니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      }); // 비밀번호 길이 확인
     if (!/[!@#$%^&*]/.test(password))
-      return alert("비밀번호는 특수문자를 포함해야 합니다"); // 특수문자 포함 확인
-    if (!checkPassword) return alert("비밀번호 확인을 입력해주세요");
-    if (password !== checkPassword) return alert("비밀번호가 다릅니다");
-
-    const SignUpResult = await supabase.auth.signUp({ email, password }); //슈파베이스
-
-    console.log(SignUpResult.error);
-
-    if (!SignUpResult) return alert("회원가입 정보를 다시 확인해주세요");
+      return toast("💛 비밀번호는 특수문자가 포함되어야 합니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      }); // 특수문자 포함 확인
+    if (!checkPassword)
+      return toast("💛 비밀번호 확인을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    if (password !== checkPassword)
+      return toast("💛 비밀번호가 일치하지 않습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
     const extension = imageFile?.name.split(".").slice(-1)[0];
     const filename = nanoid();
@@ -39,13 +168,47 @@ function SignUpPage() {
     const baseURL =
       "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/profile-image";
 
-    if (!imageFile) return alert("이미지를 선택해주세요");
+    if (!imageFile)
+      return toast("💛 사진을 선택해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
     const storage = await supabase.storage
       .from("profile-image")
       .upload(profilePath, imageFile, { upsert: true });
 
-    if (storage.error) return alert("대 실 패");
+    if (storage.error)
+      return toast("❤️ 회원가입에 실패했습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#F9C1BD",
+          color: "#D32F2F",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
     console.log(storage.data.fullPath);
 
@@ -60,14 +223,48 @@ function SignUpPage() {
     });
 
     router.push("/");
-    return alert("회원가입에 성공하셨습니다");
+    return toast("💚 회원가입에 성공하였습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
   };
   const handleClickKakaoSignUp = async () => {
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
     });
 
-    if (data) alert("로그인 성공");
+    if (data)
+      return toast("💚 회원가입에 성공하였습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#E3F4E5",
+          color: "#2E7D32",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    alert("로그인 성공");
     //   supabase.auth.onAuthStateChange((event, session) => {
     //     if (session) {
     //       const user = session.user;
