@@ -1,6 +1,6 @@
 "use client";
 
-import Page from "@/app/_page/Page";
+import Page from "@/app/(providers)/(root)/_components/Page/Page";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import Link from "next/link";

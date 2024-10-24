@@ -1,6 +1,6 @@
 "use client";
 
-import Page from "@/app/_page/Page";
+import Page from "@/app/(providers)/(root)/_components/Page/Page";
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";

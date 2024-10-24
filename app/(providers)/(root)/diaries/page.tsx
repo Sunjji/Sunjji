@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import Page from "@/app/_page/Page";
+import Page from "@/app/(providers)/(root)/_components/Page/Page";
 import { supabase } from "@/supabase/client";
 import dayjs from "dayjs";
 import Link from "next/link";
