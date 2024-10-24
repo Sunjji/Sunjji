@@ -10,11 +10,9 @@ import HeartButton from "./_components/HeartButton";
 export const revalidate = 0;
 
 async function PublicPage() {
-  const response = await supabase.from("diaries").select();
-  const diaries = response.data;
-
-  const response2 = await supabase.from("profiles").select();
-  const profiles = response2.data;
+  const { data: diaries } = await supabase
+    .from("diaries")
+    .select("*, author:profiles (*), comments(id)");
 
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -38,31 +36,22 @@ async function PublicPage() {
                   {/* 바깥쪽 테두리 쉐도우 */}
                   <div className="absolute inset-0 rounded-[8px] group-hover:shadow-[0_0_20px_rgba(161,119,98,0.5)] transition duration-300"></div>
                   {/* 프로필+닉네임+날짜 */}
-                  {profiles?.map((profile) => {
-                    if (diary.authorId === profile.id) {
-                      return (
-                        <ul key={profile.id} className="flex items-center">
-                          <li>
-                            <img
-                              src={profile.imageUrl}
-                              className="m-2 inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
-                              alt="프로필 이미지"
-                            />
-                          </li>
-                          <div className="grow flex justify-between">
-                            <li className="text-sm font-semibold text-BrownPoint">
-                              {profile.nickname}
-                            </li>
-                            <li className="text-sm  text-BrownPoint pr-2">
-                              {dayjs(diary.createdAt).format(
-                                "YYYY년 MM월 DD일"
-                              )}
-                            </li>
-                          </div>
-                        </ul>
-                      );
-                    }
-                  })}
+
+                  <div className="flex items-center">
+                    <img
+                      src={diary.author.imageUrl}
+                      className="m-2 inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
+                      alt="프로필 이미지"
+                    />
+                    <div className="grow flex justify-between">
+                      <div className="text-sm font-semibold text-BrownPoint">
+                        {diary.author.nickname}
+                      </div>
+                      <div className="text-sm  text-BrownPoint pr-2">
+                        {dayjs(diary.createdAt).format("YYYY년 MM월 DD일")}
+                      </div>
+                    </div>
+                  </div>
                   {/* 이미지를 비율에 맞춰서 표시 */}
                   <div className="aspect-w-4 aspect-h-3 w-full">
                     <img
@@ -74,7 +63,7 @@ async function PublicPage() {
                   {/* 좋아요 댓글 버튼 */}
                   <div className="ml-5 flex gap-2 mt-1 z-0 relative">
                     <HeartButton diaryId={diary.id} />
-                    <CommentButton diaryId={diary.id} />
+                    <CommentButton commentsCount={diary.comments.length} />
                   </div>
                   <div className="text-center text-BrownPoint mt-[10px] font-semibold">
                     <p>{diary.title}</p>

@@ -1,7 +1,6 @@
 import { RiMessage3Line } from "react-icons/ri";
 
 interface CommentButtonProps {
-  diaryId: string;
   commentsCount: number;
 }
 
