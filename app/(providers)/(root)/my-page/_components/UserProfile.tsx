@@ -1,17 +1,11 @@
 import { supabase } from "@/supabase/client";
+import { resetProfile } from "@/types/type";
+import { useKakaoLoginStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
-
-type Profile = {
-  id: string;
-  nickname: string;
-  createdAt: string;
-  imageUrl: string;
-  comment: string;
-};
 
 interface UserProfileProps {
   profile: Profile;
@@ -27,6 +21,8 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const kakaoLogin = useKakaoLoginStore((state) => state.kakaoLogin);
+  const setKakaoLogin = useKakaoLoginStore((state) => state.setKakaoLogin);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -56,10 +52,13 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const handleClickSave = async () => {
     setIsLoading(true);
 
+    console.log(profile.id);
+
     const updatedProfile: {
       nickname: string;
       comment: string;
       imageUrl?: string;
+      customImage?: boolean;
     } = { nickname, comment };
 
     if (imageFile) {
@@ -68,6 +67,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
         .from("profile-image")
         .upload(uniqueFileName, imageFile);
       updatedProfile.imageUrl = `https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/profile-image/${uniqueFileName}`;
+      updatedProfile.customImage = true;
     }
 
     await supabase.from("profiles").update(updatedProfile).eq("id", profile.id);

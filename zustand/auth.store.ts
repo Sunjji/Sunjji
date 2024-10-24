@@ -13,6 +13,7 @@ type AuthStoreState = {
 type kakaoLoginState = {
   kakaoLogin: KakaoLoginType | null;
   setKakaoLogin: (profile: KakaoLoginType) => void;
+  resetToKakaoProfile: () => void;
 };
 
 export const useAuthStore = create<AuthStoreState>((set) => ({
@@ -29,4 +30,5 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
 export const useKakaoLoginStore = create<kakaoLoginState>((set) => ({
   kakaoLogin: null,
   setKakaoLogin: (kakao) => set({ kakaoLogin: kakao }),
+  resetToKakaoProfile: () => set({ kakaoLogin: null }), // 기본 프로필로 되돌리는 기능 추가
 }));
