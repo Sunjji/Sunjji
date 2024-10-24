@@ -27,10 +27,79 @@ function DiaryWritePage() {
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!file) return alert("사진을 선택해 주세요");
-    if (!title) return alert("제목을 적어주세요");
-    if (!content) return alert("내용을 적어주세요");
-    if (!memo) return alert("메모를 적어주세요");
+    if (!title)
+      return toast("💛 제목을 작성해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    if (!memo)
+      return toast("💛 한 줄 메모를 작성해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    if (!content)
+      return toast("💛 오늘의 일기를 작성해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+
+    if (!file)
+      return toast("💛 사진을 선택해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
     const filename = nanoid();
     const extension = file.name.split(".").slice(-1)[0];
