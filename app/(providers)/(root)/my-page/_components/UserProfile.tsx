@@ -1,11 +1,19 @@
+/* eslint-disable @next/next/no-img-element */
 import { supabase } from "@/supabase/client";
-import { useKakaoLoginStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { Bounce, toast } from "react-toastify";
+
+interface Profile {
+  id: string;
+  nickname: string;
+  comment: string;
+  imageUrl: string;
+  createdAt: string;
+}
 
 interface UserProfileProps {
   profile: Profile;
