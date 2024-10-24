@@ -1,13 +1,13 @@
 import { supabase } from "@/supabase/client";
 
 async function getDiary(diaryId: string) {
-  const { data: diary, error } = await supabase
+  const diary = await supabase
     .from("diaries")
     .select("*")
     .eq("id", Number(diaryId))
     .single();
 
-  return { diary, error };
+  return diary;
 }
 
 async function deleteDiary(diaryId: string) {
