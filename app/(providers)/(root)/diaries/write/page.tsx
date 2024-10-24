@@ -1,7 +1,6 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
@@ -64,26 +63,26 @@ function DiaryWritePage() {
           fontFamily: "MongxYamiyomiL",
         },
       });
-    if (!content) return;
-    toast("💛 오늘의 일기를 작성해 주세요", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#FFF9C4",
-        color: "#F9A825",
-        fontFamily: "MongxYamiyomiL",
-      },
-    });
+    if (!content)
+      return toast("💛 오늘의 일기를 작성해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
 
-    if (!file)
+    if (!imageUrl)
       return toast("💛 사진을 선택해 주세요", {
         position: "top-right",
         closeButton: false,
@@ -103,17 +102,23 @@ function DiaryWritePage() {
       });
 
     const filename = nanoid();
-    const extension = file.name.split(".").slice(-1)[0];
+    const extension = file!.name.split(".").slice(-1)[0];
     const path = `${filename}.${extension}`;
 
     const result = await supabase.storage
       .from("diaries")
-      .upload(path, file, { upsert: true });
+      .upload(path, file!, { upsert: true });
     console.log(result);
 
     const { error } = await supabase
       .from("diaries")
-      .insert({ title, content, isPublic, imageUrl: result.data?.fullPath })
+      .insert({
+        title,
+        content,
+        isPublic,
+        imageUrl: result.data?.fullPath,
+        comment: memo,
+      })
       .select();
 
     if (error) {
@@ -167,126 +172,114 @@ function DiaryWritePage() {
     setIsClicked(newClickedState);
   };
 
-  // 날짜 가져오기
-  const now = dayjs();
-  const dayNames = [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일",
-  ];
-  const today = dayNames[now.day() + 1];
-
   return (
     <Page>
-    <form
-      onSubmit={handleSubmitButton}
-      className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
-    >
-      <div className="absolute top-[46px] ml-36">
-        <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
-      </div>
-
-      <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
-        <div className="col-span-3 flex items-center mb-4">
-          <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
-          <button
-            type="submit"
-            className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
-          >
-            저장하기
-          </button>
+      <form
+        onSubmit={handleSubmitButton}
+        className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
+      >
+        <div className="absolute top-[46px] ml-36">
+          <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
         </div>
 
-        <div className="col-span-1">
-          <div className="flex gap-x-4 mb-4">
-            {isPublic ? (
+        <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
+          <div className="col-span-3 flex items-center mb-4">
+            <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
+            <button
+              type="submit"
+              className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
+            >
+              저장하기
+            </button>
+          </div>
+
+          <div className="col-span-1">
+            <div className="flex gap-x-4 mb-4">
+              {/* 미완성 */}
+              {isPublic ? (
+                <button
+                  onClick={() => handleClick(0)}
+                  type="button"
+                  className={`border px-3 py-2 rounded-[8px] ${
+                    isClicked[0]
+                      ? "bg-[#A17762] text-point"
+                      : "text-[#A17762] bg-point"
+                  } transition`}
+                >
+                  공개 일기
+                </button>
+              ) : null}
               <button
-                onClick={() => handleClick(0)}
+                onClick={() => handleClick(1)}
                 type="button"
                 className={`border px-3 py-2 rounded-[8px] ${
-                  isClicked[0]
+                  isClicked[1]
                     ? "bg-[#A17762] text-point"
                     : "text-[#A17762] bg-point"
                 } transition`}
               >
-                공개 일기
+                사고 뭉치
               </button>
-            ) : null}
-            <button
-              onClick={() => handleClick(1)}
-              type="button"
-              className={`border px-3 py-2 rounded-[8px] ${
-                isClicked[1]
-                  ? "bg-[#A17762] text-point"
-                  : "text-[#A17762] bg-point"
-              } transition`}
-            >
-              사고 뭉치
-            </button>
-            <button
-              onClick={() => handleClick(2)}
-              type="button"
-              className={`border px-3 py-2 rounded-[8px] ${
-                isClicked[2]
-                  ? "bg-[#A17762] text-point"
-                  : "text-[#A17762] bg-point"
-              } transition`}
-            >
-              저장 일기
-            </button>
-          </div>
-          <div className="flex flex-col gap-y-4">
-            <textarea
-              className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
-              placeholder="제목"
-              onChange={(e) => setTitle(e.target.value)}
-              rows={1}
-            />
-
-            {/* 한 줄 메모가 뭔지 몰라서 기능 없음 */}
-            <textarea
-              className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
-              placeholder="한 줄 메모"
-              onChange={(e) => setMemo(e.target.value)}
-              rows={13}
-            />
-          </div>
-        </div>
-
-        <textarea
-          className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
-          placeholder="오늘의 일기"
-          onChange={(e) => setContent(e.target.value)}
-          rows={16}
-        />
-
-        <div className="flex flex-col">
-          <img
-            className={imageUrl !== "" ? "w-full rounded-[8px]" : ""}
-            src={imageUrl}
-          />
-
-          <div className="flex flex-col gap-y-2 ">
-            <label htmlFor="file">
-              <input
-                id="file"
-                type="file"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="hidden"
+              <button
+                onClick={() => handleClick(2)}
+                type="button"
+                className={`border px-3 py-2 rounded-[8px] ${
+                  isClicked[2]
+                    ? "bg-[#A17762] text-point"
+                    : "text-[#A17762] bg-point"
+                } transition`}
+              >
+                저장 일기
+              </button>
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <textarea
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+                placeholder="제목"
+                onChange={(e) => setTitle(e.target.value)}
+                rows={1}
               />
 
-              <span className="block mt-4 px-1 py-2 border rounded-[8px] text-[#A17762] text-center text-sm">
-                사진 첨부하기
-              </span>
-            </label>
+              {/* 한 줄 메모가 뭔지 몰라서 기능 없음 */}
+              <textarea
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+                placeholder="한 줄 메모"
+                onChange={(e) => setMemo(e.target.value)}
+                rows={13}
+              />
+            </div>
+          </div>
+
+          <textarea
+            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+            placeholder="오늘의 일기"
+            onChange={(e) => setContent(e.target.value)}
+            rows={16}
+          />
+
+          <div className="flex flex-col">
+            <img
+              className={imageUrl !== "" ? "w-full rounded-[8px]" : ""}
+              src={imageUrl}
+            />
+
+            <div className="flex flex-col gap-y-2 ">
+              <label htmlFor="file">
+                <input
+                  id="file"
+                  type="file"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  className="hidden"
+                />
+
+                <span className="block mt-4 px-1 py-2 border rounded-[8px] text-[#A17762] text-center text-sm">
+                  사진 첨부하기
+                </span>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
     </Page>
   );
 }
