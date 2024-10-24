@@ -9,7 +9,7 @@ function AuthProvider({ children }: PropsWithChildren) {
   const logIn = useAuthStore((state) => state.logIn);
   const logOut = useAuthStore((state) => state.logOut);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
-  const currentUserId = useAuthStore((state) => state.currentUserId);
+  // const currentUserId = useAuthStore((state) => state.currentUserId);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ function AuthProvider({ children }: PropsWithChildren) {
 
     const initializeKakaoLogInUserProfile = async (
       userId: string,
-      kakaoInfo: kakaoInfo
+      kakaoInfo: KakaoIdentityData
     ) => {
-      const { nickname, imageUrl } = kakaoInfo;
+      const { avatar_url: imageUrl, user_name: nickname } = kakaoInfo;
 
       await supabase
         .from("profiles")
@@ -53,11 +53,7 @@ function AuthProvider({ children }: PropsWithChildren) {
           )?.identity_data as KakaoIdentityData;
 
           if (kakaoIdentityData) {
-            const profileData = {
-              nickname: kakaoIdentityData.user_name,
-              imageUrl: kakaoIdentityData.avatar_url,
-            };
-            initializeKakaoLogInUserProfile(session.user.id, profileData);
+            initializeKakaoLogInUserProfile(session.user.id, kakaoIdentityData);
           }
         }
       } else {
