@@ -264,19 +264,6 @@ function SignUpPage() {
           fontFamily: "MongxYamiyomiL",
         },
       });
-    alert("로그인 성공");
-    //   supabase.auth.onAuthStateChange((event, session) => {
-    //     if (session) {
-    //       const user = session.user;
-    //       const kakaoIdentity = user.identities?.find(
-    //         (identity) => identity.provider === "kakao"
-    //       );
-    //       const kakaoProfile = {
-    //         uuid: user_id,
-
-    //       };
-    //     }
-    //   });
   };
 
   return (
