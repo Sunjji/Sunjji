@@ -1,11 +1,11 @@
 import { supabase } from "@/supabase/client";
-import { resetProfile } from "@/types/type";
 import { useKakaoLoginStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
+import { Bounce, toast } from "react-toastify";
 
 interface UserProfileProps {
   profile: Profile;
@@ -87,7 +87,23 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     setIsLoading(false);
     setShowEditButton(false);
 
-    alert("수정되었습니다");
+    toast("💚 프로필이 수정되었습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
   };
 
   const handleEditClick = () => {
