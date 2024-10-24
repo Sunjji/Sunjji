@@ -16,8 +16,8 @@ function Comments() {
   const { diaryId } = params;
   const [newContent, setNewContent] = useState("");
   const [comments, setComments] = useState<CustomComment[]>([]);
-
   const currentUserId = useAuthStore((state) => state.currentUserId);
+
   useEffect(() => {
     (async () => {
       // 댓글 가져오기
@@ -61,12 +61,11 @@ function Comments() {
   };
 
   const refetchComments = async () => {
-    // supabase에서 댓글 다시 가져와서
+    // supabase에서 댓글 다시 가져오기
     const { comments, error } = await api.comments.getComments(
       diaryId.toString()
     );
 
-    // setComments에 다시 넣기
     if (error) {
       return console.log("comments error", error);
     }
@@ -86,6 +85,7 @@ function Comments() {
         profile: profile,
       };
     });
+    // setComments에 다시 넣기
     setComments(match);
   };
 
@@ -129,10 +129,7 @@ function Comments() {
         <div className="flex gap-2 absolute bottom-0 px-4 py-3 bg-white w-full z-5">
           <HeartButton diaryId={diaryId.toString()} />
 
-          <CommentButton
-            diaryId={diaryId.toString()}
-            commentsCount={comments.length}
-          />
+          <CommentButton commentsCount={comments.length} />
         </div>
       </div>
       <div className="flex items-center z-10 shadow-[0_-4px_6px_rgba(0,0,0,0.05)]">
