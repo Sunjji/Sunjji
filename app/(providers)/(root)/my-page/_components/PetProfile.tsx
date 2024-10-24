@@ -6,6 +6,7 @@ import { Database } from "@/supabase/database.types";
 import { nanoid } from "nanoid";
 import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { Bounce, toast } from "react-toastify";
 
 type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"];
 
@@ -53,37 +54,133 @@ const PetProfile = () => {
 
     if (!imageFile) {
       setIsLoading(false);
-      setStatusMessage("이미지를 선택해 주세요.");
+      toast("💛 사진을 선택해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
     if (!formData.name) {
       setIsLoading(false);
-      setStatusMessage("이름을 입력해 주세요.");
+      toast("💛 이름을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
     if (!["수컷", "암컷"].includes(formData.gender)) {
       setIsLoading(false);
-      setStatusMessage("성별을 선택해 주세요.");
+      toast("💛 성별을 선택해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
     if (formData.age <= 0) {
       setIsLoading(false);
-      setStatusMessage("나이는 0보다 큰 값을 입력해 주세요.");
+      toast("💛 나이는 0보다 큰 값을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
     if (formData.weight <= 0) {
       setIsLoading(false);
-      setStatusMessage("몸무게는 0보다 큰 값을 입력해 주세요.");
+      toast("💛 몸무게는 0보다 큰 값을 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
     if (!formData.comment) {
       setIsLoading(false);
-      setStatusMessage("한 줄 소개를 입력해 주세요.");
+      toast("💛 한 줄 소개를 입력해 주세요", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#FFF9C4",
+          color: "#F9A825",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
@@ -97,7 +194,23 @@ const PetProfile = () => {
 
     if (uploadError) {
       setIsLoading(false);
-      setStatusMessage("사진 업로드에 실패했습니다.");
+      toast("❤️ 사진을 업로드에 실패했습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#F9C1BD",
+          color: "#D32F2F",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
       return;
     }
 
@@ -110,10 +223,42 @@ const PetProfile = () => {
 
     if (error) {
       setIsLoading(false);
-      setStatusMessage("프로필 등록에 실패했습니다");
+      toast("❤️ 프로필 등록에 실패했습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#F9C1BD",
+          color: "#D32F2F",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
     } else {
     }
-    setStatusMessage("프로필이 성공적으로 등록되었습니다.");
+    toast("💚 프로필이 등록되었습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
     // 폼 데이터 초기화
     setFormData({
       weight: 0,
@@ -137,9 +282,6 @@ const PetProfile = () => {
       >
         반려동물 등록
       </button>
-      {statusMessage === "프로필이 성공적으로 등록되었습니다." && (
-        <p className="text-green-500 mt-2">{statusMessage}</p>
-      )}
 
       {formVisible && (
         <form onSubmit={handleSubmit} className="mt-4">
@@ -228,10 +370,6 @@ const PetProfile = () => {
               className="border rounded px-2 py-1 w-full"
             />
           </div>
-
-          {statusMessage !== "프로필이 성공적으로 등록되었습니다." && (
-            <p className="text-red-500 mt-2">{statusMessage}</p>
-          )}
           <button
             type="submit"
             className="mt-4 border border-black px-2 py-1 rounded-lg"
