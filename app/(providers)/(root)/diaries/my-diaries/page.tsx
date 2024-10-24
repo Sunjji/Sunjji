@@ -18,7 +18,7 @@ async function UserViewPage() {
   return (
     <Page>
       {/* 일기쓰기 버튼 */}
-      <div className="absolute top-10 right-[58px]">
+      <div className="absolute top-20 right-[84px]">
         <DiariesWriteButton />
       </div>
       <div className="bg-whitePoint px-6 rounded-2xl">
