@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import api from "@/api/api";
@@ -40,7 +41,7 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    toast("💚 프로필이 삭제 되었습니다", {
+    toast("💚 반려동물이 삭제 되었습니다", {
       position: "top-right",
       closeButton: false,
       autoClose: 2000,
@@ -79,7 +80,7 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       imageFile: undefined,
-      imageUrl: `${baseURL}${pet.imageUrl}`, // 현재 이미지 URL 설정
+      imageUrl: `${baseURL}${pet.imageUrl}`,
     });
   };
 
@@ -90,13 +91,13 @@ function AllPets() {
 
     if (formState.imageFile) {
       const extension = formState.imageFile.name.split(".").pop();
-      const filename = `${nanoid()}.${extension}`; // filename을 확장자와 함께 설정
+      const filename = `${nanoid()}.${extension}`;
       const { data, error } = await supabase.storage
         .from("pets")
         .upload(filename, formState.imageFile, { upsert: true });
 
       if (error) {
-        return toast("❤️ 사진이 수정되지 않았습니다", {
+        return toast("❤️ 반려동물 사진이 수정되지 않았습니다", {
           position: "top-right",
           closeButton: false,
           autoClose: 2000,
@@ -125,7 +126,7 @@ function AllPets() {
       gender: formState.gender,
       name: formState.name,
       comment: formState.comment,
-      imageUrl: imageFixPath, // 이미지 경로 업데이트
+      imageUrl: imageFixPath,
     };
 
     updatePet({ id: petId, ...updatedPet });
