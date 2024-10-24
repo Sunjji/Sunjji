@@ -40,7 +40,7 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    toast("❤️ 프로필이 삭제되었습니다", {
+    toast("💚 프로필이 삭제 되었습니다", {
       position: "top-right",
       closeButton: false,
       autoClose: 2000,
@@ -52,8 +52,8 @@ function AllPets() {
       theme: "colored",
       transition: Bounce,
       style: {
-        backgroundColor: "#F9C1BD",
-        color: "#D32F2F",
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
         fontFamily: "MongxYamiyomiL",
       },
     });
@@ -130,7 +130,7 @@ function AllPets() {
 
     updatePet({ id: petId, ...updatedPet });
     setEditingPetId(null);
-    toast("💙 수정이 완료되었습니다", {
+    toast("💚 프로필 수정이 완료되었습니다", {
       position: "top-right",
       closeButton: false,
       autoClose: 2000,
@@ -142,8 +142,8 @@ function AllPets() {
       theme: "colored",
       transition: Bounce,
       style: {
-        backgroundColor: "#D6EAF8",
-        color: "#0047AB",
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
         fontFamily: "MongxYamiyomiL",
       },
     });
