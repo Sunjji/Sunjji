@@ -63,24 +63,24 @@ function DiaryWritePage() {
           fontFamily: "MongxYamiyomiL",
         },
       });
-    if (!content)
-      return toast("💛 오늘의 일기를 작성해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+    if (!content) return;
+    toast("💛 오늘의 일기를 작성해 주세요", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#FFF9C4",
+        color: "#F9A825",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
 
     if (!file)
       return toast("💛 사진을 선택해 주세요", {
