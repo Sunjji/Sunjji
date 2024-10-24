@@ -21,8 +21,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const kakaoLogin = useKakaoLoginStore((state) => state.kakaoLogin);
-  const setKakaoLogin = useKakaoLoginStore((state) => state.setKakaoLogin);
+
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
