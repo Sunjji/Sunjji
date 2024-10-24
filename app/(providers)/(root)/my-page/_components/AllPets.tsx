@@ -1,11 +1,12 @@
 "use client";
 
 import api from "@/api/api";
+import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { nanoid } from "nanoid";
-import { supabase } from "@/supabase/client";
+import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -26,7 +27,8 @@ function AllPets() {
       const response = await supabase.from("pets").update(data).eq("id", id);
       return response.data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pets"], exact: true }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["pets"], exact: true }),
     mutationKey: ["updatePets"],
   });
 
@@ -38,7 +40,23 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    alert("반려동물 삭제에 성공하셨습니다");
+    toast("❤️ 프로필이 삭제되었습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#F9C1BD",
+        color: "#D32F2F",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
   };
 
   const [editingPetId, setEditingPetId] = useState<number | null>(null);
@@ -61,7 +79,7 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       imageFile: undefined,
-      imageUrl: `${baseURL}${pet.imageUrl}`,  // 현재 이미지 URL 설정
+      imageUrl: `${baseURL}${pet.imageUrl}`, // 현재 이미지 URL 설정
     });
   };
 
@@ -72,13 +90,29 @@ function AllPets() {
 
     if (formState.imageFile) {
       const extension = formState.imageFile.name.split(".").pop();
-      const filename = `${nanoid()}.${extension}`;  // filename을 확장자와 함께 설정
+      const filename = `${nanoid()}.${extension}`; // filename을 확장자와 함께 설정
       const { data, error } = await supabase.storage
         .from("pets")
         .upload(filename, formState.imageFile, { upsert: true });
 
       if (error) {
-        return alert("사진 수정에 실패하셨어요");
+        return toast("❤️ 사진이 수정되지 않았습니다", {
+          position: "top-right",
+          closeButton: false,
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          style: {
+            backgroundColor: "#F9C1BD",
+            color: "#D32F2F",
+            fontFamily: "MongxYamiyomiL",
+          },
+        });
       }
 
       // 저장된 파일의 전체 경로 설정
@@ -91,25 +125,44 @@ function AllPets() {
       gender: formState.gender,
       name: formState.name,
       comment: formState.comment,
-      imageUrl: imageFixPath,  // 이미지 경로 업데이트
+      imageUrl: imageFixPath, // 이미지 경로 업데이트
     };
 
     updatePet({ id: petId, ...updatedPet });
     setEditingPetId(null);
-    alert("수정이 완료되었습니다");
+    toast("💙 수정이 완료되었습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#D6EAF8",
+        color: "#0047AB",
+        fontFamily: "MongxYamiyomiL",
+      },
+    });
   };
 
   return (
     <div className="grid grid-cols-3 gap-4">
       {pets?.map((pet) =>
         editingPetId === pet.id ? (
-          <li key={pet.id} className="flex flex-col items-center border p-4 w-full">
+          <li
+            key={pet.id}
+            className="flex flex-col items-center border p-4 w-full"
+          >
             <form onSubmit={(e) => handleFormSubmit(e, pet.id)}>
               <h2 className="text-3xl">반려동물 수정 모드</h2>
               {formState.imageUrl && (
-                <img 
-                  src={formState.imageUrl} 
-                  alt={pet.name} 
+                <img
+                  src={formState.imageUrl}
+                  alt={pet.name}
                   className="w-32 h-32 object-cover mb-2"
                 />
               )}
@@ -193,11 +246,16 @@ function AllPets() {
                 type="text"
               />
               <button type="submit">저장하기</button>
-              <button type="button" onClick={() => setEditingPetId(null)}>취소</button>
+              <button type="button" onClick={() => setEditingPetId(null)}>
+                취소
+              </button>
             </form>
           </li>
         ) : (
-          <li key={pet.id} className="flex flex-col items-center border p-4 w-full">
+          <li
+            key={pet.id}
+            className="flex flex-col items-center border p-4 w-full"
+          >
             <h2>{pet.name}</h2>
             <img
               className="w-32 h-32 object-cover rounded-md mb-4"
