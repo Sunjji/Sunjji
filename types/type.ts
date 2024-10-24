@@ -17,3 +17,19 @@ export type kakaoInfo = {
   nickname: string;
   customImage: boolean;
 };
+
+export type Profile = {
+  id: string;
+  nickname: string;
+  createdAt: string;
+  imageUrl: string;
+  comment: string;
+};
+
+export type resetProfile = {
+  id: string;
+  nickname: string;
+  imageUrl: string;
+  comment: string;
+  customImage: boolean;
+};
