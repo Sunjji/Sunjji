@@ -1,4 +1,4 @@
-import Page from "@/app/_page/Page";
+import Page from "@/app/(providers)/(root)/_components/Page/Page";
 import { supabase } from "@/supabase/client";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import DiariesWriteButton from "../_components/DiariesWriteButton";

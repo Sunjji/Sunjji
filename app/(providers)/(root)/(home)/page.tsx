@@ -1,4 +1,4 @@
-import Page from "@/app/_page/Page";
+import Page from "@/app/(providers)/(root)/_components/Page/Page";
 
 function HomePage() {
   return (
