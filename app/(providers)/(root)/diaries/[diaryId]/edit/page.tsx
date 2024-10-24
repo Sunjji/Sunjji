@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useParams, useRouter } from "next/navigation";
@@ -12,28 +13,25 @@ const baseURL =
 
 function DiaryEditPage() {
   const params = useParams();
-  const [file, setFile] = useState<null | File>(null);
+  const { diaryId } = params;
   const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [content, setContent] = useState("");
+  const [memo, setMemo] = useState("");
+  const [file, setFile] = useState<null | File>(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const router = useRouter();
-
-  const { diaryId } = params;
 
   // diaries 정보 가져오기
   useEffect(() => {
     (async () => {
-      const response = await supabase
-        .from("diaries")
-        .select("*")
-        .eq("id", Number(diaryId))
-        .single();
+      const { data: diaries } = await api.diaries.getDiary(diaryId.toString());
 
-      setTitle(response.data!.title);
-      setContent(response.data!.content);
-      setIsPublic(response.data!.isPublic);
-      setImageUrl(baseURL + response.data!.imageUrl);
+      setTitle(diaries.title);
+      setContent(diaries.content);
+      setMemo(diaries.comment);
+      setImageUrl(baseURL + diaries.imageUrl);
+      setIsPublic(diaries.isPublic);
     })();
   }, [diaryId]);
 
@@ -51,9 +49,10 @@ function DiaryEditPage() {
       await supabase
         .from("diaries")
         .update({
-          title: title,
-          content: content,
-          isPublic: isPublic,
+          title: title, // 제목
+          content: content, // 내용
+          comment: memo, // 메모
+          isPublic: isPublic, // 공개/비공개
         })
         .eq("id", Number(diaryId));
       toast("💚 일기가 수정 되었습니다", {
@@ -83,10 +82,14 @@ function DiaryEditPage() {
       const result = await supabase.storage
         .from("diaries")
         .upload(path, file!, { upsert: true });
+      console.log(result);
+      await supabase
+        .from("diaries")
+        .update({
+          imageUrl: result.data?.fullPath,
+        })
+        .eq("id", Number(diaryId));
 
-      await supabase.from("diaries").update({
-        imageUrl: result.data?.fullPath,
-      });
       toast("💚 사진이 변경 되었습니다", {
         position: "top-right",
         closeButton: false,
@@ -139,6 +142,14 @@ function DiaryEditPage() {
       <textarea
         onChange={(e) => setContent(e.target.value)}
         value={content}
+        className="border rounded-lg p-2 resize-none hover:border-gray-400"
+        rows={10}
+      />
+
+      <label htmlFor="content">한 줄 메모</label>
+      <textarea
+        onChange={(e) => setMemo(e.target.value)}
+        value={memo}
         className="border rounded-lg p-2 resize-none hover:border-gray-400"
         rows={10}
       />

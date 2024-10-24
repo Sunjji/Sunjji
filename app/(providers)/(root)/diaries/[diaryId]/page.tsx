@@ -20,7 +20,6 @@ function DiaryDetailPage() {
   const [diaries, setDiaries] = useState<Tables<"diaries">>();
   const [profiles, setProfiles] = useState<Tables<"profiles">>();
   const [pets, setPets] = useState<Tables<"pets">>();
-  const [isUser, setIsUser] = useState(false);
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const [isClicked, setIsClicked] = useState([false, false, false]); // 컴포넌트화?/미완성
   const router = useRouter();
@@ -57,8 +56,6 @@ function DiaryDetailPage() {
         setProfiles(profile);
         setPets(pets);
       }
-
-      if (diaries.authorId === currentUserId) return setIsUser(true);
     })();
   }, []);
 
