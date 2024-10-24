@@ -217,7 +217,7 @@ const PetProfile = () => {
 
     if (error) {
       setIsLoading(false);
-      toast("❤️ 프로필 등록에 실패했습니다", {
+      toast("❤️ 반려동물 등록에 실패했습니다", {
         position: "top-right",
         closeButton: false,
         autoClose: 2000,
@@ -236,7 +236,7 @@ const PetProfile = () => {
       });
     } else {
     }
-    toast("💚 프로필이 등록되었습니다", {
+    toast("💚 반려동물이 등록되었습니다", {
       position: "top-right",
       closeButton: false,
       autoClose: 2000,
