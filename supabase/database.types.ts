@@ -44,6 +44,7 @@ export type Database = {
       diaries: {
         Row: {
           authorId: string
+          comment: string
           content: string
           createdAt: string
           id: number
@@ -53,6 +54,7 @@ export type Database = {
         }
         Insert: {
           authorId?: string
+          comment?: string
           content: string
           createdAt?: string
           id?: number
@@ -62,6 +64,7 @@ export type Database = {
         }
         Update: {
           authorId?: string
+          comment?: string
           content?: string
           createdAt?: string
           id?: number
@@ -140,6 +143,7 @@ export type Database = {
         Row: {
           comment: string
           createdAt: string
+          customImage: boolean | null
           id: string
           imageUrl: string
           nickname: string
@@ -147,6 +151,7 @@ export type Database = {
         Insert: {
           comment?: string
           createdAt?: string
+          customImage?: boolean | null
           id?: string
           imageUrl?: string
           nickname: string
@@ -154,6 +159,7 @@ export type Database = {
         Update: {
           comment?: string
           createdAt?: string
+          customImage?: boolean | null
           id?: string
           imageUrl?: string
           nickname?: string
