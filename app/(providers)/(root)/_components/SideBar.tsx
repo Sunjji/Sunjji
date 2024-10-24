@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Bounce, toast } from "react-toastify";
 
 dayjs.locale("ko");
 
@@ -26,7 +27,23 @@ function SideBar() {
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
-    alert("로그아웃 성공"); //슈파베이스 로그아웃
+    toast("💚 로그아웃 되었습니다", {
+      position: "top-right",
+      closeButton: false,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+      style: {
+        backgroundColor: "#E3F4E5",
+        color: "#2E7D32",
+        fontFamily: "MongxYamiyomiL",
+      },
+    }); //슈파베이스 로그아웃
     router.push("/");
   };
 
