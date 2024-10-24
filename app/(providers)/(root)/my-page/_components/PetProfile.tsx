@@ -2,16 +2,13 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
 import { nanoid } from "nanoid";
 import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Bounce, toast } from "react-toastify";
 
-type CreateProfileData = Database["public"]["Tables"]["pets"]["Insert"];
-
 const PetProfile = () => {
-  const [formData, setFormData] = useState<CreateProfileData>({
+  const [formData, setFormData] = useState({
     weight: 0,
     age: 0,
     gender: "",
@@ -21,7 +18,6 @@ const PetProfile = () => {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-  const [statusMessage, setStatusMessage] = useState<string>("");
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +46,6 @@ const PetProfile = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setStatusMessage(""); // 이전 메시지 초기화
 
     if (!imageFile) {
       setIsLoading(false);
@@ -217,8 +212,7 @@ const PetProfile = () => {
     const imagePath = data?.fullPath || "";
 
     // 슈파베이스에 반려동물 정보 등록
-    const petData: CreateProfileData = { ...formData, imageUrl: imagePath };
-
+    const petData = { ...formData, imageUrl: imagePath };
     const { error } = await supabase.from("pets").insert(petData);
 
     if (error) {
@@ -259,7 +253,7 @@ const PetProfile = () => {
         fontFamily: "MongxYamiyomiL",
       },
     });
-    // 폼 데이터 초기화
+
     setFormData({
       weight: 0,
       age: 0,
