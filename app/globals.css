@@ -10,5 +10,5 @@ body {
 @font-face {
   font-family: "MongxYamiyomiL";
   font-weight: 200;
-  src: url("./font/MongxYamiyomiL.ttf") format("truetype");
+  src: url("http://localhost:3000/assets/font/MongxYamiyomiL.ttf") format("truetype");
 }
