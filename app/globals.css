@@ -12,3 +12,7 @@ body {
   font-weight: 200;
   src: url("http://localhost:3000/assets/font/MongxYamiyomiL.ttf") format("truetype");
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
