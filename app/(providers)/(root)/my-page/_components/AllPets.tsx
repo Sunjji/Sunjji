@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import api from "@/api/api";
@@ -8,8 +9,15 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 
-const baseURL =
-  "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+type Pet = {
+  id: number;
+  weight: number;
+  age: number;
+  gender: string;
+  name: string;
+  comment: string;
+  imageUrl: string;
+};
 
 function AllPets() {
   const queryClient = useQueryClient();
@@ -23,7 +31,7 @@ function AllPets() {
   });
 
   const { mutate: updatePet } = useMutation({
-    mutationFn: async ({ id, ...data }) => {
+    mutationFn: async ({ id, ...data }: { id: number } & Partial<Pet>) => {
       const response = await supabase.from("pets").update(data).eq("id", id);
       return response.data;
     },
@@ -40,7 +48,7 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    toast("💚 프로필이 삭제 되었습니다", {
+    toast("💚 반려동물이 삭제 되었습니다", {
       position: "top-right",
       closeButton: false,
       autoClose: 2000,
@@ -70,7 +78,7 @@ function AllPets() {
     imageUrl: "",
   });
 
-  const handleEditClick = (pet) => {
+  const handleEditClick = (pet: Pet) => {
     setEditingPetId(pet.id);
     setFormState({
       weight: pet.weight,
@@ -79,24 +87,27 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       imageFile: undefined,
-      imageUrl: `${baseURL}${pet.imageUrl}`, // 현재 이미지 URL 설정
+      imageUrl: `https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`,
     });
   };
 
-  const handleFormSubmit = async (e, petId) => {
+  const handleFormSubmit = async (
+    e: React.FormEvent,
+    petId: number
+  ) => {
     e.preventDefault();
 
     let imageFixPath = formState.imageUrl;
 
     if (formState.imageFile) {
       const extension = formState.imageFile.name.split(".").pop();
-      const filename = `${nanoid()}.${extension}`; // filename을 확장자와 함께 설정
+      const filename = `${nanoid()}.${extension}`;
       const { data, error } = await supabase.storage
         .from("pets")
         .upload(filename, formState.imageFile, { upsert: true });
 
       if (error) {
-        return toast("❤️ 사진이 수정되지 않았습니다", {
+        return toast("❤️ 반려동물 사진이 수정되지 않았습니다", {
           position: "top-right",
           closeButton: false,
           autoClose: 2000,
@@ -115,17 +126,16 @@ function AllPets() {
         });
       }
 
-      // 저장된 파일의 전체 경로 설정
       imageFixPath = data?.fullPath || "";
     }
 
-    const updatedPet = {
+    const updatedPet: Partial<Pet> = {
       weight: formState.weight,
       age: formState.age,
       gender: formState.gender,
       name: formState.name,
       comment: formState.comment,
-      imageUrl: imageFixPath, // 이미지 경로 업데이트
+      imageUrl: imageFixPath,
     };
 
     updatePet({ id: petId, ...updatedPet });
@@ -259,7 +269,7 @@ function AllPets() {
             <h2>{pet.name}</h2>
             <img
               className="w-32 h-32 object-cover rounded-md mb-4"
-              src={`${baseURL}${pet.imageUrl}`}
+              src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`}
               alt={pet.name}
             />
             <p>몸무게 : {pet.weight}</p>
