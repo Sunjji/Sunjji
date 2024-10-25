@@ -7,7 +7,8 @@ import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 
 type Pet = {
   id: number;
@@ -20,41 +21,6 @@ type Pet = {
 };
 
 function AllPets() {
-  const failTaost = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#F9C1BD",
-      color: "#D32F2F",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-
-  const succesToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
@@ -83,7 +49,7 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    toast("💚 반려동물이 삭제 되었습니다", succesToast);
+    toast("💚 반려동물이 삭제 되었습니다", getToastOptions("success"));
   };
 
   const [editingPetId, setEditingPetId] = useState<number | null>(null);
@@ -123,7 +89,10 @@ function AllPets() {
         .upload(filename, formState.imageFile, { upsert: true });
 
       if (error) {
-        return toast("❤️ 반려동물 사진이 수정되지 않았습니다", failTaost);
+        return toast(
+          "❤️ 반려동물 사진이 수정되지 않았습니다",
+          getToastOptions("error")
+        );
       }
 
       imageFixPath = data?.fullPath || "";
@@ -140,7 +109,7 @@ function AllPets() {
 
     updatePet({ id: petId, ...updatedPet });
     setEditingPetId(null);
-    toast("💚 프로필 수정이 완료되었습니다", succesToast);
+    toast("💚 프로필 수정이 완료되었습니다", getToastOptions("success"));
   };
 
   return (

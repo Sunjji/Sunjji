@@ -4,6 +4,8 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import DiariesWriteButton from "../_components/DiariesWriteButton";
 
 async function UserViewPage() {
+  // const now = dayjs();
+  // console.
   const { data } = await supabase.auth.getUser();
   const authorId = data.user?.id;
 
@@ -13,8 +15,6 @@ async function UserViewPage() {
     .eq("authorId", authorId);
 
   const diaries = response.data;
-
-  console.log();
 
   console.log(authorId);
   return (

@@ -5,30 +5,14 @@ import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useParams, useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../../_components/getToastOptions";
 import IsPublicToggle from "../../_components/IsPublicToggle";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryEditPage() {
-  const succesToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const params = useParams();
   const { diaryId } = params;
   const [title, setTitle] = useState("");
@@ -72,7 +56,7 @@ function DiaryEditPage() {
           isPublic: isPublic, // 공개/비공개
         })
         .eq("id", Number(diaryId));
-      toast("💚 일기가 수정 되었습니다", succesToast);
+      toast("💚 일기가 수정 되었습니다", getToastOptions("success"));
 
       router.push("/diaries");
     } else {
@@ -91,7 +75,7 @@ function DiaryEditPage() {
         })
         .eq("id", Number(diaryId));
 
-      toast("💚 사진이 변경 되었습니다", succesToast);
+      toast("💚 사진이 변경 되었습니다", getToastOptions("success"));
       router.push("/diaries");
     }
   };

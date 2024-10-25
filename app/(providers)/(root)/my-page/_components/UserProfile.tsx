@@ -5,7 +5,8 @@ import { nanoid } from "nanoid";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 
 interface Profile {
   id: string;
@@ -21,23 +22,6 @@ interface UserProfileProps {
 }
 
 function UserProfile({ profile, updateProfile }: UserProfileProps) {
-  const succesToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const [isEditing, setIsEditing] = useState(false);
   const [nickname, setNickname] = useState(profile.nickname);
   const [comment, setComment] = useState(profile.comment);
@@ -110,7 +94,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     setIsLoading(false);
     setShowEditButton(false);
 
-    toast("💚 프로필이 수정되었습니다", successToast);
+    toast("💚 프로필이 수정되었습니다", getToastOptions("success"));
   };
 
   const handleEditClick = () => {

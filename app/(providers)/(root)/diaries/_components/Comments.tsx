@@ -6,30 +6,14 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 import CommentButton from "./CommentButton";
 import HeartButton from "./HeartButton";
 
 type CustomComment = Tables<"comments"> & { profile: Tables<"profiles"> };
 
 function Comments() {
-  const warningToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#FFF9C4",
-      color: "#F9A825",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const params = useParams();
   const { diaryId } = params;
   const [newContent, setNewContent] = useState("");
@@ -67,7 +51,8 @@ function Comments() {
   }, []);
 
   const handleClickCommentButton = async () => {
-    if (!newContent) return toast("💛 댓글을 작성하여 주세요");
+    if (!newContent)
+      return toast("💛 댓글을 작성하여 주세요", getToastOptions("warning"));
 
     await supabase
       .from("comments")

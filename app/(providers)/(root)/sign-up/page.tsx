@@ -4,60 +4,10 @@ import { supabase } from "@/supabase/client";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../_components/getToastOptions";
 
 function SignUpPage() {
-  const failToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#F9C1BD",
-      color: "#D32F2F",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-  const succesToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-  const waringToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
@@ -68,19 +18,37 @@ function SignUpPage() {
   const handleClickSignUpPage = async () => {
     // 유효성 검사
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규 표현식
-    if (!nickname) return toast("💛 이름을 입력해 주세요", waringToast);
-    if (!email) return toast("💛 이메일을 입력해 주세요", waringToast);
+    if (!nickname)
+      return toast("💛 이름을 입력해 주세요", getToastOptions("warning"));
+    if (!email)
+      return toast("💛 이메일을 입력해 주세요", getToastOptions("warning"));
     if (!emailPattern.test(email))
-      return toast("💛 올바른 이메일 형식이 아닙니다", waringToast); // 이메일 형식 확인
-    if (!password) return toast("💛 비밀번호를 입력해 주세요", waringToast);
+      return toast(
+        "💛 올바른 이메일 형식이 아닙니다",
+        getToastOptions("warning")
+      ); // 이메일 형식 확인
+    if (!password)
+      return toast("💛 비밀번호를 입력해 주세요", getToastOptions("warning"));
     if (password.length < 6)
-      return toast("💛 비밀번호는 6자 이상이어야 합니다", waringToast); // 비밀번호 길이 확인
+      return toast(
+        "💛 비밀번호는 6자 이상이어야 합니다",
+        getToastOptions("warning")
+      ); // 비밀번호 길이 확인
     if (!/[!@#$%^&*]/.test(password))
-      return toast("💛 비밀번호는 특수문자가 포함되어야 합니다", waringToast); // 특수문자 포함 확인
+      return toast(
+        "💛 비밀번호는 특수문자가 포함되어야 합니다",
+        getToastOptions("warning")
+      ); // 특수문자 포함 확인
     if (!checkPassword)
-      return toast("💛 비밀번호 확인을 입력해 주세요", waringToast);
+      return toast(
+        "💛 비밀번호 확인을 입력해 주세요",
+        getToastOptions("warning")
+      );
     if (password !== checkPassword)
-      return toast("💛 비밀번호가 일치하지 않습니다", waringToast);
+      return toast(
+        "💛 비밀번호가 일치하지 않습니다",
+        getToastOptions("warning")
+      );
 
     const extension = imageFile?.name.split(".").slice(-1)[0];
     const filename = nanoid();
@@ -88,13 +56,15 @@ function SignUpPage() {
     const baseURL =
       "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/profile-image";
 
-    if (!imageFile) return toast("💛 사진을 선택해 주세요", waringToast);
+    if (!imageFile)
+      return toast("💛 사진을 선택해 주세요", getToastOptions("warning"));
 
     const storage = await supabase.storage
       .from("profile-image")
       .upload(profilePath, imageFile, { upsert: true });
 
-    if (storage.error) return toast("❤️ 회원가입에 실패했습니다", failToast);
+    if (storage.error)
+      return toast("❤️ 회원가입에 실패했습니다", getToastOptions("error"));
 
     console.log(storage.data.fullPath);
 
@@ -109,14 +79,15 @@ function SignUpPage() {
     });
 
     router.push("/");
-    return toast("💚 회원가입에 성공하였습니다", succesToast);
+    return toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
   };
   const handleClickKakaoSignUp = async () => {
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
     });
 
-    if (data) return toast("💚 회원가입에 성공하였습니다", succesToast);
+    if (data)
+      return toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
   };
 
   return (

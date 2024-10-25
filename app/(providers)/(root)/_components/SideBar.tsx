@@ -8,28 +8,12 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "./getToastOptions";
 
 dayjs.locale("ko");
 
 function SideBar() {
-  const succesToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
@@ -53,7 +37,7 @@ function SideBar() {
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
-    toast("💚 로그아웃 되었습니다", succesToast); //슈파베이스 로그아웃
+    toast("💚 로그아웃 되었습니다", getToastOptions("success")); //슈파베이스 로그아웃
     router.push("/");
   };
 
