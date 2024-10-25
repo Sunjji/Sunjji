@@ -2,6 +2,7 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
@@ -74,6 +75,18 @@ const PetProfile = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { mutate: createPet } = useMutation({
+    mutationFn: async (data: Partial<Pet>) => {
+      const response = await supabase.from("pets").insert(data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pets"], exact: true });
+      toast("💚 반려동물이 등록되었습니다", successToast);
+    },
+  });
 
   useEffect(() => {
     if (imageFile) {
@@ -151,18 +164,13 @@ const PetProfile = () => {
       return;
     }
 
-    const imagePath = data?.fullPath || "";
-
     // 슈파베이스에 반려동물 정보 등록
-    const petData = { ...formData, imageUrl: imagePath };
-    const { error } = await supabase.from("pets").insert(petData);
+    createPet(FormData);
 
     if (error) {
       setIsLoading(false);
-      toast("❤️ 반려동물 등록에 실패했습니다", failToast);
     } else {
     }
-    toast("💚 반려동물이 등록되었습니다", successToast);
 
     setFormData({
       weight: 0,
