@@ -14,6 +14,8 @@ async function UserViewPage() {
 
   const diaries = response.data;
 
+  console.log();
+
   console.log(authorId);
   return (
     <Page>
