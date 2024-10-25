@@ -1,22 +1,10 @@
 import Page from "@/app/(providers)/(root)/_components/Page/Page";
+import AuthCheck from "./_components/AuthCheck";
 
 function HomePage() {
   return (
     <Page>
-      <div className="flex flex-wrap justify-between h-[66vh] w-[68%] gap-5">
-        <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full">
-          이달의 인기 일기
-        </div>
-        <div className="w-[47%] h-full flex flex-col gap-7">
-          <div className="rounded-2xl bg-whitePoint p-5 h-72">
-            OO과(와) 함께 한지
-          </div>
-          <div className="rounded-2xl bg-whitePoint p-5 h-72">OO의 생일</div>
-          <div className="rounded-2xl bg-whitePoint p-5 h-full">
-            나의 반려동물
-          </div>
-        </div>
-      </div>
+      <AuthCheck />
       <div className="rounded-r-3xl bg-whitePoint p-5 w-[24.7%] absolute right-[5vh] h-[90.6%]">
         달력 들어갈 자리
         {/* 나중에 적당한 곳에 위치 시키기 */}
