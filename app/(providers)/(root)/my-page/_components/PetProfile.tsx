@@ -8,6 +8,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
+import { Pet } from "@/types/type";
 
 const PetProfile = () => {
   const [formData, setFormData] = useState({
