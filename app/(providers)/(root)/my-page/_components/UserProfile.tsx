@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/client";
-import { useKakaoLoginStore } from "@/zustand/auth.store";
+import { Profile } from "@/types/type";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -21,7 +22,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const queryClient = useQueryClient();
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {

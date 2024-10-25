@@ -2,10 +2,12 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Bounce, toast } from "react-toastify";
+import { Pet } from "./AllPets";
 
 const PetProfile = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,53 @@ const PetProfile = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { mutate: createPet } = useMutation({
+    mutationFn: async (data: Partial<Pet>) => {
+      const response = await supabase.from("pets").insert(data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pets"], exact: true });
+      toast("💚 반려동물이 등록되었습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#E3F4E5",
+          color: "#2E7D32",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    },
+    onError: () => {
+      toast("❤️ 반려동물 등록에 실패했습니다", {
+        position: "top-right",
+        closeButton: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        style: {
+          backgroundColor: "#F9C1BD",
+          color: "#D32F2F",
+          fontFamily: "MongxYamiyomiL",
+        },
+      });
+    },
+  });
 
   useEffect(() => {
     if (imageFile) {
@@ -183,12 +232,11 @@ const PetProfile = () => {
     const filename = `${nanoid()}.${extension}`;
 
     // 이미지 업로드
-    const { data, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("pets")
       .upload(filename, imageFile!, { upsert: true });
 
     if (uploadError) {
-      setIsLoading(false);
       toast("❤️ 사진을 업로드에 실패했습니다", {
         position: "top-right",
         closeButton: false,
@@ -209,50 +257,8 @@ const PetProfile = () => {
       return;
     }
 
-    const imagePath = data?.fullPath || "";
-
     // 슈파베이스에 반려동물 정보 등록
-    const petData = { ...formData, imageUrl: imagePath };
-    const { error } = await supabase.from("pets").insert(petData);
-
-    if (error) {
-      setIsLoading(false);
-      toast("❤️ 반려동물 등록에 실패했습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#F9C1BD",
-          color: "#D32F2F",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
-    } else {
-    }
-    toast("💚 반려동물이 등록되었습니다", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#E3F4E5",
-        color: "#2E7D32",
-        fontFamily: "MongxYamiyomiL",
-      },
-    });
+    createPet(formData);
 
     setFormData({
       weight: 0,
