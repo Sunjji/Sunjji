@@ -20,6 +20,41 @@ type Pet = {
 };
 
 function AllPets() {
+  const failTaost = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#F9C1BD",
+      color: "#D32F2F",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
+
+  const succesToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
   const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
@@ -48,23 +83,7 @@ function AllPets() {
 
   const handleClickDeletePets = (petId: number) => {
     deletePets(petId);
-    toast("💚 반려동물이 삭제 되었습니다", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#E3F4E5",
-        color: "#2E7D32",
-        fontFamily: "MongxYamiyomiL",
-      },
-    });
+    toast("💚 반려동물이 삭제 되었습니다", succesToast);
   };
 
   const [editingPetId, setEditingPetId] = useState<number | null>(null);
@@ -91,10 +110,7 @@ function AllPets() {
     });
   };
 
-  const handleFormSubmit = async (
-    e: React.FormEvent,
-    petId: number
-  ) => {
+  const handleFormSubmit = async (e: React.FormEvent, petId: number) => {
     e.preventDefault();
 
     let imageFixPath = formState.imageUrl;
@@ -107,23 +123,7 @@ function AllPets() {
         .upload(filename, formState.imageFile, { upsert: true });
 
       if (error) {
-        return toast("❤️ 반려동물 사진이 수정되지 않았습니다", {
-          position: "top-right",
-          closeButton: false,
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          style: {
-            backgroundColor: "#F9C1BD",
-            color: "#D32F2F",
-            fontFamily: "MongxYamiyomiL",
-          },
-        });
+        return toast("❤️ 반려동물 사진이 수정되지 않았습니다", failTaost);
       }
 
       imageFixPath = data?.fullPath || "";
@@ -140,23 +140,7 @@ function AllPets() {
 
     updatePet({ id: petId, ...updatedPet });
     setEditingPetId(null);
-    toast("💚 프로필 수정이 완료되었습니다", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#E3F4E5",
-        color: "#2E7D32",
-        fontFamily: "MongxYamiyomiL",
-      },
-    });
+    toast("💚 프로필 수정이 완료되었습니다", succesToast);
   };
 
   return (
