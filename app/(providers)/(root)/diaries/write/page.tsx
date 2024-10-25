@@ -1,20 +1,39 @@
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
+import { Tables } from "@/supabase/database.types";
+import { useAuthStore } from "@/zustand/auth.store";
+import { useModalStore } from "@/zustand/modal.store";
+import { useQuery } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Page from "../../_components/Page/Page";
+import ChooseMyPets from "../_components/ChooseMyPets ";
 import IsPublicToggle from "../_components/IsPublicToggle";
+
+const baseURL =
+  "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryWritePage() {
   const [file, setFile] = useState<null | File>(null);
   const [isPublic, setIsPublic] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [memo, setMemo] = useState(""); // 테이블 수정되면 기능 구체화 할게요
+  const [memo, setMemo] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+
+  const [isSelected, setIsSelected] = useState(false);
+
+  const openModal = useModalStore((state) => state.openModal);
+
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+
+  console.log(currentUserId);
+  const [pets, setPets] = useState<Tables<"pets">[]>([]);
   const [isClicked, setIsClicked] = useState([false, false, false]);
   const router = useRouter();
 
@@ -23,6 +42,20 @@ function DiaryWritePage() {
       setImageUrl(URL.createObjectURL(file));
     }
   }, [file]);
+
+  const { data: myPets } = useQuery({
+    queryKey: ["pets"],
+    enabled: !!currentUserId,
+    queryFn: () => api.pets.getMyPets(currentUserId!),
+  });
+
+  useEffect(() => {
+    if (!myPets) {
+      return console.log("pets error");
+    } else {
+      setPets(myPets);
+    }
+  }, [myPets]);
 
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
@@ -172,6 +205,12 @@ function DiaryWritePage() {
     setIsClicked(newClickedState);
   };
 
+  const handleClickOpenModal = () => {
+    openModal(
+      <ChooseMyPets isSelected={isSelected} setIsSelected={setIsSelected} />
+    );
+  };
+
   return (
     <Page>
       <form
@@ -183,8 +222,69 @@ function DiaryWritePage() {
         </div>
 
         <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
-          <div className="col-span-3 flex items-center mb-4">
+          <div className="col-span-3 flex gap-x-4 items-center mb-4">
             <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
+
+            {pets.map((pet) => (
+              <Link href={"/my-page"}>
+                {isSelected ? (
+                  <div
+                    key={pet.id}
+                    className="text-sm p-2flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center"
+                  >
+                    <img
+                      className="rounded-full w-8 h-8 object-cover"
+                      src={`${baseURL}${pet.imageUrl}`}
+                      alt="펫 이미지"
+                    />
+                    <div className="flex flex-col">
+                      <p>
+                        {pet.name} · {pet.gender}
+                      </p>
+
+                      <p>
+                        {pet.weight} / {pet.age}
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+              </Link>
+            ))}
+
+            {/* <Link href={"/my-page"}>
+              <div className="text-sm p-2flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
+                <img
+                  className="rounded-full w-8 h-8 object-cover"
+                  src={`${baseURL}${pets[0].imageUrl}`}
+                  alt="펫 이미지"
+                />
+                <div className="flex flex-col">
+                  <p>
+                    {pets[0].name} · {pets[0].gender}
+                  </p>
+
+                  <p>
+                    {pets[0].weight} / {pets[0].age}
+                  </p>
+                </div>
+              </div>
+            </Link> */}
+
+            <button
+              type="button"
+              className="p-2 text-[#A17762] border rounded-[8px] w-[100px] h-[50px]"
+              onClick={handleClickOpenModal}
+            >
+              +
+            </button>
+
+            {/*
+
+            기본은 대표펫(아직 기능은 없음)으로 설정된 펫 한 마리에 + 버튼..
+            + 버튼을 누르면 자기가 가지고 있는 펫 목록 중에 선택을 하여 일기 작성할 수 있게 하기
+
+            */}
+
             <button
               type="submit"
               className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
