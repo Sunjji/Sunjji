@@ -15,6 +15,23 @@ const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryDetailPage() {
+  const successToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
   const params = useParams();
   const { diaryId } = params;
   const [diaries, setDiaries] = useState<Tables<"diaries">>();
@@ -67,23 +84,7 @@ function DiaryDetailPage() {
     if (!deleteDiary) {
       console.log("error");
     } else {
-      toast("💚 일기가 삭제되었습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#E3F4E5",
-          color: "#2E7D32",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💚 일기가 삭제되었습니다", successToast);
       router.push("/diaries");
     }
   };
