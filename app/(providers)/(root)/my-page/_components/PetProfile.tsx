@@ -6,63 +6,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import React, { FormEvent, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 
 const PetProfile = () => {
-  const successToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-
-  const failToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#F9C1BD",
-      color: "#D32F2F",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-
-  const waringToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#FFF9C4",
-      color: "#F9A825",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-
   const [formData, setFormData] = useState({
     weight: 0,
     age: 0,
@@ -84,7 +31,7 @@ const PetProfile = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pets"], exact: true });
-      toast("💚 반려동물이 등록되었습니다", successToast);
+      toast("💚 반려동물이 등록되었습니다", getToastOptions("success"));
     },
   });
 
@@ -116,37 +63,43 @@ const PetProfile = () => {
 
     if (!imageFile) {
       setIsLoading(false);
-      toast("💛 사진을 선택해 주세요", waringToast);
+      toast("💛 사진을 선택해 주세요", getToastOptions("warning"));
       return;
     }
 
     if (!formData.name) {
       setIsLoading(false);
-      toast("💛 이름을 입력해 주세요", waringToast);
+      toast("💛 이름을 입력해 주세요", getToastOptions("warning"));
       return;
     }
 
     if (!["수컷", "암컷"].includes(formData.gender)) {
       setIsLoading(false);
-      toast("💛 성별을 선택해 주세요", waringToast);
+      toast("💛 성별을 선택해 주세요", getToastOptions("warning"));
       return;
     }
 
     if (formData.age <= 0) {
       setIsLoading(false);
-      toast("💛 나이는 0보다 큰 값을 입력해 주세요", waringToast);
+      toast(
+        "💛 나이는 0보다 큰 값을 입력해 주세요",
+        getToastOptions("warning")
+      );
       return;
     }
 
     if (formData.weight <= 0) {
       setIsLoading(false);
-      toast("💛 몸무게는 0보다 큰 값을 입력해 주세요", waringToast);
+      toast(
+        "💛 몸무게는 0보다 큰 값을 입력해 주세요",
+        getToastOptions("warning")
+      );
       return;
     }
 
     if (!formData.comment) {
       setIsLoading(false);
-      toast("💛 한 줄 소개를 입력해 주세요", waringToast);
+      toast("💛 한 줄 소개를 입력해 주세요", getToastOptions("warning"));
       return;
     }
 
@@ -160,7 +113,7 @@ const PetProfile = () => {
 
     if (uploadError) {
       setIsLoading(false);
-      toast("❤️ 사진을 업로드에 실패했습니다", failToast);
+      toast("❤️ 사진을 업로드에 실패했습니다", getToastOptions("error"));
       return;
     }
 
