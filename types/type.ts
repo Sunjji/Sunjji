@@ -33,3 +33,13 @@ export type resetProfile = {
   comment: string;
   customImage: boolean;
 };
+
+export type Pet = {
+  id: number;
+  weight: number;
+  age: number;
+  gender: string;
+  name: string;
+  comment: string;
+  imageUrl: string;
+};

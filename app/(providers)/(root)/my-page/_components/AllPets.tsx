@@ -9,16 +9,7 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
-
-type Pet = {
-  id: number;
-  weight: number;
-  age: number;
-  gender: string;
-  name: string;
-  comment: string;
-  imageUrl: string;
-};
+import { Pet } from "@/types/type";
 
 function AllPets() {
   const queryClient = useQueryClient();
