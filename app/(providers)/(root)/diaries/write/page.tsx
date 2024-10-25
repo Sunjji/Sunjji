@@ -19,6 +19,40 @@ const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryWritePage() {
+  const successToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
+  const waringToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#FFF9C4",
+      color: "#F9A825",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
   const [file, setFile] = useState<null | File>(null);
   const [isPublic, setIsPublic] = useState(false);
   const [title, setTitle] = useState("");
@@ -60,79 +94,11 @@ function DiaryWritePage() {
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!title)
-      return toast("💛 제목을 작성해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
-    if (!memo)
-      return toast("💛 한 줄 메모를 작성해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
-    if (!content)
-      return toast("💛 오늘의 일기를 작성해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+    if (!title) return toast("💛 제목을 작성해 주세요", warningToast);
+    if (!memo) return toast("💛 한 줄 메모를 작성해 주세요", waringToast);
+    if (!content) return toast("💛 오늘의 일기를 작성해 주세요", waringToast);
 
-    if (!imageUrl)
-      return toast("💛 사진을 선택해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+    if (!imageUrl) return toast("💛 사진을 선택해 주세요", waringToast);
 
     const filename = nanoid();
     const extension = file!.name.split(".").slice(-1)[0];
@@ -158,42 +124,10 @@ function DiaryWritePage() {
       console.error("Error", error);
     } else {
       if (isPublic) {
-        toast("💚 공개 일기가 작성되었습니다", {
-          position: "top-right",
-          closeButton: false,
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          style: {
-            backgroundColor: "#E3F4E5",
-            color: "#2E7D32",
-            fontFamily: "MongxYamiyomiL",
-          },
-        });
+        toast("💚 공개 일기가 작성되었습니다", successToast);
         router.push("/diaries");
       } else {
-        toast("💚 비공개 일기가 작성되었습니다", {
-          position: "top-right",
-          closeButton: false,
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          style: {
-            backgroundColor: "#E3F4E5",
-            color: "#2E7D32",
-            fontFamily: "MongxYamiyomiL",
-          },
-        });
+        toast("💚 비공개 일기가 작성되었습니다", successToast);
         router.push("/diaries");
       }
     }
