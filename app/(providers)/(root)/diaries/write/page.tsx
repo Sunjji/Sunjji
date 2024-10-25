@@ -2,7 +2,6 @@
 
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -25,10 +24,9 @@ function DiaryWritePage() {
   const [memo, setMemo] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const [selected, setSelected] = useState<null | []>(null);
+  const [selectedPetIds, setSelectedPetIds] = useState<number[]>([]);
 
   const openModal = useModalStore((state) => state.openModal);
-  const currentUserId = useAuthStore((state) => state.currentUserId);
   const [pets, setPets] = useState<Tables<"pets">[]>([]);
   const [isClicked, setIsClicked] = useState([false, false, false]);
   const router = useRouter();
@@ -39,44 +37,24 @@ function DiaryWritePage() {
     }
   }, [file]);
 
-  // const myPets = useQuery({
-  //   queryKey: ["pets"],
-  //   enabled: !!currentUserId,
-  //   queryFn: async () => {
-  //     return await supabase
-  //       .from("pets")
-  //       .select("*")
-  //       // .eq("butlerId", currentUserId)
-  //       .eq("id", selected);
-  //   },
-  // });
-
-  // console.log(myPets?.data?.map((data) => data.id));
-  // console.log(myPets?.data);
+  // state로 해서 값이 한 개만 들어감..
   useEffect(() => {
     (async () => {
       const { data: pets } = await supabase
         .from("pets")
         .select("*")
-        .eq("butlerId", currentUserId)
-        .eq("id", selected);
+        .in("id", selectedPetIds);
 
       console.log(pets);
-      console.log(selected);
+      console.log(selectedPetIds);
+      if (!pets) {
+        return console.log("pets error");
+      } else {
+        setPets(pets);
+      }
     })();
-  }, []);
+  }, [selectedPetIds]);
 
-  const click = async () => {
-    const pets = await supabase
-      .from("pets")
-      .select("*")
-
-      .eq("id", Number(selected));
-
-    console.log(pets);
-    // setPets(pets);
-    console.log(selected);
-  };
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
@@ -133,7 +111,7 @@ function DiaryWritePage() {
   };
 
   const handleClickOpenModal = () => {
-    openModal(<ChooseMyPets pets={pets} setSelected={setSelected} />);
+    openModal(<ChooseMyPets setSelectedPetIds={setSelectedPetIds} />);
   };
 
   return (
@@ -149,9 +127,8 @@ function DiaryWritePage() {
         <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
           <div className="col-span-3 flex gap-x-4 items-center mb-4">
             <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
-
             {pets.map((pet) => (
-              <Link href={"/my-page"}>
+              <Link key={pet.id} href={"/my-page"}>
                 <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
                   <img
                     className="rounded-full w-8 h-8 object-cover"
@@ -178,16 +155,6 @@ function DiaryWritePage() {
             >
               +
             </button>
-
-            <button type="button" onClick={click}>
-              click
-            </button>
-            {/*
-
-            기본은 대표펫(아직 기능은 없음)으로 설정된 펫 한 마리에 + 버튼..
-            + 버튼을 누르면 자기가 가지고 있는 펫 목록 중에 선택을 하여 일기 작성할 수 있게 하기
-
-            */}
 
             <button
               type="submit"
@@ -233,7 +200,7 @@ function DiaryWritePage() {
                     : "text-[#A17762] bg-point"
                 } transition`}
               >
-                저장 일기
+                자랑 일기
               </button>
             </div>
             <div className="flex flex-col gap-y-4">
@@ -244,10 +211,9 @@ function DiaryWritePage() {
                 rows={1}
               />
 
-              {/* 한 줄 메모가 뭔지 몰라서 기능 없음 */}
               <textarea
                 className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
-                placeholder="한 줄 메모"
+                placeholder="메모"
                 onChange={(e) => setMemo(e.target.value)}
                 rows={13}
               />
