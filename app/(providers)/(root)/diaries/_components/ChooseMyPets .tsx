@@ -2,28 +2,50 @@
 
 import api from "@/api/api";
 import Modal from "@/components/Modal";
+import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 
 type ChooseMyPetsProps = {
-  isSelected: boolean;
-  setIsSelected: Dispatch<SetStateAction<boolean>>;
+  setSelected: Dispatch<SetStateAction<[] | null>>;
+  pets: {
+    age: number;
+    butlerId: string;
+    comment: string;
+    created_at: string;
+    gender: string;
+    id: number;
+    imageUrl: string;
+    name: string;
+    weight: number;
+  }[];
 };
 
-function ChooseMyPets({ isSelected, setIsSelected }: ChooseMyPetsProps) {
+function ChooseMyPets({
+  setSelected,
+  pets,
+}: ChooseMyPetsProps): void | JSX.Element {
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const { data: myPets } = useQuery({
+  const { data: myPets = [] } = useQuery({
     queryKey: ["pets"],
     enabled: !!currentUserId,
     queryFn: () => api.pets.getMyPets(currentUserId!),
   });
 
-  const handleClick = async () => {
-    if (isSelected) return setIsSelected(false);
+  const click = async (petId: number) => {
+    const { data: pets } = await supabase
+      .from("pets")
+      .select("*")
+      .eq("id", petId)
+      .single();
+
+    console.log(pets.id);
+    if (!pets) return console.log("pets error");
+    setSelected(pets.id);
     closeModal();
   };
 
@@ -31,7 +53,11 @@ function ChooseMyPets({ isSelected, setIsSelected }: ChooseMyPetsProps) {
     <Modal>
       <h4 className="mb-10">일기에 쓸 반려동물을 선택해주세요</h4>
       {myPets?.map((pet) => (
-        <p onClick={handleClick} className="cursor-pointer hover:text-red-500">
+        <p
+          onClick={() => click(pet.id)}
+          key={pet.id}
+          className="cursor-pointer hover:text-red-500"
+        >
           {pet.name}
         </p>
       ))}
