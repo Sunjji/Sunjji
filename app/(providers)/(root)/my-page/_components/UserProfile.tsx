@@ -116,7 +116,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     <>
       {!isEditing ? (
         <>
-          <div className="bg-white shadow-lg rounded-lg px-3 py-5 max-w-sm relative">
+          <div className="bg-white  text-BrownPoint shadow-lg rounded-lg px-3 py-5 max-w-sm relative">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -124,13 +124,13 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 alt="Profile"
               />
             </div>
-            <p className="bg-white p-4 text-BrownPoint rounded-md shadow-md mb-2">
+            <p className="p-4 rounded-md shadow-md mb-2">
               이름: {profile.nickname}
             </p>
-            <p className="bg-white p-4 rounded-md shadow-md pb-16">
-              <h2 className="text-BrownPoint">집사 소개: {profile.comment}</h2>
+            <p className="p-4 rounded-md shadow-md pb-16">
+              집사 소개: {profile.comment}
             </p>
-            <p className="bg-white p-4 text-BrownPoint mt-2 rounded-md shadow-md">
+            <p className="p-4 text-BrownPoint mt-2 rounded-md shadow-md">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
@@ -139,9 +139,9 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
               onClick={handleEditClick}
             />
             {showEditButton && (
-              <div className="edit-button-container absolute top-[10px] right-[-55px]">
+              <div className="bg-white edit-button-container absolute top-[10px] right-[-55px]">
                 <button
-                  className="text-BrownPoint bg-white border border-BrownPoint hover:bg-point rounded-md px-2 py-1"
+                  className="border border-BrownPoint hover:bg-point rounded-md px-2 py-1"
                   onClick={handleConfirmEdit}
                 >
                   수정하기
@@ -152,7 +152,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
         </>
       ) : (
         <>
-          <div className="bg-white shadow-lg rounded-lg p-3 py-5 max-w-sm">
+          <div className="bg-white text-BrownPoint shadow-lg rounded-lg p-3 py-5 max-w-sm">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -162,7 +162,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
             </div>
             <div className="flex justify-center">
               <button
-                className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 text-BrownPoint"
+                className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 "
                 onClick={handleImageClick}
               >
                 사진 첨부하기
@@ -174,7 +174,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 onChange={handleChangeFile}
               />
             </div>
-            <p className="bg-white p-4 text-BrownPoint rounded-md shadow-md mb-2">
+            <p className=" p-4  rounded-md shadow-md mb-2">
               <input
                 type="text"
                 value={nickname}
@@ -182,20 +182,20 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 className="border p-2 rounded-lg w-full"
               />
             </p>
-            <p className="bg-white p-4 rounded-md shadow-md">
+            <p className="p-4 rounded-md shadow-md">
               <input
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="border p-2 rounded-lg w-full text-BrownPoint"
+                className="border p-2 rounded-lg w-full"
               />
             </p>
-            <p className="bg-white p-4 text-BrownPoint my-2 rounded-md shadow-md">
+            <p className="p-4 my-2 rounded-md shadow-md">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
             <button
-              className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 text-BrownPoint flex justify-center"
+              className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 flex justify-center"
               onClick={handleClickSave}
               disabled={isLoading}
             >
