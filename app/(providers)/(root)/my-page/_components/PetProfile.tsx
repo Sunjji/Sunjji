@@ -8,6 +8,60 @@ import { FaSpinner } from "react-icons/fa";
 import { Bounce, toast } from "react-toastify";
 
 const PetProfile = () => {
+  const successToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
+
+  const failToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#F9C1BD",
+      color: "#D32F2F",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
+
+  const waringToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#FFF9C4",
+      color: "#F9A825",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
+
   const [formData, setFormData] = useState({
     weight: 0,
     age: 0,
@@ -49,133 +103,37 @@ const PetProfile = () => {
 
     if (!imageFile) {
       setIsLoading(false);
-      toast("💛 사진을 선택해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 사진을 선택해 주세요", waringToast);
       return;
     }
 
     if (!formData.name) {
       setIsLoading(false);
-      toast("💛 이름을 입력해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 이름을 입력해 주세요", waringToast);
       return;
     }
 
     if (!["수컷", "암컷"].includes(formData.gender)) {
       setIsLoading(false);
-      toast("💛 성별을 선택해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 성별을 선택해 주세요", waringToast);
       return;
     }
 
     if (formData.age <= 0) {
       setIsLoading(false);
-      toast("💛 나이는 0보다 큰 값을 입력해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 나이는 0보다 큰 값을 입력해 주세요", waringToast);
       return;
     }
 
     if (formData.weight <= 0) {
       setIsLoading(false);
-      toast("💛 몸무게는 0보다 큰 값을 입력해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 몸무게는 0보다 큰 값을 입력해 주세요", waringToast);
       return;
     }
 
     if (!formData.comment) {
       setIsLoading(false);
-      toast("💛 한 줄 소개를 입력해 주세요", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#FFF9C4",
-          color: "#F9A825",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💛 한 줄 소개를 입력해 주세요", waringToast);
       return;
     }
 
@@ -189,23 +147,7 @@ const PetProfile = () => {
 
     if (uploadError) {
       setIsLoading(false);
-      toast("❤️ 사진을 업로드에 실패했습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#F9C1BD",
-          color: "#D32F2F",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("❤️ 사진을 업로드에 실패했습니다", failToast);
       return;
     }
 
@@ -217,42 +159,10 @@ const PetProfile = () => {
 
     if (error) {
       setIsLoading(false);
-      toast("❤️ 반려동물 등록에 실패했습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#F9C1BD",
-          color: "#D32F2F",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("❤️ 반려동물 등록에 실패했습니다", failToast);
     } else {
     }
-    toast("💚 반려동물이 등록되었습니다", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#E3F4E5",
-        color: "#2E7D32",
-        fontFamily: "MongxYamiyomiL",
-      },
-    });
+    toast("💚 반려동물이 등록되었습니다", successToast);
 
     setFormData({
       weight: 0,
