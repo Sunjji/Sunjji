@@ -13,6 +13,23 @@ import { Bounce, toast } from "react-toastify";
 dayjs.locale("ko");
 
 function SideBar() {
+  const succesToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
@@ -24,26 +41,19 @@ function SideBar() {
     openModal(<LogInModal />);
   };
 
+  const handleClickMyProfile = async () => {
+    const { data: diaries } = await supabase
+      .from("diaries")
+      .select("*, author:profiles (*), comments(id)");
+  };
+
+  const baseURL =
+    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
-    toast("💚 로그아웃 되었습니다", {
-      position: "top-right",
-      closeButton: false,
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-      style: {
-        backgroundColor: "#E3F4E5",
-        color: "#2E7D32",
-        fontFamily: "MongxYamiyomiL",
-      },
-    }); //슈파베이스 로그아웃
+    toast("💚 로그아웃 되었습니다", succesToast); //슈파베이스 로그아웃
     router.push("/");
   };
 

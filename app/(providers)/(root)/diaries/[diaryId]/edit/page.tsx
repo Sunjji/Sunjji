@@ -12,6 +12,23 @@ const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryEditPage() {
+  const succesToast = {
+    position: "top-right",
+    closeButton: false,
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+    style: {
+      backgroundColor: "#E3F4E5",
+      color: "#2E7D32",
+      fontFamily: "MongxYamiyomiL",
+    },
+  };
   const params = useParams();
   const { diaryId } = params;
   const [title, setTitle] = useState("");
@@ -55,23 +72,7 @@ function DiaryEditPage() {
           isPublic: isPublic, // 공개/비공개
         })
         .eq("id", Number(diaryId));
-      toast("💚 일기가 수정 되었습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#E3F4E5",
-          color: "#2E7D32",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💚 일기가 수정 되었습니다", succesToast);
 
       router.push("/diaries");
     } else {
@@ -90,23 +91,7 @@ function DiaryEditPage() {
         })
         .eq("id", Number(diaryId));
 
-      toast("💚 사진이 변경 되었습니다", {
-        position: "top-right",
-        closeButton: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        style: {
-          backgroundColor: "#E3F4E5",
-          color: "#2E7D32",
-          fontFamily: "MongxYamiyomiL",
-        },
-      });
+      toast("💚 사진이 변경 되었습니다", succesToast);
       router.push("/diaries");
     }
   };
