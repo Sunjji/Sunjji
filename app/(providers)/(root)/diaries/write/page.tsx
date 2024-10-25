@@ -1,11 +1,9 @@
 "use client";
 
-import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
-import { useQuery } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -53,6 +51,7 @@ function DiaryWritePage() {
       fontFamily: "MongxYamiyomiL",
     },
   };
+
   const [file, setFile] = useState<null | File>(null);
   const [isPublic, setIsPublic] = useState(false);
   const [title, setTitle] = useState("");
@@ -60,13 +59,10 @@ function DiaryWritePage() {
   const [memo, setMemo] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const [isSelected, setIsSelected] = useState(false);
+  const [selected, setSelected] = useState<null | []>(null);
 
   const openModal = useModalStore((state) => state.openModal);
-
   const currentUserId = useAuthStore((state) => state.currentUserId);
-
-  console.log(currentUserId);
   const [pets, setPets] = useState<Tables<"pets">[]>([]);
   const [isClicked, setIsClicked] = useState([false, false, false]);
   const router = useRouter();
@@ -77,24 +73,48 @@ function DiaryWritePage() {
     }
   }, [file]);
 
-  const { data: myPets } = useQuery({
-    queryKey: ["pets"],
-    enabled: !!currentUserId,
-    queryFn: () => api.pets.getMyPets(currentUserId!),
-  });
+  // const myPets = useQuery({
+  //   queryKey: ["pets"],
+  //   enabled: !!currentUserId,
+  //   queryFn: async () => {
+  //     return await supabase
+  //       .from("pets")
+  //       .select("*")
+  //       // .eq("butlerId", currentUserId)
+  //       .eq("id", selected);
+  //   },
+  // });
 
+  // console.log(myPets?.data?.map((data) => data.id));
+  // console.log(myPets?.data);
   useEffect(() => {
-    if (!myPets) {
-      return console.log("pets error");
-    } else {
-      setPets(myPets);
-    }
-  }, [myPets]);
+    (async () => {
+      const { data: pets } = await supabase
+        .from("pets")
+        .select("*")
+        .eq("butlerId", currentUserId)
+        .eq("id", selected);
 
+      console.log(pets);
+      console.log(selected);
+    })();
+  }, []);
+
+  const click = async () => {
+    const pets = await supabase
+      .from("pets")
+      .select("*")
+
+      .eq("id", Number(selected));
+
+    console.log(pets);
+    // setPets(pets);
+    console.log(selected);
+  };
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!title) return toast("💛 제목을 작성해 주세요", warningToast);
+    if (!title) return toast("💛 제목을 작성해 주세요", waringToast);
     if (!memo) return toast("💛 한 줄 메모를 작성해 주세요", waringToast);
     if (!content) return toast("💛 오늘의 일기를 작성해 주세요", waringToast);
 
@@ -140,9 +160,7 @@ function DiaryWritePage() {
   };
 
   const handleClickOpenModal = () => {
-    openModal(
-      <ChooseMyPets isSelected={isSelected} setIsSelected={setIsSelected} />
-    );
+    openModal(<ChooseMyPets pets={pets} setSelected={setSelected} />);
   };
 
   return (
@@ -161,48 +179,24 @@ function DiaryWritePage() {
 
             {pets.map((pet) => (
               <Link href={"/my-page"}>
-                {isSelected ? (
-                  <div
-                    key={pet.id}
-                    className="text-sm p-2flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center"
-                  >
-                    <img
-                      className="rounded-full w-8 h-8 object-cover"
-                      src={`${baseURL}${pet.imageUrl}`}
-                      alt="펫 이미지"
-                    />
-                    <div className="flex flex-col">
-                      <p>
-                        {pet.name} · {pet.gender}
-                      </p>
+                <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
+                  <img
+                    className="rounded-full w-8 h-8 object-cover"
+                    src={`${baseURL}${pet.imageUrl}`}
+                    alt="펫 이미지"
+                  />
+                  <div className="flex flex-col">
+                    <p>
+                      {pet.name} · {pet.gender}
+                    </p>
 
-                      <p>
-                        {pet.weight} / {pet.age}
-                      </p>
-                    </div>
+                    <p>
+                      {pet.weight} / {pet.age}
+                    </p>
                   </div>
-                ) : null}
+                </div>
               </Link>
             ))}
-
-            {/* <Link href={"/my-page"}>
-              <div className="text-sm p-2flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
-                <img
-                  className="rounded-full w-8 h-8 object-cover"
-                  src={`${baseURL}${pets[0].imageUrl}`}
-                  alt="펫 이미지"
-                />
-                <div className="flex flex-col">
-                  <p>
-                    {pets[0].name} · {pets[0].gender}
-                  </p>
-
-                  <p>
-                    {pets[0].weight} / {pets[0].age}
-                  </p>
-                </div>
-              </div>
-            </Link> */}
 
             <button
               type="button"
@@ -212,6 +206,9 @@ function DiaryWritePage() {
               +
             </button>
 
+            <button type="button" onClick={click}>
+              click
+            </button>
             {/*
 
             기본은 대표펫(아직 기능은 없음)으로 설정된 펫 한 마리에 + 버튼..
