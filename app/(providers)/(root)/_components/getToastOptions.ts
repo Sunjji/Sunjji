@@ -1,5 +1,5 @@
 // components/Toast.tsx
-import { Bounce, toast, ToastPosition } from "react-toastify";
+import { Bounce, ToastPosition } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // 각 토스트 스타일을 위한 기본 옵션들
 const baseToastOptions = {
