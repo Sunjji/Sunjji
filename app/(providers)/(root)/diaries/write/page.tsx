@@ -8,7 +8,8 @@ import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 import Page from "../../_components/Page/Page";
 import ChooseMyPets from "../_components/ChooseMyPets ";
 import IsPublicToggle from "../_components/IsPublicToggle";
@@ -17,41 +18,6 @@ const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
 
 function DiaryWritePage() {
-  const successToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#E3F4E5",
-      color: "#2E7D32",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-  const waringToast = {
-    position: "top-right",
-    closeButton: false,
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Bounce,
-    style: {
-      backgroundColor: "#FFF9C4",
-      color: "#F9A825",
-      fontFamily: "MongxYamiyomiL",
-    },
-  };
-
   const [file, setFile] = useState<null | File>(null);
   const [isPublic, setIsPublic] = useState(false);
   const [title, setTitle] = useState("");
@@ -114,11 +80,18 @@ function DiaryWritePage() {
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!title) return toast("💛 제목을 작성해 주세요", waringToast);
-    if (!memo) return toast("💛 한 줄 메모를 작성해 주세요", waringToast);
-    if (!content) return toast("💛 오늘의 일기를 작성해 주세요", waringToast);
+    if (!title)
+      return toast("💛 제목을 작성해 주세요", getToastOptions("warning"));
+    if (!memo)
+      return toast("💛 한 줄 메모를 작성해 주세요", getToastOptions("warning"));
+    if (!content)
+      return toast(
+        "💛 오늘의 일기를 작성해 주세요",
+        getToastOptions("warning")
+      );
 
-    if (!imageUrl) return toast("💛 사진을 선택해 주세요", waringToast);
+    if (!imageUrl)
+      return toast("💛 사진을 선택해 주세요", getToastOptions("warning"));
 
     const filename = nanoid();
     const extension = file!.name.split(".").slice(-1)[0];
@@ -144,10 +117,10 @@ function DiaryWritePage() {
       console.error("Error", error);
     } else {
       if (isPublic) {
-        toast("💚 공개 일기가 작성되었습니다", successToast);
+        toast("💚 공개 일기가 작성되었습니다", getToastOptions("success"));
         router.push("/diaries");
       } else {
-        toast("💚 비공개 일기가 작성되었습니다", successToast);
+        toast("💚 비공개 일기가 작성되었습니다", getToastOptions("success"));
         router.push("/diaries");
       }
     }
