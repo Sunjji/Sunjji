@@ -117,13 +117,10 @@ const PetProfile = () => {
       return;
     }
 
-    // 슈파베이스에 반려동물 정보 등록
-    createPet(FormData);
+    const petData = { ...formData, imageUrl: data.fullPath };
 
-    if (error) {
-      setIsLoading(false);
-    } else {
-    }
+    // 슈파베이스에 반려동물 정보 등록
+    createPet(petData);
 
     setFormData({
       weight: 0,
