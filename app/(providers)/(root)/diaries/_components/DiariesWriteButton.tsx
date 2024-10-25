@@ -1,7 +1,11 @@
 "use client";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 
 function DiariesWriteButton() {
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+
+  console.log(currentUserId);
   const router = useRouter();
 
   const handleClickDiariesWriteButton = () => {
@@ -10,12 +14,16 @@ function DiariesWriteButton() {
   };
 
   return (
-    <button
-      className="rounded-[8px] w-[150px] h-[60px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white"
-      onClick={handleClickDiariesWriteButton}
-    >
-      일기 쓰기
-    </button>
+    <>
+      {currentUserId !== null ? (
+        <button
+          className="rounded-[8px] w-[150px] h-[60px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white"
+          onClick={handleClickDiariesWriteButton}
+        >
+          일기 쓰기
+        </button>
+      ) : null}
+    </>
   );
 }
 

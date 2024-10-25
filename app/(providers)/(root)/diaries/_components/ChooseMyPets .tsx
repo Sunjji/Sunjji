@@ -9,24 +9,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 
 type ChooseMyPetsProps = {
-  setSelected: Dispatch<SetStateAction<[] | null>>;
-  pets: {
-    age: number;
-    butlerId: string;
-    comment: string;
-    created_at: string;
-    gender: string;
-    id: number;
-    imageUrl: string;
-    name: string;
-    weight: number;
-  }[];
+  setSelectedPetIds: Dispatch<SetStateAction<number[]>>;
 };
 
-function ChooseMyPets({
-  setSelected,
-  pets,
-}: ChooseMyPetsProps): void | JSX.Element {
+function ChooseMyPets({ setSelectedPetIds }: ChooseMyPetsProps) {
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const closeModal = useModalStore((state) => state.closeModal);
 
@@ -45,7 +31,7 @@ function ChooseMyPets({
 
     console.log(pets.id);
     if (!pets) return console.log("pets error");
-    setSelected(pets.id);
+    setSelectedPetIds((selectedPets) => [...selectedPets, pets.id]);
     closeModal();
   };
 
