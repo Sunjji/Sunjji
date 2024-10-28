@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-type ButtonProps = { children: string };
+type ButtonProps = { buttonLabel: string };
 
-function Button({ children }: ButtonProps) {
+function Button({ buttonLabel }: ButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
@@ -15,11 +15,11 @@ function Button({ children }: ButtonProps) {
     <button
       onClick={() => handleClick()}
       type="button"
-      className={`border px-3 py-2 rounded-[8px] w-full 
+      className={`border px-3 py-2 rounded-[8px] w-full
         ${isClicked ? "bg-BrownPoint text-point" : "text-BrownPoint bg-point"}
         transition`}
     >
-      {children}
+      {buttonLabel}
     </button>
   );
 }

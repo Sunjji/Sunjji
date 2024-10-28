@@ -202,11 +202,11 @@ function DiaryWritePage() {
           <div className="col-span-1">
             <div className="flex gap-x-4 mb-4 ">
               {/* 미완성 */}
-              <Button>{"일기"}</Button>
+              <Button buttonLabel="일기" />
 
-              <Button>{"사고뭉치"}</Button>
+              <Button buttonLabel="사고 뭉치" />
 
-              <Button>{"자랑일기"}</Button>
+              <Button buttonLabel="자랑 일기" />
             </div>
 
             {/* 제목 10글자 넘으면 ...으로 바꿔주기 */}
