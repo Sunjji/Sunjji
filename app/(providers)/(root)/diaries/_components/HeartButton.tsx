@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface HeartButtonProps {
-  diaryId: string;
+  diaryId: number;
 }
 
 function HeartButton({ diaryId }: HeartButtonProps) {

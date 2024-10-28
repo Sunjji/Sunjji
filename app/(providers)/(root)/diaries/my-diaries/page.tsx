@@ -4,19 +4,12 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import DiariesWriteButton from "../_components/DiariesWriteButton";
 
 async function UserViewPage() {
-  // const now = dayjs();
-  // console.
   const { data } = await supabase.auth.getUser();
   const authorId = data.user?.id;
+  await supabase.from("diaries").select().eq("authorId", authorId);
 
-  await supabase
-    .from("diaries")
-    .select()
-    .eq("authorId", authorId);
-
-  console.log(authorId);
   return (
-    <Page>
+    <Page title="나의 집사 일기">
       {/* 일기쓰기 버튼 */}
       <div className="absolute top-20 right-[84px]">
         <DiariesWriteButton />

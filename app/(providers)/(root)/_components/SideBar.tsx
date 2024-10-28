@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaBookOpen,
+  FaDog,
   FaSignInAlt,
   FaSignOutAlt,
   FaUserPlus,
@@ -73,13 +74,19 @@ function SideBar() {
                   className="flex gap-x-3 items-center mb-5"
                   href={"/diaries"}
                 >
-                  <FaBookOpen /> 공개일기
+                  <FaBookOpen /> 모두의 일기
                 </Link>
                 <Link
                   className="flex gap-x-3 items-center mb-5"
                   href={"/diaries/my-diaries"}
                 >
                   <FaBookBookmark /> 내 일기
+                </Link>
+                <Link
+                  className="flex gap-x-3 items-center mb-5"
+                  href={"/diaries/my-diaries"}
+                >
+                  <FaDog /> 내 반려동물들
                 </Link>
                 <button
                   className="flex gap-x-3 items-center"
