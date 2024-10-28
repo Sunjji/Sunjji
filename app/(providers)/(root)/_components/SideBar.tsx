@@ -65,7 +65,7 @@ function SideBar() {
         {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
           <div className="text-BrownPoint font-bold">
             <Link className="flex gap-x-3 items-center mb-5" href={"/"}>
-              <FaHouse /> Home
+              <FaHouse /> 홈
             </Link>
             {isLoggedIn ? ( // isLoggedIn이 true일때 출력
               <>
@@ -73,7 +73,7 @@ function SideBar() {
                   className="flex gap-x-3 items-center mb-5"
                   href={"/diaries"}
                 >
-                  <FaBookOpen /> Diaries
+                  <FaBookOpen /> 공개일기
                 </Link>
                 <Link
                   className="flex gap-x-3 items-center mb-5"
