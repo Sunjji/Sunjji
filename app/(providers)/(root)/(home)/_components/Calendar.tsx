@@ -3,6 +3,7 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
 
@@ -74,6 +75,10 @@ function Calendar() {
     return dayNumber;
   };
 
+  const handleEventContent2 = (eventInfo) => {
+    return eventInfo.event.title; // 이벤트 제목만 반환하여 "All Day"를 숨김
+  };
+
   const handleDayHeaderContent = (arg) => {
     // 요일 배열
     const weekdays = ["ㅤ일", "ㅤ월", "ㅤ화", "ㅤ수", "ㅤ목", "ㅤ금", "ㅤ토"];
@@ -96,14 +101,30 @@ function Calendar() {
           expandRows={true}
           navLinks={true}
           droppable={true}
-          navLinkDayClick={handleClickCreateDiary}
           locale={"ko"}
           eventBackgroundColor="#E3F4E5"
           eventTextColor="#2E7D32"
+          navLinkDayClick={handleClickCreateDiary}
           events={events}
           eventDrop={handleDropEvent} //드래그앤드롭하면 일기 날짜도 바귐
           dayCellContent={handleDayCellContent} //"일"삭제
           dayHeaderContent={handleDayHeaderContent} //"요일 칸 맞추기용"
+        />
+      </div>
+      <div className=" bg-whitePoint w-full">
+        <FullCalendar
+          plugins={[listPlugin, interactionPlugin]}
+          initialView="listMonth"
+          height="220px"
+          events={events} // 현재 날짜에 맞는 이벤트만 필터링
+          locale={"ko"}
+          displayEventTime={false}
+          eventBackgroundColor="#E3F4E5"
+          headerToolbar={{
+            start: "",
+            center: "",
+            end: "",
+          }}
         />
       </div>
     </>
