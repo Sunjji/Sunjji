@@ -92,3 +92,17 @@ a {
 .fc .fc-button:hover {
   background-color: transparent;
 }
+
+.fc-theme-standard .fc-list-day-cushion {
+  background-color: #fffefa;
+  color: #a17762;
+}
+.fc-list-event-title {
+  color: #2e7d32;
+}
+.fc-list-event-time {
+}
+
+.fc-theme-standard .fc-list {
+  border: none;
+}
