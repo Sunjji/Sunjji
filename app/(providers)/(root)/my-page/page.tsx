@@ -40,7 +40,7 @@ function MyPage() {
   };
 
   return (
-    <Page>
+    <Page title="집사 프로필 관리">
       <div className="flex flex-wrap gap-[5%] rounded-2xl bg-whitePoint p-8 w-full">
         <div className="w-[25%]">
           <h1 className="text-2xl font-bold mb-5 text-BrownPoint">내 프로필</h1>
