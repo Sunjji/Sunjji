@@ -22,7 +22,7 @@ function UserProfile() {
       const { data: pets, error: petsError } = await supabase
         .from("pets")
         .select("*")
-        .eq("butlerId", currentUserId)
+        .eq("id", profiles.firstPetId)
         .single();
 
       if (error) return console.log("diary error", error);
