@@ -97,6 +97,15 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     toast("💚 프로필이 수정되었습니다", getToastOptions("success"));
   };
 
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setPreviewUrl(null);
+    setImageFile(null);
+    setIsLoading(false);
+    setShowEditButton(false);
+    toast("💛 프로필 수정이 취소되었습니다", getToastOptions("warning"));
+  };
+
   const handleEditClick = () => {
     setShowEditButton(true);
   };
@@ -194,17 +203,25 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
-            <button
-              className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 flex justify-center"
-              onClick={handleClickSave}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <FaSpinner className="animate-spin h-6 w-6 text-BrownPoint" />
-              ) : (
-                "저장"
-              )}
-            </button>
+            <div className="flex justify-between gap-1">
+              <button
+                className="px-4 py-1 w-1/2 rounded-md shadow-lg hover:bg-gray-100"
+                onClick={handleCancelClick}
+              >
+                취소
+              </button>
+              <button
+                className="px-4 py-1 w-1/2 rounded-md shadow-lg hover:bg-gray-100 flex justify-center"
+                onClick={handleClickSave}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <FaSpinner className="animate-spin h-6 w-6 text-BrownPoint" />
+                ) : (
+                  "저장"
+                )}
+              </button>
+            </div>
           </div>
         </>
       )}
