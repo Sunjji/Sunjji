@@ -21,8 +21,10 @@ function IsPublicToggle({ isPublic, setIsPublic }: IsPublicToggleProps) {
       type="button"
       onClick={handleToggleIsPublic}
       className={`
-        ${isPublic ? "bg-[#A17762] text-point" : "text-[#A17762] bg-point"}
-        py-2 rounded-[8px] w-[150px] h-[60px] font-semibold text-center transition duration-300 text-3xl`}
+        ${isPublic ? "bg-BrownPoint text-point" : "text-BrownPoint bg-point"}
+        py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center transition duration-300
+        text-BrownPoint border
+        `}
     >
       {isPublic ? "공개 일기" : "비공개 일기"}
     </button>

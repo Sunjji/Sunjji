@@ -4,6 +4,7 @@
 
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
+
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { nanoid } from "nanoid";
@@ -13,6 +14,7 @@ import { ComponentProps, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
 import Page from "../../_components/Page/Page";
+import Button from "../_components/button";
 import ChooseMyPets from "../_components/ChooseMyPets ";
 import IsPublicToggle from "../_components/IsPublicToggle";
 
@@ -34,7 +36,6 @@ function DiaryWritePage() {
   const [firstPet, setFirstPet] = useState<Tables<"pets">>();
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
-  const [isClicked, setIsClicked] = useState([false, false, false]); // 미완성
   const router = useRouter();
 
   useEffect(() => {
@@ -63,7 +64,7 @@ function DiaryWritePage() {
       const { data: profiles } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", currentUserId);
+        .eq("id", currentUserId!);
 
       if (!profiles) return;
 
@@ -103,7 +104,6 @@ function DiaryWritePage() {
     const result = await supabase.storage
       .from("diaries")
       .upload(path, file!, { upsert: true });
-    console.log(result);
 
     const { error } = await supabase
       .from("diaries")
@@ -129,32 +129,20 @@ function DiaryWritePage() {
     }
   };
 
-  const handleClick = (index: number) => {
-    const newClickedState = [false, false, false]; // 초기화
-    newClickedState[index] = !isClicked[index]; // 클릭한 버튼만 반전
-    setIsClicked(newClickedState);
-  };
-
   const handleClickOpenModal = () => {
     openModal(<ChooseMyPets setSelectedPetIds={setSelectedPetIds} />);
   };
 
   return (
-    <Page>
+    <Page title={"작성페이지"}>
       <form
         onSubmit={handleSubmitButton}
         className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
       >
-        <div className="absolute top-[88px] ml-40">
-          <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
-        </div>
-
         <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
           <div className="col-span-3 flex gap-x-4 items-center mb-4">
-            <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
-
             <Link href={"/my-page"}>
-              <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
+              <div className="text-sm p-2 flex gap-x-2 text-BrownPoint border rounded-[8px] w-auto h-[50px] items-center">
                 <img
                   className="rounded-full w-8 h-8 object-cover"
                   src={`${baseURL}${firstPet?.imageUrl}`}
@@ -174,7 +162,7 @@ function DiaryWritePage() {
 
             {pets.map((pet) => (
               <Link key={pet.id} href={"/my-page"}>
-                <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
+                <div className="text-sm p-2 flex gap-x-2 text-BrownPoint border rounded-[8px] w-auto h-[50px] items-center">
                   <img
                     className="rounded-full w-8 h-8 object-cover"
                     src={`${baseURL}${pet.imageUrl}`}
@@ -195,69 +183,43 @@ function DiaryWritePage() {
 
             <button
               type="button"
-              className="p-2 text-[#A17762] border rounded-[8px] w-[100px] h-[50px]"
+              className="p-2 text-BrownPoint border rounded-[8px] w-[100px] h-[50px]"
               onClick={handleClickOpenModal}
             >
               +
             </button>
-
-            <button
-              type="submit"
-              className="text-[#A17762] border ml-auto py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
-            >
-              저장하기
-            </button>
+            <div className="flex gap-x-4 ml-auto">
+              <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
+              <button
+                type="submit"
+                className="text-BrownPoint border py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
+              >
+                저장하기
+              </button>
+            </div>
           </div>
 
           <div className="col-span-1">
-            <div className="flex gap-x-4 mb-4">
+            <div className="flex gap-x-4 mb-4 ">
               {/* 미완성 */}
-              {isPublic ? (
-                <button
-                  onClick={() => handleClick(0)}
-                  type="button"
-                  className={`border px-3 py-2 rounded-[8px] ${
-                    isClicked[0]
-                      ? "bg-[#A17762] text-point"
-                      : "text-[#A17762] bg-point"
-                  } transition`}
-                >
-                  공개 일기
-                </button>
-              ) : null}
-              <button
-                onClick={() => handleClick(1)}
-                type="button"
-                className={`border px-3 py-2 rounded-[8px] ${
-                  isClicked[1]
-                    ? "bg-[#A17762] text-point"
-                    : "text-[#A17762] bg-point"
-                } transition`}
-              >
-                사고 뭉치
-              </button>
-              <button
-                onClick={() => handleClick(2)}
-                type="button"
-                className={`border px-3 py-2 rounded-[8px] ${
-                  isClicked[2]
-                    ? "bg-[#A17762] text-point"
-                    : "text-[#A17762] bg-point"
-                } transition`}
-              >
-                자랑 일기
-              </button>
+              <Button buttonLabel="일기" />
+
+              <Button buttonLabel="사고 뭉치" />
+
+              <Button buttonLabel="자랑 일기" />
             </div>
+
+            {/* 제목 10글자 넘으면 ...으로 바꿔주기 */}
             <div className="flex flex-col gap-y-4">
               <textarea
-                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
                 placeholder="제목"
                 onChange={(e) => setTitle(e.target.value)}
                 rows={1}
               />
 
               <textarea
-                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
                 placeholder="메모"
                 onChange={(e) => setMemo(e.target.value)}
                 rows={13}
@@ -266,7 +228,7 @@ function DiaryWritePage() {
           </div>
 
           <textarea
-            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-[#A17762]"
+            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
             placeholder="오늘의 일기"
             onChange={(e) => setContent(e.target.value)}
             rows={16}
@@ -287,7 +249,7 @@ function DiaryWritePage() {
                   className="hidden"
                 />
 
-                <span className="block mt-4 px-1 py-2 border rounded-[8px] text-[#A17762] text-center text-sm">
+                <span className="block mt-4 px-1 py-2 border rounded-[8px] text-BrownPoint text-center text-sm">
                   사진 첨부하기
                 </span>
               </label>
