@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { supabase } from "@/supabase/client";
@@ -143,7 +145,7 @@ function DiaryWritePage() {
         onSubmit={handleSubmitButton}
         className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
       >
-        <div className="absolute top-[46px] ml-36">
+        <div className="absolute top-[88px] ml-40">
           <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
         </div>
 
