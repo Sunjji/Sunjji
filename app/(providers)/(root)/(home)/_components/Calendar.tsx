@@ -5,6 +5,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
+
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "../_style/Calendar.css";
 
@@ -15,6 +17,7 @@ type FullCalendarEvent = {
 };
 
 function Calendar() {
+  const router = useRouter();
   const [events, setEvents] = useState<FullCalendarEvent[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
@@ -43,6 +46,9 @@ function Calendar() {
     })();
   }, [isLoggedIn]);
 
+  const handleClickCreateDiary = (arg) => {
+    router.push(`diaries/write`);
+  };
   // 드래그앤드롭 이벤트 핸들러
   const handleDropEvent = async (info: EventDragStopArg) => {
     const newDate = info.event.startStr;
@@ -67,13 +73,21 @@ function Calendar() {
     const dayNumber = arg.dayNumberText.replace("일", "");
     return dayNumber;
   };
+
+  const handleDayHeaderContent = (arg) => {
+    // 요일 배열
+    const weekdays = ["ㅤ일", "ㅤ월", "ㅤ화", "ㅤ수", "ㅤ목", "ㅤ금", "ㅤ토"];
+    // 요일 인덱스를 구하여 반환
+    return weekdays[arg.date.getDay()]; // getDay()는 0 (일요일)부터 6 (토요일)까지 반환
+  };
+
   return (
     <>
-      <div className="mt-[30px] ml-[50px] rounded-[8px] bg-point w-[600px] h-[400px] ">
+      <div className="rounded-[8px] bg-whitePoint w-full">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          height="400px"
+          height="420px"
           headerToolbar={{
             start: "prev",
             center: "title",
@@ -82,12 +96,14 @@ function Calendar() {
           expandRows={true}
           navLinks={true}
           droppable={true}
+          navLinkDayClick={handleClickCreateDiary}
           locale={"ko"}
-          eventBackgroundColor="pink"
-          eventBorderColor="pink"
+          eventBackgroundColor="#E3F4E5"
+          eventTextColor="#2E7D32"
           events={events}
-          eventDrop={handleDropEvent}
-          dayCellContent={handleDayCellContent}
+          eventDrop={handleDropEvent} //드래그앤드롭하면 일기 날짜도 바귐
+          dayCellContent={handleDayCellContent} //"일"삭제
+          dayHeaderContent={handleDayHeaderContent} //"요일 칸 맞추기용"
         />
       </div>
     </>
