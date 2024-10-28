@@ -43,3 +43,11 @@ export type Pet = {
   comment: string;
   imageUrl: string;
 };
+
+export type DiaryInfo = {
+  id: number;
+  title: string;
+  content: string;
+  imageUrl: string;
+  createdAt: string;
+};
