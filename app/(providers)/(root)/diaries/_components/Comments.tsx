@@ -7,7 +7,7 @@ import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
 import CommentButton from "./CommentButton";
@@ -52,7 +52,9 @@ function Comments() {
     })();
   }, []);
 
-  const handleClickCommentButton = async () => {
+  const handleSubmitComment: ComponentProps<"form">["onSubmit"] = async (e) => {
+    e.preventDefault();
+
     if (!newContent)
       return toast("💛 댓글을 작성하여 주세요", getToastOptions("warning"));
 
@@ -100,7 +102,7 @@ function Comments() {
   };
 
   return (
-    <div className="flex flex-col w-[380px] bg-white rounded-lg shadow-xl">
+    <div className="flex flex-col bg-white rounded-lg">
       <div className="h-[550px] relative">
         <ul className="mt-2">
           {comments.map((comment) => (
@@ -137,21 +139,24 @@ function Comments() {
           <CommentButton commentsCount={comments.length} />
         </div>
       </div>
-      <div className="flex items-center z-10 shadow-[0_-4px_6px_rgba(0,0,0,0.05)]">
-        <textarea
-          className="rounded-bl-lg p-4 flex-grow resize-none text-BrownPoint placeholder-BrownPoint text-2xl h-[65.6px] placeholder-opacity-75 focus:outline-none focus:ring-0"
-          rows={2}
+      <form
+        className="flex items-center z-10 border-t border-BrownPoint/20"
+        onClick={handleSubmitComment}
+      >
+        <input
+          type="text"
+          className="rounded-bl-lg p-4 flex-grow text-BrownPoint placeholder-BrownPoint text-2xl h-[65.6px] placeholder-opacity-75 focus:outline-none focus:ring-0"
           onChange={(e) => setNewContent(e.target.value)}
           value={newContent}
           placeholder="댓글 남기기..."
         />
         <button
           className="rounded-br-lg w-[65.6px] h-[65.6px] text-center hover:underline active:brightness-50 bg-white text-2xl text-BrownPoint focus:outline-none"
-          onClick={handleClickCommentButton}
+          type="submit"
         >
           게시
         </button>
-      </div>
+      </form>
     </div>
   );
 }
