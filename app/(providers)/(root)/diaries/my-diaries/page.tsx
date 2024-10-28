@@ -9,12 +9,10 @@ async function UserViewPage() {
   const { data } = await supabase.auth.getUser();
   const authorId = data.user?.id;
 
-  const response = await supabase
+  await supabase
     .from("diaries")
     .select()
     .eq("authorId", authorId);
-
-  const diaries = response.data;
 
   console.log(authorId);
   return (

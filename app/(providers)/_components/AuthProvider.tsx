@@ -9,7 +9,6 @@ function AuthProvider({ children }: PropsWithChildren) {
   const logIn = useAuthStore((state) => state.logIn);
   const logOut = useAuthStore((state) => state.logOut);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
-  const currentUserId = useAuthStore((state) => state.currentUserId);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
 
   useEffect(() => {
