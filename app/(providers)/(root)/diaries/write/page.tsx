@@ -2,6 +2,7 @@
 
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -28,7 +29,10 @@ function DiaryWritePage() {
 
   const openModal = useModalStore((state) => state.openModal);
   const [pets, setPets] = useState<Tables<"pets">[]>([]);
-  const [isClicked, setIsClicked] = useState([false, false, false]);
+  const [firstPet, setFirstPet] = useState<Tables<"pets">>();
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+
+  const [isClicked, setIsClicked] = useState([false, false, false]); // 미완성
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +41,6 @@ function DiaryWritePage() {
     }
   }, [file]);
 
-  // state로 해서 값이 한 개만 들어감..
   useEffect(() => {
     (async () => {
       const { data: pets } = await supabase
@@ -45,8 +48,6 @@ function DiaryWritePage() {
         .select("*")
         .in("id", selectedPetIds);
 
-      console.log(pets);
-      console.log(selectedPetIds);
       if (!pets) {
         return console.log("pets error");
       } else {
@@ -54,6 +55,28 @@ function DiaryWritePage() {
       }
     })();
   }, [selectedPetIds]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUserId);
+
+      if (!profiles) return;
+
+      const { data: pets, error } = await supabase
+        .from("pets")
+        .select("*")
+        .in(
+          "id",
+          profiles!.map((data) => data.firstPetId)
+        )
+        .single();
+      if (!pets) return console.log("pets error", error);
+      setFirstPet(pets);
+    })();
+  }, [currentUserId, pets]);
 
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
@@ -127,6 +150,26 @@ function DiaryWritePage() {
         <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
           <div className="col-span-3 flex gap-x-4 items-center mb-4">
             <p className="text-[#A17762]">오늘 어떤 변화가 있었나요?</p>
+
+            <Link href={"/my-page"}>
+              <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
+                <img
+                  className="rounded-full w-8 h-8 object-cover"
+                  src={`${baseURL}${firstPet?.imageUrl}`}
+                  alt="펫 이미지"
+                />
+                <div className="flex flex-col">
+                  <p>
+                    {firstPet?.name} · {firstPet?.gender}
+                  </p>
+
+                  <p>
+                    {firstPet?.weight} / {firstPet?.age}
+                  </p>
+                </div>
+              </div>
+            </Link>
+
             {pets.map((pet) => (
               <Link key={pet.id} href={"/my-page"}>
                 <div className="text-sm p-2 flex gap-x-2 text-[#A17762] border  rounded-[8px] w-auto h-[50px] items-center">
