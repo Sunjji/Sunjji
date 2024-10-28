@@ -63,7 +63,7 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       imageFile: undefined,
-      imageUrl: `https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`,
+      imageUrl: pet.imageUrl,
     });
   };
 
@@ -115,7 +115,7 @@ function AllPets() {
               <h2 className="text-3xl">반려동물 수정 모드</h2>
               {formState.imageUrl && (
                 <img
-                  src={formState.imageUrl}
+                  src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${formState.imageUrl}`}
                   alt={pet.name}
                   className="w-32 h-32 object-cover mb-2"
                 />
