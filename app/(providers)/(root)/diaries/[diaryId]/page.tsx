@@ -23,7 +23,8 @@ function DiaryDetailPage() {
   const { diaryId } = params;
   const [diaries, setDiaries] = useState<Tables<"diaries">>();
   const [profiles, setProfiles] = useState<Tables<"profiles">>();
-  const [pets, setPets] = useState<Tables<"pets">>();
+  const [firstPet, setFirstPet] = useState<Tables<"pets">>();
+  // const [pets, setPets] = useState<Tables<"pets">[]>([]);
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const [isClicked, setIsClicked] = useState([false, false, false]); // 컴포넌트화?/미완성
   const router = useRouter();
@@ -47,18 +48,27 @@ function DiaryDetailPage() {
       } else {
         const profile = profiles?.find((data) => data.id === diaries.authorId);
 
-        const { data: pets, error } = await supabase
+        const { data: firstPet, error } = await supabase
           .from("pets")
           .select("*")
-          .eq("butlerId", diaries.authorId)
+          .eq("id", profile.firstPetId)
           .single();
         if (error) {
-          return console.log("pets error", error);
+          return console.log("firstPet error", error);
+        }
+
+        const { data: pets } = await supabase
+          .from("pets")
+          .select("*")
+          .eq("butlerId", profile.id);
+        if (!pets) {
+          return console.log("pets error");
         }
 
         setDiaries(diaries);
         setProfiles(profile);
-        setPets(pets);
+        setFirstPet(firstPet);
+        // setPets(pets);
       }
     })();
   }, []);
@@ -161,16 +171,16 @@ function DiaryDetailPage() {
             <div className="flex">
               <div
                 className="grid grid-cols-3 gap-x-4 items-center text-sm"
-                key={pets?.id}
+                key={firstPet?.id}
               >
                 <p className="col-span-1 text-xl font-semibold ">
                   {profiles.nickname}
                 </p>
                 <p className="col-span-2">
-                  {pets?.name} · {pets?.gender}
+                  {firstPet?.name} · {firstPet?.gender}
                 </p>
                 <p className="col-span-3">
-                  {pets?.weight}kg / {pets?.age}세
+                  {firstPet?.weight}kg / {firstPet?.age}세
                 </p>
               </div>
             </div>
@@ -181,6 +191,10 @@ function DiaryDetailPage() {
             한 줄 메모: <br />
             {diaries.comment}
           </p>
+
+          {/* {pets.map((pet) => (
+            <p>{pet.name}</p>
+          ))} */}
         </div>
       </div>
     </Page>
