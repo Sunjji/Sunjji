@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
 import Comments from "../_components/Comments";
+import dayjs from "dayjs";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -94,60 +95,61 @@ function DiaryDetailPage() {
     <Page>
       <ToastContainer />
       <div className="grid grid-cols-3 text-[#A17762]">
-        <div className="flex gap-x-4 col-span-3">
-          <div className="flex gap-x-4 mb-4">
+        <div className="flex gap-x-4 col-span-3 absolute top-[82px] left-[430px] ">
+          <div className="flex gap-x-10 mb-4">
             {/* 미완성 */}
             <button
               onClick={() => handleClick(0)}
               type="button"
-              className="border px-3 py-2 rounded-[8px]"
+              className="rounded-[8px] w-[150px] h-[70px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white"
             >
               공개 일기
             </button>
             <button
               onClick={() => handleClick(1)}
               type="button"
-              className="border px-3 py-2 rounded-[8px]"
+              className="rounded-[8px] w-[150px] h-[70px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white"
             >
-              오늘의 사고 뭉치
+              오늘의 <br /> 사고 뭉치
             </button>
             <button
               onClick={() => handleClick(2)}
               type="button"
-              className="border px-3 py-2 rounded-[8px]"
+              className="rounded-[8px] w-[150px] h-[70px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white"
             >
-              이것 좀 보세요 ~!
+              이것 좀 <br /> 보세요 ~!
             </button>
           </div>
         </div>
-
+        <div className="bg-whitePoint flex w-[1200px] p-7 rounded-[8px]">
         <div className="col-span-1 gap-4">
-          <div className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-3">
             {/* 제목 */}
-            <h2 className="text-lg font-bold">{diaries.title}</h2>
+            <h2 className="text-2xl font-bold">{diaries.title}</h2>
 
             {/* 일기 사진 */}
-            <img className="w-full" src={`${baseURL}${diaries.imageUrl}`} />
+            <div className="aspect-w-4 aspect-h-3 w-[430px]">
+              <img className="w-full h-full object-cover" src={`${baseURL}${diaries.imageUrl}`} />
+            </div>
 
-            {/* 글쓴이 */}
-
-            <p>글쓴이: {profiles.nickname}</p>
+            {/* 작성 시간 */}
+            <p className="text-xl">{dayjs(profiles.createdAt).format('YYYY.MM.DD A hh:mm')}</p>
 
             {/* 일기 내용 */}
-            <p className=" w-full text-sm">{diaries.content}</p>
+            <p className=" w-full text-lg">{diaries.content}</p>
 
             {/* 자기 일기라면 편집, 삭제 버튼 띄우기 */}
             {diaries.authorId === currentUserId ? (
-              <div className="mt-10 flex flex-col lg:flex-row gap-2">
+              <div className="mt-5 flex flex-col lg:flex-row gap-2">
                 <Link
-                  className="border rounded-lg w-72 text-center py-2 hover:brightness-90 active:brightness-50"
+                  className="border rounded-lg w-[212px] text-center py-2 hover:brightness-90 active:brightness-50"
                   href={`/diaries/${diaries.id}/edit`}
                 >
                   편집하기
                 </Link>
 
                 <button
-                  className="border rounded-lg w-72 text-center py-2 hover:border-gray-400 active:brightness-50"
+                  className="border rounded-lg w-[212px] text-center py-2 hover:border-gray-400 active:brightness-50"
                   onClick={handleClickDeleteButton}
                 >
                   삭제하기
@@ -156,12 +158,10 @@ function DiaryDetailPage() {
             ) : null}
           </div>
 
-          <div className="flex md:justify-end sm:justify-start sm:pt-5">
-            <Comments />
-          </div>
+          
         </div>
 
-        <div className="col-span-1 w-full">
+        <div className="col-span-1 w-full mt-[46px] ml-7">
           <div key={profiles.id} className="flex gap-x-4">
             <img
               className="rounded-full w-14 h-14 object-cover"
@@ -187,14 +187,18 @@ function DiaryDetailPage() {
           </div>
 
           {/* 한 줄 메모 들어갈 자리 */}
-          <p>
-            한 줄 메모: <br />
+          <p className="text-2xl ml-2 mt-8">
+            한 줄 메모: <br /> <br />
             {diaries.comment}
           </p>
 
           {/* {pets.map((pet) => (
             <p>{pet.name}</p>
           ))} */}
+        </div>
+        <div className="col-span-1 md:justify-end sm:justify-start sm:pt-5">
+          <Comments />
+        </div>
         </div>
       </div>
     </Page>
