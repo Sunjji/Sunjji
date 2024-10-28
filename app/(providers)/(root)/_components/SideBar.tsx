@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaBookOpen,
+  FaDog,
   FaSignInAlt,
   FaSignOutAlt,
   FaUserPlus,
@@ -65,7 +66,7 @@ function SideBar() {
         {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
           <div className="text-BrownPoint font-bold">
             <Link className="flex gap-x-3 items-center mb-5" href={"/"}>
-              <FaHouse /> Home
+              <FaHouse /> 홈
             </Link>
             {isLoggedIn ? ( // isLoggedIn이 true일때 출력
               <>
@@ -73,13 +74,19 @@ function SideBar() {
                   className="flex gap-x-3 items-center mb-5"
                   href={"/diaries"}
                 >
-                  <FaBookOpen /> Diaries
+                  <FaBookOpen /> 모두의 일기
                 </Link>
                 <Link
                   className="flex gap-x-3 items-center mb-5"
                   href={"/diaries/my-diaries"}
                 >
                   <FaBookBookmark /> 내 일기
+                </Link>
+                <Link
+                  className="flex gap-x-3 items-center mb-5"
+                  href={"/diaries/my-diaries"}
+                >
+                  <FaDog /> 내 반려동물들
                 </Link>
                 <button
                   className="flex gap-x-3 items-center"

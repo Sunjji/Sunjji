@@ -1,5 +1,15 @@
 import { supabase } from "@/supabase/client";
 
+async function getPublicDiaries() {
+  const response = await supabase
+    .from("diaries")
+    .select("*, author:profiles (*), comments(id)")
+    .eq("isPublic", true);
+  const publicDiaries = response.data;
+
+  return publicDiaries;
+}
+
 async function getDiary(diaryId: string) {
   const diary = await supabase
     .from("diaries")
@@ -20,6 +30,7 @@ async function deleteDiary(diaryId: string) {
 }
 
 const diariesApi = {
+  getPublicDiaries,
   getDiary,
   deleteDiary,
 };
