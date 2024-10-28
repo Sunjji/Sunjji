@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import LogInModal from "@/components/LoginModal";
 //임시헤더
