@@ -18,7 +18,7 @@ const baseURL =
 function DiaryBox({ diary }: DiaryBoxProps) {
   return (
     <Link href={`/diaries/${diary.id}`}>
-      <div className="relative group rounded-[8px] bg-whitePoint border hover:shadow-md transition border-BrownPoint/20">
+      <div className="relative group rounded-[8px] bg-whitePoint border hover:border-BrownPoint transition border-BrownPoint/20">
         <div className="flex items-center px-3 py-2.5">
           <img
             src={diary.author!.imageUrl}
