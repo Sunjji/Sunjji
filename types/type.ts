@@ -52,4 +52,9 @@ export type DiaryInfo = {
   content: string;
   imageUrl: string;
   createdAt: string;
+  author: {
+    id: string;
+    imageUrl: string;
+    nickname: string;
+  };
 };
