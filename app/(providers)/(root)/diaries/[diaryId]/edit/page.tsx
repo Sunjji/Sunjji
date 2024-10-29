@@ -38,6 +38,7 @@ function DiaryEditPage() {
   useEffect(() => {
     (async () => {
       const { data: diaries } = await api.diaries.getDiary(diaryId.toString());
+      if (!diaries) return;
 
       setTitle(diaries.title);
       setContent(diaries.content);
