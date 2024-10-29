@@ -13,7 +13,7 @@ import { getToastOptions } from "../../_components/getToastOptions";
 import CommentButton from "./CommentButton";
 import HeartButton from "./HeartButton";
 
-type CustomComment = Tables<"comments"> & { profile: Tables<"profiles"> };
+type CustomComment = Tables<"comments"> & { author: Tables<"profiles">[] }; // author가 배열인 경우
 
 function Comments() {
   const params = useParams();
@@ -31,24 +31,8 @@ function Comments() {
 
       if (error) return console.log("comments error", error);
 
-      // 프로필 가져오기
-      const { data: profiles } = await supabase.from("profiles").select("*");
-
-      if (!profiles) return console.log("profiles error");
-
-      // 댓글 단 유저의 프로필 정보 찾기
-      const match = comments!.map((comment) => {
-        const profile = profiles.find(
-          (profile) => comment.authorId === profile.id
-        );
-
-        return {
-          ...comment,
-          profile: profile,
-        };
-      });
-
-      setComments(match);
+      console.log("comments", comments);
+      setComments(comments || []);
     })();
   }, []);
 
@@ -76,24 +60,8 @@ function Comments() {
     if (error) {
       return console.log("comments error", error);
     }
-    // 프로필 가져오기
-    const { data: profiles } = await supabase.from("profiles").select("*");
-
-    if (!profiles) return console.log("profiles error");
-
-    // 댓글 단 유저의 프로필 정보 찾기
-    const match = comments!.map((comment) => {
-      const profile = profiles.find(
-        (profile) => comment.authorId === profile.id
-      );
-
-      return {
-        ...comment,
-        profile: profile,
-      };
-    });
-    // setComments에 다시 넣기
-    setComments(match);
+    console.log("comments", comments);
+    setComments(comments || []);
   };
 
   const handleClickDeleteButton = async (commentId: number) => {
@@ -112,7 +80,7 @@ function Comments() {
             >
               <img
                 className="w-14 h-14 rounded-full object-cover"
-                src={`${comment.profile?.imageUrl}`}
+                src={`${comment.author?.imageUrl}`}
                 alt="프로필 이미지"
               />
 
@@ -129,7 +97,7 @@ function Comments() {
                 {comment.content}
               </p>
 
-              <p>{comment.profile?.nickname}</p>
+              <p>{comment.author?.nickname}</p>
             </li>
           ))}
         </ul>
