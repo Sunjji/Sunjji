@@ -27,14 +27,7 @@ function DiaryDetailPage() {
   const [firstPet, setFirstPet] = useState<Tables<"pets">>();
   // const [pets, setPets] = useState<Tables<"pets">[]>([]);
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  const [isClicked, setIsClicked] = useState([false, false, false]); // 컴포넌트화?/미완성
   const router = useRouter();
-
-  const handleClick = (index: number) => {
-    const newClickedState = [false, false, false]; // 초기화
-    newClickedState[index] = !isClicked[index]; // 클릭한 버튼만 반전
-    setIsClicked(newClickedState);
-  };
 
   useEffect(() => {
     (async () => {
@@ -49,12 +42,10 @@ function DiaryDetailPage() {
       } else {
         const profile = profiles?.find((data) => data.id === diaries.authorId);
 
-        if (!profile) return
-
         const { data: firstPet, error } = await supabase
           .from("pets")
           .select("*")
-          .eq("id", !profile.firstPetId)
+          .eq("id", profile.firstPetId)
           .single();
         if (error) {
           return console.log("firstPet error", error);

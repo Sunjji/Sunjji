@@ -134,7 +134,7 @@ function Comments() {
           ))}
         </ul>
         <div className="flex gap-2 absolute bottom-0 px-4 py-3 bg-white w-full z-5">
-          <HeartButton diaryId={diaryId.toString()} />
+          <HeartButton diaryId={+diaryId} />
 
           <CommentButton commentsCount={comments.length} />
         </div>
