@@ -17,6 +17,7 @@ const PetProfile = () => {
     gender: "",
     name: "",
     comment: "",
+    breed: "",
     imageUrl: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -98,6 +99,12 @@ const PetProfile = () => {
       return;
     }
 
+    if (!formData.breed) {
+      setIsLoading(false);
+      toast("💛 품종을 입력해 주세요", getToastOptions("warning"));
+      return;
+    }
+
     if (!formData.comment) {
       setIsLoading(false);
       toast("💛 한 줄 소개를 입력해 주세요", getToastOptions("warning"));
@@ -129,6 +136,7 @@ const PetProfile = () => {
       gender: "",
       name: "",
       comment: "",
+      breed: "", // 필드 초기화
       imageUrl: "",
     });
     setIsLoading(false);
@@ -171,6 +179,17 @@ const PetProfile = () => {
             <input
               name="name"
               value={formData.name}
+              onChange={handleInputChange}
+              type="text"
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-2xl">품종</label>
+            <input
+              name="breed"
+              value={formData.breed}
               onChange={handleInputChange}
               type="text"
               className="border rounded px-2 py-1 w-full"
