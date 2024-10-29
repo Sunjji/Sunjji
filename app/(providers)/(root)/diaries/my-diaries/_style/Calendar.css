@@ -48,14 +48,8 @@ a {
   color: #a17762;
   border: none;
 }
-.fc-daygrid-day-frame {
-  border: none !important; /* 격자선 제거 */
-}
-
-/* 각 날짜 셀에 라운드 적용 */
-.fc-daygrid-day {
-  border-radius: 10px;
-  overflow: hidden;
+.fc .fc-view-harness {
+  display: none;
 }
 
 /* 기본적으로 테두리를 모두 투명하게 처리 */
