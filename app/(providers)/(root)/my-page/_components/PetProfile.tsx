@@ -154,13 +154,15 @@ const PetProfile = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <button
-        onClick={() => setFormVisible(true)}
-        className="border border-black px-2 py-1 rounded-lg mb-4"
-      >
-        반려동물 등록
-      </button>
+    <div>
+      {formVisible ? null : (
+        <button
+          onClick={() => setFormVisible(true)}
+          className="w-[350px] text-2xl font-bold text-BrownPoint"
+        >
+          +
+        </button>
+      )}
 
       {formVisible && (
         <form onSubmit={handleSubmit} className="mt-4">

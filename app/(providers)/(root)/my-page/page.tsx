@@ -4,7 +4,6 @@ import Page from "@/app/(providers)/(root)/_components/Page/Page";
 import { supabase } from "@/supabase/client";
 import { useEffect, useState } from "react";
 import AllPets from "./_components/AllPets";
-import CreatePet from "./_components/PetProfile";
 import UserProfile from "./_components/UserProfile";
 
 type Profile = {
@@ -55,7 +54,6 @@ function MyPage() {
 
         <div className="w-[70%]">
           <h1 className="text-2xl font-bold mb-5 text-BrownPoint">반려동물</h1>
-          <CreatePet />
           {profile && <AllPets />}
         </div>
       </div>
