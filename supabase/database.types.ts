@@ -114,8 +114,8 @@ export type Database = {
       pets: {
         Row: {
           age: number
-          birth: string | null
-          breed: string | null
+          birth: string
+          breed: string
           butlerId: string
           comment: string
           created_at: string
@@ -127,8 +127,8 @@ export type Database = {
         }
         Insert: {
           age: number
-          birth?: string | null
-          breed?: string | null
+          birth: string
+          breed: string
           butlerId?: string
           comment?: string
           created_at?: string
@@ -140,8 +140,8 @@ export type Database = {
         }
         Update: {
           age?: number
-          birth?: string | null
-          breed?: string | null
+          birth?: string
+          breed?: string
           butlerId?: string
           comment?: string
           created_at?: string

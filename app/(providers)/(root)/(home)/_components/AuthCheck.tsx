@@ -2,6 +2,7 @@
 
 import { useAuthStore } from "@/zustand/auth.store";
 import RecentDiary from "./RecentDiary";
+import MyFirstPet from "./MyFirstPet";
 
 function AuthCheck() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -19,7 +20,8 @@ function AuthCheck() {
             </div>
             <div className="rounded-2xl bg-whitePoint p-5 h-72">OO의 생일</div>
             <div className="rounded-2xl bg-whitePoint p-5 h-full">
-              나의 반려동물
+              <h2>나의 반려동물</h2>
+              <MyFirstPet />
             </div>
           </div>
         </div>
