@@ -1,12 +1,19 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import api from "@/api/api";
 import { supabase } from "@/supabase/client";
+import { Tables } from "@/supabase/database.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { nanoid } from "nanoid";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../../_components/getToastOptions";
+import Page from "../../../_components/Page/Page";
+import Button from "../../_components/Button";
 import IsPublicToggle from "../../_components/IsPublicToggle";
 
 const baseURL =
@@ -19,14 +26,19 @@ function DiaryEditPage() {
   const [content, setContent] = useState("");
   const [memo, setMemo] = useState("");
   const [file, setFile] = useState<null | File>(null);
+  const [firstPet, setFirstPet] = useState<Tables<"pets">>();
   const [imageUrl, setImageUrl] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const router = useRouter();
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+  const [pets, setPets] = useState<Tables<"pets">[]>([]);
+  const [selectedPetIds] = useState<number[]>([]);
 
   // diaries 정보 가져오기
   useEffect(() => {
     (async () => {
       const { data: diaries } = await api.diaries.getDiary(diaryId.toString());
+      if (!diaries) return;
 
       setTitle(diaries.title);
       setContent(diaries.content);
@@ -41,6 +53,43 @@ function DiaryEditPage() {
       setImageUrl(URL.createObjectURL(file));
     }
   }, [file]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: pets } = await supabase
+        .from("pets")
+        .select("*")
+        .in("id", selectedPetIds);
+
+      if (!pets) {
+        return console.log("pets error");
+      } else {
+        setPets(pets);
+      }
+    })();
+  }, [selectedPetIds]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUserId!);
+
+      if (!profiles) return;
+
+      const { data: pets, error } = await supabase
+        .from("pets")
+        .select("*")
+        .in(
+          "id",
+          profiles!.map((data) => data.firstPetId)
+        )
+        .single();
+      if (!pets) return console.log("pets error", error);
+      setFirstPet(pets);
+    })();
+  }, [currentUserId, pets]);
 
   // form 제출 버튼
   const handleSubmitButton: ComponentProps<"form">["onSubmit"] = async (e) => {
@@ -81,57 +130,123 @@ function DiaryEditPage() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmitButton}
-      className="flex flex-col gap-y-5 p-5 w-[500px]"
-    >
-      <div className="flex gap-x-7">
-        <img className="w-32" src={imageUrl} />
-
-        <div className="flex flex-col gap-y-2 flex-grow">
-          <label htmlFor="file">사진을 선택해주세요</label>
-          <input
-            id="file"
-            type="file"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            className="px-1 py-2 border rounded-lg hover:border-gray-400"
-          />
-        </div>
-      </div>
-
-      <label htmlFor="title">일기 제목</label>
-      <textarea
-        onChange={(e) => setTitle(e.target.value)}
-        value={title}
-        className="border rounded-lg p-2 resize-none hover:border-gray-400"
-        rows={2}
-      />
-
-      <label htmlFor="content">일기 내용</label>
-      <textarea
-        onChange={(e) => setContent(e.target.value)}
-        value={content}
-        className="border rounded-lg p-2 resize-none hover:border-gray-400"
-        rows={10}
-      />
-
-      <label htmlFor="content">한 줄 메모</label>
-      <textarea
-        onChange={(e) => setMemo(e.target.value)}
-        value={memo}
-        className="border rounded-lg p-2 resize-none hover:border-gray-400"
-        rows={10}
-      />
-
-      <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
-
-      <button
-        type="submit"
-        className="border rounded-lg text-center py-2 hover:border-gray-400 active:brightness-50"
+    <Page title={"수정페이지"}>
+      <form
+        onSubmit={handleSubmitButton}
+        className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
       >
-        수정하기
-      </button>
-    </form>
+        <div className="grid grid-cols-3 gap-x-3 p-5 bg-[#FFFEFA] rounded-[8px] w-full">
+          <div className="col-span-3 flex gap-x-4 items-center mb-4">
+            <Link href={"/my-page"}>
+              <div className="text-sm p-2 flex gap-x-2 text-BrownPoint border rounded-[8px] w-auto h-[50px] items-center">
+                <img
+                  className="rounded-full w-8 h-8 object-cover"
+                  src={`${baseURL}${firstPet?.imageUrl}`}
+                  alt="펫 이미지"
+                />
+                <div className="flex flex-col">
+                  <p>
+                    {firstPet?.name} · {firstPet?.gender}
+                  </p>
+
+                  <p>
+                    {firstPet?.weight} / {firstPet?.age}
+                  </p>
+                </div>
+              </div>
+            </Link>
+
+            {pets.map((pet) => (
+              <Link key={pet.id} href={"/my-page"}>
+                <div className="text-sm p-2 flex gap-x-2 text-BrownPoint border rounded-[8px] w-auto h-[50px] items-center">
+                  <img
+                    className="rounded-full w-8 h-8 object-cover"
+                    src={`${baseURL}${pet.imageUrl}`}
+                    alt="펫 이미지"
+                  />
+                  <div className="flex flex-col">
+                    <p>
+                      {pet.name} · {pet.gender}
+                    </p>
+
+                    <p>
+                      {pet.weight} / {pet.age}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            <div className="flex gap-x-4 ml-auto">
+              <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
+              <button
+                type="submit"
+                className="text-BrownPoint border py-2 rounded-[8px] w-[100px] h-[40px] font-semibold text-center"
+              >
+                수정하기
+              </button>
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <div className="flex gap-x-4 mb-4 ">
+              {/* 미완성 */}
+              <Button buttonLabel="일기" />
+
+              <Button buttonLabel="사고 뭉치" />
+
+              <Button buttonLabel="자랑 일기" />
+            </div>
+
+            {/* 제목 10글자 넘으면 ...으로 바꿔주기 */}
+            <div className="flex flex-col gap-y-4">
+              <textarea
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                className="border rounded-lg p-2 resize-none hover:border-gray-400"
+                rows={2}
+              />
+
+              <textarea
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+                rows={13}
+              />
+            </div>
+          </div>
+
+          <textarea
+            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={16}
+          />
+
+          <div className="flex flex-col">
+            <img
+              className={imageUrl !== "" ? "w-full rounded-[8px]" : ""}
+              src={imageUrl}
+            />
+
+            <div className="flex flex-col gap-y-2 ">
+              <label htmlFor="file">
+                <input
+                  id="file"
+                  type="file"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  className="hidden"
+                />
+
+                <span className="block mt-4 px-1 py-2 border rounded-[8px] text-BrownPoint text-center text-sm">
+                  사진 첨부하기
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </Page>
   );
 }
 

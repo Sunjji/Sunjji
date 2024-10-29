@@ -17,7 +17,7 @@ function DiariesWriteButton() {
     <>
       {currentUserId !== null ? (
         <button
-          className="rounded-[8px] w-[150px] h-[60px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white border border-BrownPoint/50"
+          className="rounded-[8px] w-[150px] h-[60px] text-3xl text-opacity-50 font-semibold text-BrownPoint bg-whitePoint text-center transition duration-300 hover:bg-BrownPoint hover:text-white" // 선주가 버튼 테두리 빼라고 요청함
           onClick={handleClickDiariesWriteButton}
         >
           일기 쓰기
