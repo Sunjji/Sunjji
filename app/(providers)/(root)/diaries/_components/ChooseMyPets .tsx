@@ -27,13 +27,17 @@ function ChooseMyPets({ setSelectedPetIds }: ChooseMyPetsProps) {
 
   useEffect(() => {
     (async () => {
-      const { data: profiles } = await supabase
+      if (!currentUserId) return;
+
+      const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", currentUserId)
         .single();
 
-      setProfiles(profiles);
+      if (profileData) {
+        setProfiles(profileData);
+      }
     })();
   }, [currentUserId]);
 

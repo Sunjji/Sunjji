@@ -49,10 +49,12 @@ function DiaryDetailPage() {
       } else {
         const profile = profiles?.find((data) => data.id === diaries.authorId);
 
+        if (!profile) return
+
         const { data: firstPet, error } = await supabase
           .from("pets")
           .select("*")
-          .eq("id", profile.firstPetId)
+          .eq("id", !profile.firstPetId)
           .single();
         if (error) {
           return console.log("firstPet error", error);

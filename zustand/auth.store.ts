@@ -11,8 +11,8 @@ type AuthStoreState = {
 };
 
 type kakaoLoginState = {
-  kakaoLogin: KakaoLoginType | null;
-  setKakaoLogin: (profile: KakaoLoginType) => void;
+  kakaoLogin: kakaoLoginState | null;
+  setKakaoLogin: (profile: kakaoLoginState) => void;
   resetToKakaoProfile: () => void;
 };
 

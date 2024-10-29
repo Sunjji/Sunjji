@@ -6,6 +6,7 @@ import MyCalendar from "./_components/MyCalendar";
 async function UserViewPage() {
   const { data } = await supabase.auth.getUser();
   const authorId = data.user?.id;
+  if (!authorId) return;
   await supabase.from("diaries").select().eq("authorId", authorId);
 
   return (

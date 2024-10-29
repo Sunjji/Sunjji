@@ -37,6 +37,7 @@ function HeartButton({ diaryId }: HeartButtonProps) {
         .eq("diaryId", diaryId);
 
       setLike(count || 0);
+      if (!userId) return;
 
       const { data } = await supabase
         .from("likes")

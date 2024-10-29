@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { supabase } from "@/supabase/client";
@@ -13,11 +14,16 @@ function UserProfile() {
 
   useEffect(() => {
     (async () => {
+      if (!currentUserId) return;
+
       const { data: profiles, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", currentUserId)
         .single();
+
+      if (!profiles) return;
+      if (!profiles.firstPetId) return;
 
       const { data: pets, error: petsError } = await supabase
         .from("pets")

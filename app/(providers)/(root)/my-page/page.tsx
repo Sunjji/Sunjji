@@ -23,6 +23,8 @@ function MyPage() {
       const response = await supabase.auth.getUser();
       const user = response.data.user;
 
+      if (!user) return;
+
       const { data: profilesData } = await supabase
         .from("profiles")
         .select("*")
