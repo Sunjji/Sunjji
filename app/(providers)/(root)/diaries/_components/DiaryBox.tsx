@@ -58,11 +58,11 @@ function DiaryBox({ diary }: DiaryBoxProps) {
           <p>{diary.title}</p>
         </div>
 
-        <div className="text-center text-BrownPoint mt-[10px] mb-2">
+        <div className="text-center text-BrownPoint mt-[10px] mb-2 h-[52px] px-5">
           {/* 18글자까지만 보여주고, 글자가 길면 "..." 표시 */}
           <p>
-            {diary.content.length > 18
-              ? diary.content.slice(0, 18) + "..."
+            {diary.content.length > 50
+              ? diary.content.slice(0, 50) + "..."
               : diary.content}
           </p>
         </div>
