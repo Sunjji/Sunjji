@@ -1,14 +1,16 @@
-import Button from "@/components/Button/Button";
+"use client";
+
 import Page from "../_components/Page/Page";
+import AllPets from "../my-page/_components/AllPets";
 
 function MyPetsPage() {
   return (
     <Page title="나의 반려동물들">
-      <div className="absolute top-20 right-[84px]">
-        <Button>반려동물 등록하기</Button>
-      </div>
+      <div className=""></div>
 
-      <div className="bg-whitePoint p-10 rounded-2xl">blabla</div>
+      <div className="bg-whitePoint p-10 rounded-2xl">
+        <AllPets />
+      </div>
     </Page>
   );
 }
