@@ -37,7 +37,7 @@ function DiaryBox({ diary }: DiaryBoxProps) {
         </div>
 
         {/* 이미지를 비율에 맞춰서 표시 */}
-        <div className="aspect-w-4 aspect-h-3 w-full">
+        <div className="aspect-w-4 aspect-h-3 w-full border-y border-BrownPoint/20">
           <img
             className="object-cover w-full h-full"
             src={`${baseURL}/${diary.imageUrl}`}
