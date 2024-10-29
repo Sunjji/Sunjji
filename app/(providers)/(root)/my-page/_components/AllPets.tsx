@@ -53,6 +53,7 @@ function AllPets() {
     breed: "",
     imageFile: undefined as File | undefined,
     imageUrl: "",
+    birth: "", // 생일 필드 추가
   });
 
   const handleEditClick = (pet: Pet) => {
@@ -64,6 +65,7 @@ function AllPets() {
       name: pet.name,
       comment: pet.comment,
       breed: pet.breed,
+      birth: pet.birth,
       imageFile: undefined,
       imageUrl: pet.imageUrl,
     });
@@ -98,6 +100,7 @@ function AllPets() {
       name: formState.name,
       comment: formState.comment,
       breed: formState.breed,
+      birth: formState.birth,
       imageUrl: imageFixPath,
     };
 
@@ -214,6 +217,17 @@ function AllPets() {
                 name="comment"
                 type="text"
               />
+              <input
+                value={formState.birth}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    birth: e.target.value,
+                  }))
+                }
+                name="birth"
+                type="date"
+              />
               <button type="submit">저장하기</button>
               <button type="button" onClick={() => setEditingPetId(null)}>
                 취소
@@ -236,6 +250,7 @@ function AllPets() {
             <p>성별 : {pet.gender}</p>
             <p>품종 : {pet.breed}</p>
             <p>한 줄 소개 : {pet.comment}</p>
+            <p>생일 : {pet.birth}</p>
             <div className="flex justify-between gap-5">
               <button
                 className="border border-black px-2 py-1 rounded-lg"

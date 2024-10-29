@@ -19,6 +19,7 @@ const PetProfile = () => {
     comment: "",
     breed: "",
     imageUrl: "",
+    birth: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
@@ -111,6 +112,12 @@ const PetProfile = () => {
       return;
     }
 
+    if (!formData.birth) {
+      setIsLoading(false);
+      toast("💛 생일을 입력해 주세요", getToastOptions("warning"));
+      return;
+    }
+
     const extension = imageFile!.name.split(".").pop();
     const filename = `${nanoid()}.${extension}`;
 
@@ -136,8 +143,9 @@ const PetProfile = () => {
       gender: "",
       name: "",
       comment: "",
-      breed: "", // 필드 초기화
+      breed: "",
       imageUrl: "",
+      birth: "",
     });
     setIsLoading(false);
     setImageFile(null);
@@ -237,6 +245,17 @@ const PetProfile = () => {
               name="weight"
               type="number"
               value={formData.weight}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-2xl">생일</label>
+            <input
+              name="birth"
+              type="date"
+              value={formData.birth}
               onChange={handleInputChange}
               className="border rounded px-2 py-1 w-full"
             />
