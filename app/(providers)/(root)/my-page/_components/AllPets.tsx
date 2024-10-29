@@ -50,6 +50,7 @@ function AllPets() {
     gender: "",
     name: "",
     comment: "",
+    breed: "",
     imageFile: undefined as File | undefined,
     imageUrl: "",
   });
@@ -62,6 +63,7 @@ function AllPets() {
       gender: pet.gender,
       name: pet.name,
       comment: pet.comment,
+      breed: pet.breed,
       imageFile: undefined,
       imageUrl: pet.imageUrl,
     });
@@ -95,6 +97,7 @@ function AllPets() {
       gender: formState.gender,
       name: formState.name,
       comment: formState.comment,
+      breed: formState.breed,
       imageUrl: imageFixPath,
     };
 
@@ -189,6 +192,18 @@ function AllPets() {
                 type="number"
               />
               <input
+                value={formState.breed}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    breed: e.target.value,
+                  }))
+                }
+                name="breed"
+                type="text"
+                placeholder="품종 입력"
+              />
+              <input
                 value={formState.comment}
                 onChange={(e) =>
                   setFormState((prev) => ({
@@ -219,7 +234,8 @@ function AllPets() {
             <p>몸무게 : {pet.weight}</p>
             <p>나이 : {pet.age}</p>
             <p>성별 : {pet.gender}</p>
-            <p>반려동물 한줄평가 : {pet.comment}</p>
+            <p>품종 : {pet.breed}</p>
+            <p>한 줄 소개 : {pet.comment}</p>
             <div className="flex justify-between gap-5">
               <button
                 className="border border-black px-2 py-1 rounded-lg"

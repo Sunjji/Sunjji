@@ -41,6 +41,7 @@ export type Pet = {
   gender: string;
   name: string;
   comment: string;
+  breed: string;
   imageUrl: string;
 };
 
