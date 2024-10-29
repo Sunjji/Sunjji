@@ -15,6 +15,8 @@ import { getToastOptions } from "../../../_components/getToastOptions";
 import Page from "../../../_components/Page/Page";
 import Button from "../../_components/Button";
 import IsPublicToggle from "../../_components/IsPublicToggle";
+import ChooseMyPets from "../../_components/ChooseMyPets ";
+import { useModalStore } from "@/zustand/modal.store";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -32,7 +34,8 @@ function DiaryEditPage() {
   const router = useRouter();
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const [pets, setPets] = useState<Tables<"pets">[]>([]);
-  const [selectedPetIds] = useState<number[]>([]);
+  const [selectedPetIds, setSelectedPetIds] = useState<number[]>([]);
+  const openModal = useModalStore((state) => state.openModal);
 
   // diaries 정보 가져오기
   useEffect(() => {
@@ -129,8 +132,12 @@ function DiaryEditPage() {
     }
   };
 
+  const handleClickOpenModal = () => {
+    openModal(<ChooseMyPets setSelectedPetIds={setSelectedPetIds} />);
+  };
+
   return (
-    <Page title={"수정페이지"}>
+    <Page title={"수정 페이지"}>
       <form
         onSubmit={handleSubmitButton}
         className="flex flex-col bg-[#FEFBF2] rounded-[8px]"
@@ -177,6 +184,13 @@ function DiaryEditPage() {
               </Link>
             ))}
 
+            <button
+              type="button"
+              className="p-2 text-BrownPoint border rounded-[8px] w-[100px] h-[50px]"
+              onClick={handleClickOpenModal}
+            >
+              +
+            </button>
             <div className="flex gap-x-4 ml-auto">
               <IsPublicToggle isPublic={isPublic} setIsPublic={setIsPublic} />
               <button

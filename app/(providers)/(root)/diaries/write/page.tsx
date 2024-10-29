@@ -14,7 +14,7 @@ import { ComponentProps, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getToastOptions } from "../../_components/getToastOptions";
 import Page from "../../_components/Page/Page";
-import Button from "../_components/button";
+import Button from "../_components/Button";
 import ChooseMyPets from "../_components/ChooseMyPets ";
 import IsPublicToggle from "../_components/IsPublicToggle";
 
@@ -111,7 +111,7 @@ function DiaryWritePage() {
         title,
         content,
         isPublic,
-        imageUrl: result.data?.fullPath,
+        imageUrl: result.data?.fullPath || "",
         comment: memo,
       })
       .select();
@@ -134,7 +134,7 @@ function DiaryWritePage() {
   };
 
   return (
-    <Page title={"작성페이지"}>
+    <Page title={"작성 페이지"}>
       <form
         onSubmit={handleSubmitButton}
         className="flex flex-col bg-[#FEFBF2] rounded-[8px]"

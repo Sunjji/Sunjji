@@ -117,20 +117,19 @@ function DiaryDetailPage() {
 
             {/* 자기 일기라면 편집, 삭제 버튼 띄우기 */}
             {diary.authorId === currentUserId ? (
-              <div className="mt-5 flex flex-col lg:flex-row gap-2">
+                <div className="mt-5 flex flex-col lg:flex-row gap-2"><button
+                  className="border rounded-lg w-[212px] text-center py-2 hover:border-gray-400 active:brightness-50"
+                  onClick={handleClickDeleteButton}
+                >
+                  삭제하기
+                </button>
+
                 <Link
                   className="border rounded-lg w-[212px] text-center py-2 hover:brightness-90 active:brightness-50"
                   href={`/diaries/${diary.id}/edit`}
                 >
                   편집하기
                 </Link>
-
-                <button
-                  className="border rounded-lg w-[212px] text-center py-2 hover:border-gray-400 active:brightness-50"
-                  onClick={handleClickDeleteButton}
-                >
-                  삭제하기
-                </button>
               </div>
             ) : null}
           </div>
