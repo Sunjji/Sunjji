@@ -27,7 +27,7 @@ const PetProfile = () => {
   const queryClient = useQueryClient();
 
   const { mutate: createPet } = useMutation({
-    mutationFn: async (data: Partial<Pet>) => {
+    mutationFn: async (data: Pet) => {
       const response = await supabase.from("pets").insert(data);
       return response.data;
     },
@@ -128,7 +128,7 @@ const PetProfile = () => {
     const petData = { ...formData, imageUrl: data.fullPath };
 
     // 슈파베이스에 반려동물 정보 등록
-    createPet(petData);
+    createPet(petData as Pet);
 
     setFormData({
       weight: 0,
