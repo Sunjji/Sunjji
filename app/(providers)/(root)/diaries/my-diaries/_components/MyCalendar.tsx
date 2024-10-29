@@ -3,10 +3,8 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { EventDragStopArg } from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
-
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "../_style/Calendar.css";
@@ -17,7 +15,7 @@ type FullCalendarEvent = {
   url: string;
 };
 
-function HomeCalendar() {
+function MyCalendar() {
   const router = useRouter();
   const [events, setEvents] = useState<FullCalendarEvent[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -84,7 +82,7 @@ function HomeCalendar() {
 
   return (
     <>
-      <div className="rounded-[8px] bg-whitePoint w-full">
+      <div className="bg-whitePoint w-full">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -94,40 +92,15 @@ function HomeCalendar() {
             center: "title",
             end: "next",
           }}
+          titleFormat={{ month: "long" }}
           expandRows={true}
-          editable={true}
           navLinks={true}
           droppable={true}
           locale={"ko"}
-          eventBackgroundColor="#E3F4E5"
-          eventTextColor="#2E7D32"
-          navLinkDayClick={handleClickCreateDiary}
-          events={events}
-          eventDrop={handleDropEvent} //드래그앤드롭하면 일기 날짜도 바귐
-          dayCellContent={handleDayCellContent} //"일"삭제
-          dayHeaderContent={handleDayHeaderContent} //"요일 칸 맞추기용"
         />
       </div>
-      {events.length > 0 && (
-        <div className=" bg-whitePoint w-full">
-          <FullCalendar
-            plugins={[listPlugin, interactionPlugin]}
-            initialView="listMonth"
-            height="220px"
-            events={events} // 현재 날짜에 맞는 이벤트만 필터링
-            locale={"ko"}
-            displayEventTime={false}
-            eventBackgroundColor="#E3F4E5"
-            headerToolbar={{
-              start: "",
-              center: "",
-              end: "",
-            }}
-          />
-        </div>
-      )}
     </>
   );
 }
 
-export default HomeCalendar;
+export default MyCalendar;
