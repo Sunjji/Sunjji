@@ -29,10 +29,19 @@ async function deleteDiary(diaryId: string) {
   return deleteDiary;
 }
 
+async function getDiaryUserProfile() {
+  const { data } = await supabase
+    .from("diaries")
+    .select("*, author:profiles(id, imageUrl, nickname), comments(id)");
+
+  return data;
+}
+
 const diariesApi = {
   getPublicDiaries,
   getDiary,
   deleteDiary,
+  getDiaryUserProfile,
 };
 
 export default diariesApi;
