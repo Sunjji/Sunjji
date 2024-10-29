@@ -5,6 +5,9 @@ import Link from "next/link";
 import CommentButton from "./CommentButton";
 import HeartButton from "./HeartButton";
 
+// type Diary = Awaited<ReturnType<typeof api.diaries.getPublicDiaries>>
+
+
 interface DiaryBoxProps {
   diary: Exclude<
     Awaited<ReturnType<typeof api.diaries.getPublicDiaries>>,
