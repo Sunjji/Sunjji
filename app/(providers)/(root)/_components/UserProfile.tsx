@@ -23,11 +23,12 @@ function UserProfile() {
         .single();
 
       if (!profiles) return;
+      if (!profiles.firstPetId) return;
 
       const { data: pets, error: petsError } = await supabase
         .from("pets")
         .select("*")
-        .eq("id", !profiles.firstPetId)
+        .eq("id", profiles.firstPetId)
         .single();
 
       if (error) return console.log("diary error", error);
