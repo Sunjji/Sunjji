@@ -114,6 +114,7 @@ export type Database = {
       pets: {
         Row: {
           age: number
+          birth: string | null
           breed: string | null
           butlerId: string
           comment: string
@@ -126,6 +127,7 @@ export type Database = {
         }
         Insert: {
           age: number
+          birth?: string | null
           breed?: string | null
           butlerId?: string
           comment?: string
@@ -138,6 +140,7 @@ export type Database = {
         }
         Update: {
           age?: number
+          birth?: string | null
           breed?: string | null
           butlerId?: string
           comment?: string
@@ -152,7 +155,6 @@ export type Database = {
       }
       profiles: {
         Row: {
-          birth: string | null
           comment: string
           createdAt: string
           customImage: boolean | null
@@ -162,7 +164,6 @@ export type Database = {
           nickname: string
         }
         Insert: {
-          birth?: string | null
           comment?: string
           createdAt?: string
           customImage?: boolean | null
@@ -172,7 +173,6 @@ export type Database = {
           nickname: string
         }
         Update: {
-          birth?: string | null
           comment?: string
           createdAt?: string
           customImage?: boolean | null
