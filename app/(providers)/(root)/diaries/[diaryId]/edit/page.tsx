@@ -6,6 +6,7 @@ import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -14,9 +15,8 @@ import { toast } from "react-toastify";
 import { getToastOptions } from "../../../_components/getToastOptions";
 import Page from "../../../_components/Page/Page";
 import Button from "../../_components/Button";
-import IsPublicToggle from "../../_components/IsPublicToggle";
 import ChooseMyPets from "../../_components/ChooseMyPets ";
-import { useModalStore } from "@/zustand/modal.store";
+import IsPublicToggle from "../../_components/IsPublicToggle";
 
 const baseURL =
   "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -217,23 +217,26 @@ function DiaryEditPage() {
               <textarea
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
-                className="border rounded-lg p-2 resize-none hover:border-gray-400"
+                placeholder="제목"
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
                 rows={2}
               />
 
               <textarea
-                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
-                value={memo}
                 onChange={(e) => setMemo(e.target.value)}
+                value={memo}
+                placeholder="메모"
+                className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
                 rows={13}
               />
             </div>
           </div>
 
           <textarea
-            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
-            value={content}
             onChange={(e) => setContent(e.target.value)}
+            value={content}
+            placeholder="내용"
+            className="border rounded-lg p-2 resize-none hover:border-gray-400 placeholder:text-BrownPoint"
             rows={16}
           />
 
@@ -253,7 +256,7 @@ function DiaryEditPage() {
                 />
 
                 <span className="block mt-4 px-1 py-2 border rounded-[8px] text-BrownPoint text-center text-sm">
-                  사진 첨부하기
+                  사진 수정하기
                 </span>
               </label>
             </div>

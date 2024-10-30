@@ -37,11 +37,22 @@ async function getDiaryUserProfile() {
   return data;
 }
 
+async function getDiaryDetail(diaryId: string) {
+  const { data, error } = await supabase
+    .from("diaries")
+    .select("*, author:profiles(*), comments(id)")
+    .eq("id", Number(diaryId))
+    .single();
+
+  return { data, error };
+}
+
 const diariesApi = {
   getPublicDiaries,
   getDiary,
   deleteDiary,
   getDiaryUserProfile,
+  getDiaryDetail,
 };
 
 export default diariesApi;
