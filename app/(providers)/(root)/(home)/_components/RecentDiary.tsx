@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useModalStore } from "@/zustand/modal.store";
 import dayjs from "dayjs";
 import CommentButton from "../../diaries/_components/CommentButton";
