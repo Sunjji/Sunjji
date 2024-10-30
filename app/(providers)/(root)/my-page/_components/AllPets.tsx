@@ -19,7 +19,6 @@ function AllPets() {
 
   const [isClicked, setIsClicked] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
-  const [warning, setWarning] = useState("");
   const [petId, setPetId] = useState(0);
 
   const { mutate: deletePets } = useMutation({
@@ -53,21 +52,19 @@ function AllPets() {
   const [editingPetId, setEditingPetId] = useState<number | null>(null);
   const [formState, setFormState] = useState({
     weight: 1,
-    age: 1,
     gender: "",
     name: "",
     comment: "",
     breed: "",
     imageFile: undefined as File | undefined,
     imageUrl: "",
-    birth: "", // 생일 필드 추가
+    birth: "",
   });
 
   const handleEditClick = (pet: Pet) => {
     setEditingPetId(pet.id);
     setFormState({
       weight: pet.weight,
-      age: pet.age,
       gender: pet.gender,
       name: pet.name,
       comment: pet.comment,
@@ -102,7 +99,6 @@ function AllPets() {
 
     const updatedPet: Partial<Pet> = {
       weight: formState.weight,
-      age: formState.age,
       gender: formState.gender,
       name: formState.name,
       comment: formState.comment,
@@ -144,46 +140,23 @@ function AllPets() {
   };
 
   const selectGender = (gender: string) => {
-    if (gender === "왕자") {
-      setSelectedGender("왕자");
-      setFormState((prev) => ({
-        ...prev,
-        gender: "왕자",
-      }));
-    } else if (gender === "공주") {
-      setSelectedGender("공주");
-
-      setFormState((prev) => ({
-        ...prev,
-        gender: "공주",
-      }));
-    } else {
-      setSelectedGender("중성");
-      setFormState((prev) => ({
-        ...prev,
-        gender: "중성",
-      }));
-    }
-  };
-
-  const handleFocus = (inputName: string) => {
-    inputName === "weight" && setWarning("몸무게");
-    inputName === "age" && setWarning("나이");
-  };
-  const handleBlur = () => {
-    setWarning("");
+    setSelectedGender(gender);
+    setFormState((prev) => ({
+      ...prev,
+      gender,
+    }));
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-4 text-BrownPoint text-sm text-center">
       {pets?.map((pet) =>
         editingPetId === pet.id ? (
           <form
             key={pet.id}
-            className="flex flex-col rounded-lg items-center border p-4 w-[350px] row-span-3 lg:col-span-1"
+            className="flex flex-col rounded-lg items-center border p-4 row-span-3 lg:col-span-1 w-[420px]"
             onSubmit={(e) => handleFormSubmit(e, pet.id)}
           >
-            <h2 className="text-xl">반려동물 프로필 수정</h2>
+            <h2 className="text-2xl">반려동물 프로필 수정</h2>
             {formState.imageUrl && (
               <img
                 src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${formState.imageUrl}`}
@@ -193,7 +166,7 @@ function AllPets() {
             )}
             <label
               htmlFor="image"
-              className="w-[350px] block mt-2 p-2 border rounded-lg text-BrownPoint text-center text-sm"
+              className="w-full my-4 p-3 border rounded-lg"
             >
               사진 첨부하기
               <input
@@ -219,77 +192,9 @@ function AllPets() {
               name="name"
               type="text"
               placeholder="이름"
-              className="w-[350px] block p-2 mt-4 border rounded-lg text-BrownPoint text-sm placeholder:text-BrownPoint"
+              className="w-full p-3 border rounded-lg placeholder:text-BrownPoint"
             />
-            {/* 성별 */}
-            <div className="flex gap-x-4 my-4">
-              <button
-                type="button"
-                className={`border px-4 py-2 rounded-lg hover:border-BrownPoint
-                  ${selectedGender === "왕자" && "border-BrownPoint"}
-                  transition`}
-                onClick={() => selectGender("왕자")}
-              >
-                왕자
-              </button>
-              <button
-                type="button"
-                className={`border px-4 py-2 rounded-lg hover:border-BrownPoint
-                  ${selectedGender === "공주" && "border-BrownPoint"}
-                  transition`}
-                onClick={() => selectGender("공주")}
-              >
-                공주
-              </button>
-              <button
-                type="button"
-                className={`border px-4 py-2 rounded-lg hover:border-BrownPoint
-                  ${selectedGender === "중성" && "border-BrownPoint"}
-                  transition`}
-                onClick={() => selectGender("중성")}
-              >
-                중성
-              </button>
-            </div>
 
-            {/* 몸무게, 나이 */}
-            {warning === "몸무게" && (
-              <div className="text-red-500 mb-4">몸무게를 적어주세요</div>
-            )}
-            {warning === "나이" && (
-              <div className="text-red-500 mb-4">나이를 적어주세요</div>
-            )}
-            <div className="grid grid-cols-2 items-center text-BrownPoint text-sm gap-x-4 w-[350px]">
-              <input
-                value={formState.weight}
-                onChange={(e) =>
-                  setFormState((prev) => ({
-                    ...prev,
-                    weight: Number(e.target.value),
-                  }))
-                }
-                name="weight"
-                type="number"
-                className="w-[350px] flex items-center p-2 border rounded-lg"
-                onFocus={() => handleFocus("weight")}
-                onBlur={() => handleBlur()}
-              />
-
-              <input
-                value={formState.age}
-                onChange={(e) =>
-                  setFormState((prev) => ({
-                    ...prev,
-                    age: Number(e.target.value),
-                  }))
-                }
-                name="age"
-                type="number"
-                className="w-[350px] flex items-center p-2 border rounded-lg"
-                onFocus={() => handleFocus("age")}
-                onBlur={() => handleBlur()}
-              />
-            </div>
             {/* 품종 */}
             <input
               value={formState.breed}
@@ -302,8 +207,69 @@ function AllPets() {
               name="breed"
               type="text"
               placeholder="품종"
-              className="w-[350px] block my-4 p-2 border rounded-lg text-BrownPoint text-sm placeholder:text-BrownPoint"
+              className="w-full my-4 p-3 border rounded-lg placeholder:text-BrownPoint"
             />
+
+            {/* 성별 */}
+            <div className="flex gap-x-4 w-full">
+              <button
+                type="button"
+                className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+                  ${selectedGender === "왕자" && "border-BrownPoint"}
+                  transition`}
+                onClick={() => selectGender("왕자")}
+              >
+                왕자
+              </button>
+              <button
+                type="button"
+                className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+                  ${selectedGender === "공주" && "border-BrownPoint"}
+                  transition`}
+                onClick={() => selectGender("공주")}
+              >
+                공주
+              </button>
+              <button
+                type="button"
+                className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+                  ${selectedGender === "중성" && "border-BrownPoint"}
+                  transition`}
+                onClick={() => selectGender("중성")}
+              >
+                중성
+              </button>
+            </div>
+
+            {/* 몸무게, 생일 */}
+            <div className="flex my-4 gap-x-4 w-full">
+              <input
+                value={formState.weight}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    weight: Number(e.target.value),
+                  }))
+                }
+                name="weight"
+                type="number"
+                className="border rounded-lg p-3 w-full"
+              />
+
+              <input
+                value={formState.birth}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    birth: e.target.value,
+                  }))
+                }
+                name="birth"
+                type="date"
+                className="border rounded-lg p-3 w-full"
+              />
+            </div>
+
             {/* 한 줄 소개 */}
             <input
               value={formState.comment}
@@ -316,32 +282,16 @@ function AllPets() {
               name="comment"
               type="text"
               placeholder="한 줄 소개"
-              className="w-[350px] block p-2 border rounded-lg text-BrownPoint text-sm placeholder:text-BrownPoint"
-            />
-            {/* 생일 */}
-            <input
-              value={formState.birth}
-              onChange={(e) =>
-                setFormState((prev) => ({
-                  ...prev,
-                  birth: e.target.value,
-                }))
-              }
-              name="birth"
-              type="date"
-              className="w-[350px] block my-4 p-2 border rounded-lg text-BrownPoint text-sm"
+              className="border rounded-lg mb-4 p-3 w-full placeholder:text-BrownPoint"
             />
 
             {/* 수정, 삭제 */}
-            <div className="flex gap-x-4 w-[350px]">
-              <button
-                className="w-[350px] block p-2 border rounded-lg text-BrownPoint text-sm"
-                type="submit"
-              >
+            <div className="flex gap-x-4 w-full">
+              <button className="w-full p-3 border rounded-lg" type="submit">
                 수정하기
               </button>
               <button
-                className="w-[350px] block p-2 border rounded-lg text-BrownPoint text-sm"
+                className="w-full p-3 border rounded-lg"
                 type="button"
                 onClick={() => setEditingPetId(null)}
               >
@@ -352,32 +302,30 @@ function AllPets() {
         ) : (
           <div
             key={pet.id}
-            className="flex gap-x-4 items-center border rounded-lg p-4 w-[350px] col-span-3 lg:col-span-1"
+            className="flex gap-x-4 items-center border rounded-lg p-4 w-[420px] col-span-3 lg:col-span-1"
           >
             <img
               className="w-10 h-10 object-cover rounded-full"
               src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${pet.imageUrl}`}
               alt={pet.name}
             />
-            <div>
+            <div className="text-left">
               <p>
                 {pet.name} · {pet.gender}
               </p>
-              <p>
-                {pet.weight}kg / {pet.age}개월
-              </p>
+              <p>{pet.weight}kg</p>
             </div>
 
             {isClicked && petId === pet.id ? (
               <div className="edit-button flex justify-between gap-4 ml-auto">
                 <button
-                  className="border border-black px-2 py-1 rounded-lg"
+                  className="border px-4 py-1 rounded-lg hover:border-BrownPoint"
                   onClick={() => handleEditClick(pet)}
                 >
                   수정
                 </button>
                 <button
-                  className="border border-black px-2 py-1 rounded-lg"
+                  className="border px-4 py-1 rounded-lg hover:border-BrownPoint"
                   onClick={() => handleClickDeletePets(pet.id)}
                 >
                   삭제
@@ -385,14 +333,17 @@ function AllPets() {
               </div>
             ) : (
               <IoIosMore
-                className="w-6 h-6 ml-auto cursor-pointer text-BrownPoint"
+                className="w-6 h-6 ml-auto cursor-pointer"
                 onClick={() => handlePetOptions(pet.id)}
               />
             )}
           </div>
         )
       )}
-      <div className="w-[350px] border rounded-lg p-4 col-span-3 lg:col-span-1">
+      <div
+        className="w-[420px] border rounded-lg p-4 col-span-3 lg:col-span-1
+"
+      >
         <PetProfile />
       </div>
     </div>
