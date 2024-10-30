@@ -6,6 +6,7 @@ async function getComments(diaryId: string) {
     .select("*, author:profiles (*)")
     .eq("diaryId", Number(diaryId))
     .order("createdAt", { ascending: false }); // 최신 댓글이 위로 올라오게 하기
+
   return { comments, error };
 }
 
