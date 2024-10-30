@@ -6,14 +6,11 @@ import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-type Profile = Tables["profiles"];
-type Pet = Tables["pets"];
-
 function DiariesProfile() {
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [pets, setPets] = useState<Pet | null>(null);
+  const [profile, setProfile] = useState<Tables<"profiles"> | null>(null);
+  const [pets, setPets] = useState<Tables<"pets"> | null>(null);
 
   // 나이 계산 함수
   function calculateAge(birthDate: string): string {
@@ -27,30 +24,32 @@ function DiariesProfile() {
 
   useEffect(() => {
     (async () => {
-      const { data: profiles, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", currentUserId)
-        .single();
-
-      if (error) {
-        console.log("diary error", error);
-        return;
-      }
-      setProfile(profiles);
-
-      if (profiles?.firstPetId) {
-        const { data: pets, error: petsError } = await supabase
-          .from("pets")
+      if (currentUserId) {
+        const { data: profiles, error } = await supabase
+          .from("profiles")
           .select("*")
-          .eq("id", profiles.firstPetId)
+          .eq("id", currentUserId)
           .single();
 
-        if (petsError) {
-          console.log("pets error", petsError);
+        if (error) {
+          console.log("diary error", error);
           return;
         }
-        setPets(pets);
+        setProfile(profiles);
+
+        if (profiles?.firstPetId) {
+          const { data: pets, error: petsError } = await supabase
+            .from("pets")
+            .select("*")
+            .eq("id", profiles.firstPetId)
+            .single();
+
+          if (petsError) {
+            console.log("pets error", petsError);
+            return;
+          }
+          setPets(pets);
+        }
       }
     })();
   }, [currentUserId]);
