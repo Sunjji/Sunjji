@@ -3,12 +3,17 @@ import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQueries } from "@tanstack/react-query";
 import MyFirstPetSelectButton from "./MyFirstPetSelectButton";
+import { FaWheelchair } from "react-icons/fa";
+import { useEffect, useState } from "react";
+
 function MyPets() {
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const firstPetIdState = useAuthStore((state) => state.firstPetIdState);
   const setFirstPetIdState = useAuthStore((state) => state.setFirstPetIdState);
+  const [firstPetId, setFirstPetId] = useState<number | null>(null);
+
   const result = useQueries({
     queries: [
       {
@@ -25,9 +30,33 @@ function MyPets() {
   });
 
   const petsData = result[0].data;
+  const firstPetData = result[1].data;
 
-  const handlePetSelect = (petId: number) => {
-    setFirstPetIdState(petId);
+  // 첫 번째 반려동물 정보를 로컬 스토리지에서 불러오기
+  useEffect(() => {
+    const storedPetId = localStorage.getItem("firstPetId");
+    if (storedPetId) {
+      setFirstPetId(Number(storedPetId)); // 문자열을 숫자로 변환하여 상태에 설정
+    }
+  }, []);
+
+  // firstPetId가 변경될 때 로컬 스토리지에 저장
+  useEffect(() => {
+    if (firstPetId !== null) {
+      localStorage.setItem("firstPetId", firstPetId.toString()); // 숫자를 문자열로 변환하여 저장
+      setFirstPetIdState(firstPetId); // Zustand 상태에도 업데이트
+    }
+  }, [firstPetId]);
+
+  // firstPetId를 서버에서 가져온 값으로 업데이트
+  useEffect(() => {
+    if (firstPetData && firstPetData.length > 0) {
+      setFirstPetId(firstPetData[0].firstPetId); // 첫 번째 반려동물 ID로 업데이트
+    }
+  }, [firstPetData]);
+
+  const handlePetSelect = (petId) => {
+    setFirstPetId(petId); // 사용자가 선택한 반려동물의 ID로 업데이트
   };
 
   return (
@@ -39,28 +68,13 @@ function MyPets() {
               className="rounded-full bg-white object-cover w-10 h-10"
               src={`${baseURL}${pet.imageUrl}`}
             />
-            <div className="flex flex-col">
-              <p className="font-semibold">
-                {pet.name} · {pet.breed} · {pet.gender}
-              </p>
-
-              <p>{pet.weight}kg</p>
-            </div>
-
-            <div className="ml-auto flex flex-col items-center justify-center">
-              <MyFirstPetSelectButton
-                petId={pet.id}
-                onSelect={handlePetSelect}
-              />
-
-              {firstPetIdState === pet.id && (
-                <img
-                  className="w-5 h- object-cover"
-                  src="https://em-content.zobj.net/source/apple/391/crown_1f451.png"
-                  alt="대표 반려동물 아이콘"
-                />
-              )}
-            </div>
+            <h2>
+              {pet.name} · {pet.breed} · {pet.gender}
+            </h2>
+            {firstPetId === pet.id && <FaWheelchair />}
+            <p>
+              {pet.weight}kg / {pet.age}개월
+            </p>
           </div>
         ))
       ) : (
@@ -69,4 +83,5 @@ function MyPets() {
     </div>
   );
 }
+
 export default MyPets;
