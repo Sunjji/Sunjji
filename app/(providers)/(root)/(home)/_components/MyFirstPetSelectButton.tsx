@@ -7,9 +7,10 @@ import { IoIosMore } from "react-icons/io";
 
 interface SelectButtonProps {
   petId: number;
+  onSelect: (petId: number) => void; // 선택 시 호출되는 함수
 }
 
-function MyFirstPetSelectButton({ petId }: SelectButtonProps) {
+function MyFirstPetSelectButton({ petId, onSelect }: SelectButtonProps) {
   const [showSelectButton, setShowSelectButton] = useState(false);
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
@@ -21,12 +22,15 @@ function MyFirstPetSelectButton({ petId }: SelectButtonProps) {
 
     console.log(asr);
 
+    onSelect(petId);
+
     return alert("대표 반려동물을 정해다");
   };
 
   const handleClickSelect = () => {
     setShowSelectButton(true);
   };
+
   return (
     <>
       <button>
