@@ -53,7 +53,13 @@ function MyPets() {
                 onSelect={handlePetSelect}
               />
 
-              {firstPetIdState === pet.id && "👑"}
+              {firstPetIdState === pet.id && (
+                <img
+                  className="w-5 h- object-cover"
+                  src="https://em-content.zobj.net/source/apple/391/crown_1f451.png"
+                  alt="대표 반려동물 아이콘"
+                />
+              )}
             </div>
           </div>
         ))
