@@ -1,10 +1,8 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import RecentDiary from "./RecentDiary";
 import MyPets from "./MyPets";
-import PopularDiaries from "./PopularDiaries";
-import MyFirstPetBirth from "./MyFirstPetBirth";
+import RecentDiary from "./RecentDiary";
 
 function AuthCheck() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -21,12 +19,9 @@ function AuthCheck() {
             <div className="rounded-2xl bg-whitePoint p-5 h-72">
               OO과(와) 함께 한지
             </div>
-            <div className="rounded-2xl bg-whitePoint p-5 h-72">
-              OO의 생일
-              <MyFirstPetBirth />
-            </div>
-            <div className="rounded-2xl bg-whitePoint p-5 h-full">
-              <h2>나의 반려동물</h2>
+            <div className="rounded-2xl bg-whitePoint p-5 h-72">OO의 생일</div>
+            <div className="rounded-2xl bg-whitePoint p-5 h-full overflow-y-hidden">
+              <h2 className="fixed">나의 반려동물</h2>
               <MyPets />
             </div>
           </div>

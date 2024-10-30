@@ -2,8 +2,8 @@
 import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQueries } from "@tanstack/react-query";
+import { FaCrown } from "react-icons/fa";
 import MyFirstPetSelectButton from "./MyFirstPetSelectButton";
-import { FaWheelchair } from "react-icons/fa";
 function MyPets() {
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
@@ -27,34 +27,45 @@ function MyPets() {
 
   const petsData = result[0].data;
 
-  const handlePetSelect = (petId) => {
+  const handlePetSelect = (petId: number) => {
     setFirstPetIdState(petId);
 
     console.log(petId);
   };
+
   return (
-    <>
+    <div className="mt-8 py-2 flex flex-col gap-y-4 text-sm text-BrownPoint w-full h-[calc(100%-20px)] overflow-y-auto">
       {petsData ? (
         petsData.map((pet) => (
-          <div key={pet.id}>
-            <MyFirstPetSelectButton petId={pet.id} onSelect={handlePetSelect} />
+          <div key={pet.id} className="flex gap-x-4 border rounded-lg p-4">
             <img
-              className="m-2 inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
+              className="rounded-full bg-white object-cover w-10 h-10"
               src={`${baseURL}${pet.imageUrl}`}
             />
-            <h2>
-              {pet.name} · {pet.breed} · {pet.gender}
-            </h2>
-            {firstPetIdState === pet.id && <FaWheelchair />}
-            <p>
-              {pet.weight}kg / {pet.age}개월
-            </p>
+            <div className="flex flex-col">
+              <p className="font-semibold">
+                {pet.name} · {pet.breed} · {pet.gender}
+              </p>
+
+              <p>{pet.weight}kg</p>
+            </div>
+
+            <div className="ml-auto">
+              <MyFirstPetSelectButton
+                petId={pet.id}
+                onSelect={handlePetSelect}
+              />
+
+              {firstPetIdState === pet.id && (
+                <FaCrown className="text-yellow-400" />
+              )}
+            </div>
           </div>
         ))
       ) : (
         <p>반려동물 불러오는 중...</p>
       )}
-    </>
+    </div>
   );
 }
 export default MyPets;

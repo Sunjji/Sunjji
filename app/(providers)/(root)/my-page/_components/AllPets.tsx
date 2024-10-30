@@ -148,7 +148,7 @@ function AllPets() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 text-BrownPoint text-sm text-center">
+    <div className="overflow-y-auto h-[410px] grid grid-cols-1 gap-4 text-BrownPoint text-sm text-center">
       {pets?.map((pet) =>
         editingPetId === pet.id ? (
           <form
@@ -340,10 +340,7 @@ function AllPets() {
           </div>
         )
       )}
-      <div
-        className="w-[420px] border rounded-lg p-4 col-span-3 lg:col-span-1
-"
-      >
+      <div className="w-[420px] border rounded-lg p-4 col-span-3 lg:col-span-1">
         <PetProfile />
       </div>
     </div>
