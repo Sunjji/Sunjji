@@ -29,12 +29,10 @@ function MyPets() {
 
   const handlePetSelect = (petId: number) => {
     setFirstPetIdState(petId);
-
-    console.log(petId);
   };
 
   return (
-    <div className="mt-8 py-2 flex flex-col gap-y-4 text-sm text-BrownPoint w-full h-[calc(100%-20px)] overflow-y-auto">
+    <div className="mt-8 pb-3 flex flex-col gap-y-4 text-sm text-BrownPoint w-full h-[calc(100%-20px)] overflow-y-auto">
       {petsData ? (
         petsData.map((pet) => (
           <div key={pet.id} className="flex gap-x-4 border rounded-lg p-4">

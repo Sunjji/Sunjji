@@ -14,23 +14,6 @@ function MyFirstPetSelectButton({ petId, onSelect }: SelectButtonProps) {
   const [showSelectButton, setShowSelectButton] = useState(false);
   const currentUserId = useAuthStore((state) => state.currentUserId);
 
-  const handleClickSelectButton = async () => {
-    const asr = await supabase
-      .from("profiles")
-      .update({ firstPetId: petId })
-      .eq("id", currentUserId!);
-
-    console.log(asr);
-
-    onSelect(petId);
-
-    return alert("대표 반려동물을 정했다");
-  };
-
-  const handleClickSelect = () => {
-    setShowSelectButton(true);
-  };
-
   // 수정, 삭제 버튼이 아닌 곳을 클릭했을 때 수정, 삭제 버튼 사라지게 만들기
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -45,6 +28,24 @@ function MyFirstPetSelectButton({ petId, onSelect }: SelectButtonProps) {
     },
     [showSelectButton]
   );
+
+  const handleClickSelectButton = async () => {
+    const asr = await supabase
+      .from("profiles")
+      .update({ firstPetId: petId })
+      .eq("id", currentUserId!);
+
+    console.log(asr);
+
+    onSelect(petId);
+
+    alert("대표 반려동물을 정했다");
+    setShowSelectButton(false);
+  };
+
+  const handleClickSelect = () => {
+    setShowSelectButton(true);
+  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
