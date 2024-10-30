@@ -3,10 +3,10 @@ import api from "@/api/api";
 import dayjs from "dayjs";
 import Link from "next/link";
 import CommentButton from "./CommentButton";
+import DiariesProflie from "./DiariesProflie";
 import HeartButton from "./HeartButton";
 
 // type Diary = Awaited<ReturnType<typeof api.diaries.getPublicDiaries>>
-
 
 interface DiaryBoxProps {
   diary: Exclude<
@@ -21,26 +21,13 @@ const baseURL =
 function DiaryBox({ diary }: DiaryBoxProps) {
   return (
     <Link href={`/diaries/${diary.id}`}>
-      <div className="relative group rounded-[8px] bg-whitePoint border hover:border-BrownPoint transition border-BrownPoint/20">
-        <div className="flex items-center px-3 py-2.5">
-          <img
-            src={diary.author!.imageUrl}
-            className="rounded-full bg-white object-cover w-10 h-10"
-            alt="프로필 이미지"
-          />
-
-          <div className="grow flex justify-between">
-            <div className="text-sm font-semibold text-BrownPoint">
-              {diary.author!.nickname}
-            </div>
-            <div className="text-sm  text-BrownPoint pr-2">
-              {dayjs(diary.createdAt).format("YYYY년 MM월 DD일")}
-            </div>
-          </div>
+      <div className="relative group rounded-[8px] bg-whitePoint hover:border-BrownPoint transition">
+        <div className="flex items-center py-2">
+          <DiariesProflie />
         </div>
 
         {/* 이미지를 비율에 맞춰서 표시 */}
-        <div className="aspect-w-4 aspect-h-3 w-full border-y border-BrownPoint/20">
+        <div className="aspect-w-4 aspect-h-3 w-full">
           <img
             className="object-cover w-full h-full"
             src={`${baseURL}/${diary.imageUrl}`}
@@ -49,20 +36,24 @@ function DiaryBox({ diary }: DiaryBoxProps) {
         </div>
 
         {/* 좋아요 댓글 버튼 */}
-        <div className="ml-5 flex gap-2 mt-1 z-0 relative">
+        <div className=" flex gap-2 mt-1 z-0 relative">
           <HeartButton diaryId={diary.id} />
           <CommentButton commentsCount={diary.comments.length} />
         </div>
-
-        <div className="text-center text-BrownPoint mt-[10px] font-semibold">
-          <p>{diary.title}</p>
+        <div className="grow flex justify-between">
+          <div className="text-BrownPoint mt-[10px] mb-1 font-semibold">
+            <p>{diary.title}</p>
+          </div>
+          <div className=" text-sm  text-BrownPoint font-bold pr-2">
+            {dayjs(diary.createdAt).format("YYYY.MM.DD A hh:mm")}
+          </div>
         </div>
 
-        <div className="text-center text-BrownPoint mt-[10px] mb-2 h-[52px] px-5">
+        <div className="text-BrownPoint mb-1">
           {/* 18글자까지만 보여주고, 글자가 길면 "..." 표시 */}
           <p>
-            {diary.content.length > 50
-              ? diary.content.slice(0, 50) + "..."
+            {diary.content.length > 18
+              ? diary.content.slice(0, 18) + "..."
               : diary.content}
           </p>
         </div>

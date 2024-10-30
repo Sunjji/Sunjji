@@ -1,14 +1,10 @@
+"use client";
+
 import Page from "@/app/(providers)/(root)/_components/Page/Page";
-import { supabase } from "@/supabase/client";
 import DiariesWriteButton from "../_components/DiariesWriteButton";
 import MyCalendar from "./_components/MyCalendar";
 
-async function UserViewPage() {
-  const { data } = await supabase.auth.getUser();
-  const authorId = data.user?.id;
-  if (!authorId) return;
-  await supabase.from("diaries").select().eq("authorId", authorId);
-
+function UserViewPage() {
   return (
     <Page title="나의 집사 일기">
       <div className="absolute top-20 right-[84px]">
