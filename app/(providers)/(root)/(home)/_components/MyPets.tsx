@@ -3,13 +3,13 @@ import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQueries } from "@tanstack/react-query";
 import MyFirstPetSelectButton from "./MyFirstPetSelectButton";
-import { useState } from "react";
 import { FaWheelchair } from "react-icons/fa";
 function MyPets() {
   const baseURL =
     "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  const [firstPetId, setFirstPetId] = useState(null);
+  const firstPetIdState = useAuthStore((state) => state.firstPetIdState);
+  const setFirstPetIdState = useAuthStore((state) => state.setFirstPetIdState);
   const result = useQueries({
     queries: [
       {
@@ -19,8 +19,8 @@ function MyPets() {
       },
       {
         queryKey: ["profiles"],
-        queryFn: () => api.pets.getMyFirstPet(firstPetId!),
-        enabled: !!firstPetId,
+        queryFn: () => api.pets.getMyFirstPet(currentUserId!),
+        enabled: !!firstPetIdState,
       },
     ],
   });
@@ -28,7 +28,7 @@ function MyPets() {
   const petsData = result[0].data;
 
   const handlePetSelect = (petId) => {
-    setFirstPetId(petId); // 선택한 반려동물의 ID를 firstPetId에 설정
+    setFirstPetIdState(petId);
 
     console.log(petId);
   };
@@ -45,7 +45,7 @@ function MyPets() {
             <h2>
               {pet.name} · {pet.breed} · {pet.gender}
             </h2>
-            {firstPetId === pet.id && <FaWheelchair />}
+            {firstPetIdState === pet.id && <FaWheelchair />}
             <p>
               {pet.weight}kg / {pet.age}개월
             </p>

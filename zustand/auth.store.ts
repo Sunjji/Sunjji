@@ -8,6 +8,8 @@ type AuthStoreState = {
   logOut: () => void;
   currentUserId: string | null;
   setCurrentUserId: (id: string | null) => void;
+  firstPetIdState: number | null;
+  setFirstPetIdState: (id: number | null) => void;
 };
 
 type kakaoLoginState = {
@@ -25,6 +27,8 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
   setIsLoggedIn: (isLoggedIn: boolean) => set({ isLoggedIn }),
   currentUserId: null,
   setCurrentUserId: (id: string | null) => set({ currentUserId: id }),
+  firstPetIdState: null,
+  setFirstPetIdState: (id) => set({ firstPetIdState: id }),
 }));
 
 export const useKakaoLoginStore = create<kakaoLoginState>((set) => ({

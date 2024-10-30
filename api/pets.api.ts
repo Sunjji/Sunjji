@@ -14,11 +14,11 @@ async function deleteMyPets(petId: number) {
   await supabase.from("pets").delete().eq("id", petId);
 }
 
-async function getMyFirstPet(firstPetId: number) {
+async function getMyFirstPet(currentUserId: string) {
   const firstPet = await supabase
     .from("profiles")
     .select("firstPetId")
-    .eq("id", firstPetId);
+    .eq("id", currentUserId);
 
   return firstPet;
 }
