@@ -2,7 +2,6 @@
 import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQueries } from "@tanstack/react-query";
-import { FaCrown } from "react-icons/fa";
 import MyFirstPetSelectButton from "./MyFirstPetSelectButton";
 function MyPets() {
   const baseURL =
@@ -48,15 +47,13 @@ function MyPets() {
               <p>{pet.weight}kg</p>
             </div>
 
-            <div className="ml-auto">
+            <div className="ml-auto flex flex-col items-center justify-center">
               <MyFirstPetSelectButton
                 petId={pet.id}
                 onSelect={handlePetSelect}
               />
 
-              {firstPetIdState === pet.id && (
-                <FaCrown className="text-yellow-400" />
-              )}
+              {firstPetIdState === pet.id && "👑"}
             </div>
           </div>
         ))
