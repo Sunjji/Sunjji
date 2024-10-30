@@ -3,6 +3,7 @@
 import { useAuthStore } from "@/zustand/auth.store";
 import RecentDiary from "./RecentDiary";
 import MyPets from "./MyPets";
+import PopularDiaries from "./PopularDiaries";
 
 function AuthCheck() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -13,6 +14,7 @@ function AuthCheck() {
         <div className="flex flex-wrap justify-between h-[66vh] w-[68%] gap-5">
           <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full">
             이달의 인기 일기
+            {/* <PopularDiaries /> */}
           </div>
           <div className="w-[47%] h-full flex flex-col gap-7">
             <div className="rounded-2xl bg-whitePoint p-5 h-72">
