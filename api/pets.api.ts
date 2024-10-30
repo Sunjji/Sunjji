@@ -23,21 +23,10 @@ async function getMyFirstPet(currentUserId: string) {
   return firstPet;
 }
 
-async function getMyFirstPetBirth(currentUserId: string) {
-  const firstPetBirth = await supabase
-    .from("pets")
-    .select("birth")
-    .eq("id", currentUserId)
-    .single();
-
-  return firstPetBirth;
-}
-
 const petsApi = {
   getMyPets,
   deleteMyPets,
   getMyFirstPet,
-  getMyFirstPetBirth,
   //따른 API추가예정
 };
 
