@@ -58,15 +58,9 @@ function MyCalendar() {
 
   function handleClickNext() {
     console.log("Next", calendarRef.current?.getApi().getDate());
-    // const calendarApi = calendarRef.current.getApi();
-    // calendarApi.next();
   }
   function handleClickPrev() {
     console.log("Prev", calendarRef.current?.getApi().getDate());
-
-    // const calendarApi = calendarRef.current.getApi();
-    // calendarApi.prev();
-    // console.log();
   }
 
   useEffect(() => {
@@ -95,8 +89,6 @@ function MyCalendar() {
           locale={"ko"}
           contentHeight={0}
         />
-        {/* <button onClick={goPrev}>Go Prev!</button>
-        <button onClick={goNext}>Go Next!</button> */}
       </div>
     </>
   );

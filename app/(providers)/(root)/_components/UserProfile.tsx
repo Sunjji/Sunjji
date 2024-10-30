@@ -47,7 +47,7 @@ function UserProfile() {
       <div>
         <p>{profile?.nickname} 집사님</p>
         <p>
-          {pets?.name} · {pets?.gender}
+          {pets?.name}· {pets?.breed} · {pets?.gender}
         </p>
       </div>
     </div>
