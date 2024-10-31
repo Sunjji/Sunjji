@@ -153,7 +153,7 @@ const PetProfile = () => {
   };
 
   return (
-    <div className="text-center">
+    <>
       {formVisible ? null : (
         <button
           onClick={() => setFormVisible(true)}
@@ -280,7 +280,7 @@ const PetProfile = () => {
           </button>
         </form>
       )}
-    </div>
+    </>
   );
 };
 
