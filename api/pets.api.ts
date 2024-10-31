@@ -1,3 +1,5 @@
+"use client";
+
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 
