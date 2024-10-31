@@ -1,53 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { supabase } from "@/supabase/client";
-import { Tables } from "@/supabase/database.types";
+import api from "@/api/api";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useEffect, useState } from "react";
-
+import { useQuery } from "@tanstack/react-query";
 function UserProfile() {
-  const currentUserId = useAuthStore((state) => state.currentUserId);
+  const profiles = useAuthStore((state) => state.profile);
 
-  const [profile, setProfile] = useState<Tables<"profiles">>();
-  const [pets, setPets] = useState<Tables<"pets">>();
+  const { data } = useQuery({
+    queryKey: ["pet"],
+    queryFn: () => api.pets.getMyFirstPet(),
+  });
 
-  useEffect(() => {
-    (async () => {
-      if (!currentUserId) return;
+  console.log(data);
 
-      const { data: profiles, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", currentUserId)
-        .single();
-
-      if (!profiles) return;
-      if (!profiles.firstPetId) return;
-
-      const { data: pets, error: petsError } = await supabase
-        .from("pets")
-        .select("*")
-        .eq("id", profiles.firstPetId)
-        .single();
-
-      if (error) return console.log("diary error", error);
-      if (petsError) return console.log("pets error", petsError);
-      setProfile(profiles);
-      setPets(pets);
-    })();
-  }, [currentUserId]);
   return (
     <div className="flex items-center p-2 bg-[#FEFBF2] text-BrownPoint text-sm rounded-[100px]">
       <img
         className="mx-2 inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
-        src={profile?.imageUrl}
+        src={profiles?.imageUrl}
         alt="프로필 이미지"
       />
       <div>
-        <p>{profile?.nickname} 집사님</p>
+        <p>{profiles?.nickname} 집사님</p>
         <p>
-          {pets?.name}· {pets?.breed} · {pets?.gender}
+          {data?.name}· {data?.breed} · {data?.gender}
         </p>
       </div>
     </div>
