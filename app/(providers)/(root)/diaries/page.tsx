@@ -8,7 +8,6 @@ export const revalidate = 0;
 
 async function PublicPage() {
   const publicDiaries = await api.diaries.getPublicDiaries();
-
   return (
     <Page title="모두의 집사 일기">
       {/* 일기쓰기 버튼 */}
