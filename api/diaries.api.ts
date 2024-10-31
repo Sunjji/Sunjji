@@ -55,6 +55,17 @@ async function getDiaries() {
   return { data, error };
 }
 
+async function getDiaryWithLikes() {
+  const { data } = await supabase
+    .from("diaries")
+    .select("*,likes:likes!diaryId(*), author:profiles(*)");
+
+  return data!.map((diary) => ({
+    ...diary,
+    likesCount: diary.likes.length,
+  }));
+}
+
 const diariesApi = {
   getPublicDiaries,
   getDiary,
@@ -62,6 +73,7 @@ const diariesApi = {
   getDiaryUserProfile,
   getDiaryDetail,
   getDiaries,
+  getDiaryWithLikes,
 };
 
 export default diariesApi;
