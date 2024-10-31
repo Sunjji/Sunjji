@@ -5,6 +5,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import HomeCalendar from "./_components/HomeCalendar";
 import HomeMyPets from "./_components/HomeMyPets";
+import HomePopularDiaries from "./_components/HomePopularDiaries";
 import HomeRecentDiaries from "./_components/HomeRecentDiaries";
 
 function HomePage() {
@@ -15,7 +16,7 @@ function HomePage() {
   return (
     <Page title={title}>
       <div className="w-full grid grid-cols-3 gap-x-10 grow overflow-hidden">
-        <div>이달의 인기 일기</div>
+        <HomePopularDiaries />
 
         {isAuthInitialized ? (
           isLoggedIn ? (

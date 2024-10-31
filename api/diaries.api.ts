@@ -57,15 +57,22 @@ async function getDiaries() {
   return { data, error };
 }
 
-async function getDiaryWithLikes() {
-  const { data } = await supabase
+async function getPopularDiaries() {
+  const { data: diaries = [] } = await supabase
     .from("diaries")
-    .select("*,likes:likes!diaryId(*), author:profiles(*)");
+    .select("*, likes(id), author:profiles(*), comments(id)")
+    .limit(8);
 
-  return data!.map((diary) => ({
+  const diariesWithLikesCount = diaries?.map((diary) => ({
     ...diary,
     likesCount: diary.likes.length,
   }));
+
+  diariesWithLikesCount?.sort(
+    (diaryA, diaryB) => diaryB.likesCount - diaryA.likesCount
+  );
+
+  return diariesWithLikesCount;
 }
 
 const diariesApi = {
@@ -75,7 +82,7 @@ const diariesApi = {
   getRecentDiaries,
   getDiaryDetail,
   getDiaries,
-  getDiaryWithLikes,
+  getPopularDiaries,
 };
 
 export default diariesApi;
