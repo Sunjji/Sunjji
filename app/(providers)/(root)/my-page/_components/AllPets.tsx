@@ -167,7 +167,7 @@ function AllPets() {
       {pets?.map((pet) => (
         <div
           key={pet.id}
-          className={`
+          className={`cursor-pointer
           ${
             editStyle === pet.id && editingPetId !== null
               ? "col-end-2 row-start-1"
@@ -177,7 +177,7 @@ function AllPets() {
         >
           {/* pet card */}
           <div
-            className="flex gap-x-4 items-center border rounded-lg p-4 w-[320px]"
+            className="flex gap-x-4 items-center border rounded-lg p-4 w-[320px] bg-white"
             onClick={() => handleEditClick(pet)}
           >
             <img
@@ -209,7 +209,7 @@ function AllPets() {
         <>
           {editingPetId === pet.id && (
             <form
-              className="col-end-2 row-start-2 flex flex-col rounded-lg items-center border p-4 w-[320px]"
+              className="col-end-1 row-start-2 flex flex-col rounded-lg items-center border p-4 w-[320px] bg-white"
               onSubmit={(e) => handleFormSubmit(e, pet.id)}
             >
               <h2 className="text-2xl ">반려동물 프로필 수정</h2>
@@ -380,7 +380,7 @@ function AllPets() {
         </>
       ))}
 
-      <div className="col-end-1 w-[320px] border rounded-lg p-4">
+      <div className="col-end-1 w-[320px] border rounded-lg py-2 bg-white">
         <PetProfile />
       </div>
     </div>

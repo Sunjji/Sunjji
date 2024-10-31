@@ -125,7 +125,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
     <>
       {!isEditing ? (
         <>
-          <div className="bg-white  text-BrownPoint shadow-lg rounded-lg px-3 py-5 max-w-sm relative">
+          <div className="bg-white  text-BrownPoint shadow-sm border rounded-lg px-3 py-5 max-w-sm relative">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -133,13 +133,13 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
                 alt="Profile"
               />
             </div>
-            <p className="p-4 rounded-md shadow-md mb-2">
+            <p className="p-4 rounded-md shadow-sm border mb-2">
               이름: {profile.nickname}
             </p>
-            <p className="p-4 rounded-md shadow-md pb-16">
+            <p className="p-4 rounded-md shadow-sm border pb-16">
               집사 소개: {profile.comment}
             </p>
-            <p className="p-4 text-BrownPoint mt-2 rounded-md shadow-md">
+            <p className="p-4 text-BrownPoint mt-2 rounded-md shadow-sm border">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
@@ -161,7 +161,7 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
         </>
       ) : (
         <>
-          <div className="bg-white text-BrownPoint shadow-lg rounded-lg p-3 py-5 max-w-sm">
+          <div className="bg-white text-BrownPoint shadow-sm border rounded-lg p-3 py-5 max-w-sm">
             <div className="flex justify-center mb-4">
               <img
                 className="w-32 h-32 object-cover inline rounded-xl"
@@ -171,47 +171,43 @@ function UserProfile({ profile, updateProfile }: UserProfileProps) {
             </div>
             <div className="flex justify-center">
               <button
-                className="px-4 py-1 w-full rounded-md shadow-lg hover:bg-gray-100 "
+                className="px-4 py-1 w-full rounded-md shadow-sm border mb-2 hover:bg-gray-100 hover:border-BrownPoint"
                 onClick={handleImageClick}
               >
                 사진 첨부하기
               </button>
               <input
                 type="file"
-                className="hidden"
+                className="hidden hover:border-BrownPoint"
                 ref={fileInputRef}
                 onChange={handleChangeFile}
               />
             </div>
-            <p className=" p-4  rounded-md shadow-md mb-2">
-              <input
-                type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                className="border p-2 rounded-lg w-full"
-              />
-            </p>
-            <p className="p-4 rounded-md shadow-md">
-              <input
-                type="text"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className="border p-2 rounded-lg w-full"
-              />
-            </p>
-            <p className="p-4 my-2 rounded-md shadow-md">
+            <input
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              className="border p-2 w-full rounded-md shadow-sm mb-2 hover:border-BrownPoint"
+            />
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="border p-2 w-full rounded-md shadow-sm mb-2 hover:border-BrownPoint"
+            />
+            <p className="p-2 mb-2 rounded-md shadow-sm border">
               계정 생성 날짜:{" "}
               {dayjs(profile.createdAt).format("YYYY년 MM월 DD일")}
             </p>
             <div className="flex justify-between gap-1">
               <button
-                className="px-4 py-1 w-1/2 rounded-md shadow-lg hover:bg-gray-100"
+                className="px-4 py-1 w-1/2 rounded-md shadow-sm border hover:bg-gray-100 hover:border-BrownPoint"
                 onClick={handleCancelClick}
               >
                 취소
               </button>
               <button
-                className="px-4 py-1 w-1/2 rounded-md shadow-lg hover:bg-gray-100 flex justify-center"
+                className="px-4 py-1 w-1/2 rounded-md shadow-sm border hover:bg-gray-100 flex justify-center hover:border-BrownPoint"
                 onClick={handleClickSave}
                 disabled={isLoading}
               >

@@ -157,7 +157,7 @@ const PetProfile = () => {
       {formVisible ? null : (
         <button
           onClick={() => setFormVisible(true)}
-          className="text-2xl font-bold "
+          className="text-2xl font-bold w-full h-full bg-white"
         >
           +
         </button>
