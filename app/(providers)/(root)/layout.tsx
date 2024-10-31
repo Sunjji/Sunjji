@@ -5,7 +5,7 @@ function Layout({ children }: PropsWithChildren) {
   return (
     <div className="flex">
       <SideBar />
-      <main className="pl-[200px] w-full">{children}</main>
+      <div className="pl-[200px] w-full">{children}</div>
     </div>
   );
 }
