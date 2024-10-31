@@ -16,9 +16,9 @@ async function PublicPage() {
       </div>
 
       {/* 클릭하면 일기 상세페이지로 들어감 */}
-      <div className="bg-whitePoint p-10 rounded-2xl overflow-y-hidden">
-        <p>공개 일기들을 읽을 수 있어요!</p>
-        <div className=" overflow-y-auto h-[380px] grid lg:grid-cols-3 md:grid-cols-1  gap-x-20 gap-y-10">
+      <div className="bg-whitePoint p-5 rounded-2xl overflow-y-hidden grow flex flex-col">
+        <h2 className="mb-4">공개 일기들을 읽을 수 있어요!</h2>
+        <div className="grid lg:grid-cols-3 md:grid-cols-1 gap-10 overflow-scroll">
           {publicDiaries?.map((diary) => (
             <DiaryBox key={diary.id} diary={diary} />
           ))}
