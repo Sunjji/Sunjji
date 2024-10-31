@@ -24,7 +24,7 @@ function LogInModal() {
     const { data: register } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN" && session?.user) {
-          toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
+          toast("💚 로그인에 성공하였습니다", getToastOptions("success"));
         }
       }
     );
@@ -36,17 +36,24 @@ function LogInModal() {
   }, []); // useEffect의 의존성 배열 추가
 
   const handleClickLogInPage = async () => {
-    if (!email) return alert("이메일을 입력해주세요");
-    if (!password) return alert("비밀번호를 입력해주세요");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규 표현식
+    if (!email)
+      return toast("💛 이메일을 입력해 주세요", getToastOptions("warning"));
+    if (!emailPattern.test(email))
+      return toast(
+        "💛 올바른 이메일 형식이 아닙니다",
+        getToastOptions("warning")
+      ); // 이메일 형식 확인
+    if (!password)
+      return toast("💛 비밀번호를 입력해 주세요", getToastOptions("warning"));
 
     const loginResult = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (loginResult.error) return alert("로그인 실패");
+    if (loginResult.error) return toast("❤️ 로그인에 실패했습니다", getToastOptions("error"));
 
-    alert("로그인에 성공하셨습니다");
     setIsLoggedIn(true);
     closeModal();
   };
@@ -54,29 +61,42 @@ function LogInModal() {
   return (
     // main을 Modal로 변경
     <Modal>
-      <h1 className="text-3xl font-bold mb-3">로그인</h1>
-      <h2 className="font-bold">이메일</h2>
-      <div>
-        <input
-          value={email}
-          type="text"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="비밀번호를 입력해주세요"
-        />
-      </div>
+      <section className="text-center">
+        <h1 className="text-3xl font-bold mb-3">로그인</h1>
+        <h2 className="font-bold">이메일</h2>
+        <div>
+          <input
+            value={email}
+            type="text"
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-5 p-2"
+          />
+        </div>
 
-      <h2 className="font-bold">비밀번호</h2>
-      <div>
-        <input
-          value={password}
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="비밀번호를 입력해주세요"
-        />
+        <h2 className="font-bold">비밀번호</h2>
+        <div>
+          <input
+            value={password}
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-5 p-2"
+          />
+        </div>
+      </section>
+      <div className="flex flex-col gap-5">
+        <button
+          onClick={handleClickLogInPage}
+          className="bg-Brown p-2 px-10 rounded-sm"
+        >
+          로그인하기
+        </button>
+        <button
+          onClick={handleClickKakaoSignUp}
+          className="bg-yellow-300 p-2 px-10 rounded-sm"
+        >
+          카카오로 로그인하기
+        </button>
       </div>
-
-      <button onClick={handleClickLogInPage}>로그인하기</button>
-      <button onClick={handleClickKakaoSignUp}>카카오로 로그인하기</button>
     </Modal>
   );
 }
