@@ -1,11 +1,15 @@
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 
-async function getMyPets(currentUserId: string) {
-  console.log(currentUserId);
+async function getMyPets() {
+  const myProfile = useAuthStore.getState().profile;
+  console.log("myProfile", myProfile);
+  if (!myProfile) return [];
+
   const { data: myPets } = await supabase
     .from("pets")
     .select()
-    .eq("butlerId", currentUserId);
+    .eq("butlerId", myProfile.id);
 
   return myPets;
 }
@@ -14,11 +18,19 @@ async function deleteMyPets(petId: number) {
   await supabase.from("pets").delete().eq("id", petId);
 }
 
-async function getMyFirstPet(currentUserId: string) {
-  const firstPet = await supabase
-    .from("profiles")
-    .select("firstPetId")
-    .eq("id", currentUserId);
+async function getMyFirstPet() {
+  const myProfile = useAuthStore.getState().profile;
+  if (!myProfile) return;
+
+  const firstPetId = myProfile.firstPetId;
+  if (!firstPetId) return null;
+
+  const { data: firstPet } = await supabase
+    .from("pets")
+    .select("*")
+    .eq("id", firstPetId)
+    .eq("butlerId", myProfile.id)
+    .single();
 
   return firstPet;
 }

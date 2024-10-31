@@ -1,3 +1,4 @@
+import { Tables } from "@/supabase/database.types";
 import { create } from "zustand";
 type AuthStoreState = {
   isAuthInitialized: boolean;
@@ -10,6 +11,8 @@ type AuthStoreState = {
   setCurrentUserId: (id: string | null) => void;
   firstPetIdState: number | null;
   setFirstPetIdState: (id: number | null) => void;
+  profile: Tables<"profiles"> | null;
+  setProfile: (profile: AuthStoreState["profile"]) => void;
 };
 
 type kakaoLoginState = {
@@ -29,6 +32,8 @@ export const useAuthStore = create<AuthStoreState>((set) => ({
   setCurrentUserId: (id: string | null) => set({ currentUserId: id }),
   firstPetIdState: null,
   setFirstPetIdState: (id) => set({ firstPetIdState: id }),
+  profile: null,
+  setProfile: (profile) => set({ profile }),
 }));
 
 export const useKakaoLoginStore = create<kakaoLoginState>((set) => ({
