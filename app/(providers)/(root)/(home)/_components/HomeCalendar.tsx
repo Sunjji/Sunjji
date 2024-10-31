@@ -32,7 +32,7 @@ function HomeCalendar() {
       const response = await supabase
         .from("diaries")
         .select()
-        .eq("authorId", authorId);
+        .eq("authorId", authorId!);
 
       const diaries = response.data;
 

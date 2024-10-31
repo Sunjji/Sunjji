@@ -21,19 +21,13 @@ function LogInModal() {
   };
 
   useEffect(() => {
-    const { data: register } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "SIGNED_IN" && session?.user) {
-          toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
-        }
+    const kakaoAuthState = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
       }
-    );
-
-    // 컴포넌트가 언마운트될 때 구독 해제
-    return () => {
-      register?.subscription.unsubscribe();
-    };
-  }, []); // useEffect의 의존성 배열 추가
+      console.log(kakaoAuthState);
+    });
+  }, []);
 
   const handleClickLogInPage = async () => {
     if (!email) return alert("이메일을 입력해주세요");
