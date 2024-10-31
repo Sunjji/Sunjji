@@ -7,11 +7,9 @@ interface PageProps {
 
 function Page({ title, children }: PageProps) {
   return (
-    <main className="flex flex-col p-[2.5vh] pt-[5vh] pr-[2.8vw]">
-      <section className="ml-[2vw] px-10 flex flex-col bg-point rounded-3xl pb-10">
-        <div className="pt-12 pb-8 flex justify-between items-center">
-          <h1 className="font text-[45px] text-BrownPoint">{title}</h1>
-        </div>
+    <main className="flex flex-col p-10 min-h-screen">
+      <section className="p-10 flex flex-col bg-point rounded-3xl grow">
+        <h1 className="font text-[45px] text-BrownPoint pb-10">{title}</h1>
 
         {children}
       </section>

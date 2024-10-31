@@ -49,83 +49,79 @@ function SideBar() {
   };
 
   return (
-    <>
-      <nav className="ml-5 w-[150px] min-h-screen fixed z-10">
-        <Link href={"/"}>
-          <img
-            className="w-[250px] mb-5"
-            src="http://localhost:3000/assets/img/logo.png"
-            alt="logo"
-          />
-        </Link>
-        <Link href={"/my-page"} className="font-bold text-2xl">
-          {isLoggedIn ? <UserProfile /> : null}
-        </Link>
-        <br />
+    <nav className="p-5 pr-0 w-[200px] min-h-screen fixed z-10">
+      <Link href={"/"}>
+        <img
+          className="w-[250px] mb-5"
+          src="http://localhost:3000/assets/img/logo.png"
+          alt="logo"
+        />
+      </Link>
+      <Link href={"/my-page"} className="font-bold text-2xl">
+        {isLoggedIn ? <UserProfile /> : null}
+      </Link>
+      <br />
 
-        {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
-          <div className="text-BrownPoint font-bold">
-            <Link className="flex gap-x-3 items-center mb-5" href={"/"}>
-              <FaHouse /> 홈
-            </Link>
-            {isLoggedIn ? ( // isLoggedIn이 true일때 출력
-              <>
+      {isAuthInitialized ? ( // isAuthInitialized가 true일때 출력(삼항연산자)
+        <div className="text-BrownPoint font-bold">
+          <Link className="flex gap-x-3 items-center mb-5" href={"/"}>
+            <FaHouse /> 홈
+          </Link>
+          {isLoggedIn ? ( // isLoggedIn이 true일때 출력
+            <>
+              <Link
+                className="flex gap-x-3 items-center mb-5"
+                href={"/diaries"}
+              >
+                <FaBookOpen /> 모두의 일기
+              </Link>
+              <Link
+                className="flex gap-x-3 items-center mb-5"
+                href={"/diaries/my-diaries"}
+              >
+                <FaBookBookmark /> 내 일기
+              </Link>
+              <Link
+                className="flex gap-x-3 items-center mb-5"
+                href={"/my-pets"}
+              >
+                <FaHeart /> 내 반려동물들
+              </Link>
+              <button
+                className="flex gap-x-3 items-center"
+                onClick={handleClickLogOut}
+              >
+                <FaSignOutAlt /> 로그아웃
+              </button>
+            </>
+          ) : (
+            // isLoggedIn이 false일때 출력
+            <div className="font-bold">
+              <Link
+                className="flex gap-x-3 items-center pb-3"
+                href={"/diaries"}
+              >
+                <FaBookOpen /> 모두의 일기
+              </Link>
+              <button
+                onClick={handleClickLogInButton}
+                className="flex gap-x-3 items-center pb-3 pt-3"
+              >
+                <FaSignInAlt /> 로그인
+              </button>
+              <button>
                 <Link
-                  className="flex gap-x-3 items-center mb-5"
-                  href={"/diaries"}
-                >
-                  <FaBookOpen /> 모두의 일기
-                </Link>
-                <Link
-                  className="flex gap-x-3 items-center mb-5"
-                  href={"/diaries/my-diaries"}
-                >
-                  <FaBookBookmark /> 내 일기
-                </Link>
-                <Link
-                  className="flex gap-x-3 items-center mb-5"
-                  href={"/my-pets"}
-                >
-                  <FaHeart /> 내 반려동물들
-                </Link>
-                <button
-                  className="flex gap-x-3 items-center"
-                  onClick={handleClickLogOut}
-                >
-                  <FaSignOutAlt /> 로그아웃
-                </button>
-              </>
-            ) : (
-              // isLoggedIn이 false일때 출력
-              <div className="font-bold">
-                <Link
-                  className="flex gap-x-3 items-center pb-3"
-                  href={"/diaries"}
-                >
-                  <FaBookOpen /> 모두의 일기
-                </Link>
-                <button
-                  onClick={handleClickLogInButton}
+                  href={"/sign-up"}
                   className="flex gap-x-3 items-center pb-3 pt-3"
                 >
-                  <FaSignInAlt /> 로그인
-                </button>
-                <button>
-                  <Link
-                    href={"/sign-up"}
-                    className="flex gap-x-3 items-center pb-3 pt-3"
-                  >
-                    <FaUserPlus /> 회원가입
-                  </Link>
-                </button>
-              </div>
-            )}
-          </div>
-        ) : null}
-        {/* isAuthInitialized가 false일때 null을 출력 */}
-      </nav>
-      <div className="w-[75px]" />
-    </>
+                  <FaUserPlus /> 회원가입
+                </Link>
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null}
+    </nav>
   );
 }
 

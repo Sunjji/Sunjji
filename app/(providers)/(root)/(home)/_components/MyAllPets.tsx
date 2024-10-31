@@ -4,7 +4,7 @@ import { FaWheelchair } from "react-icons/fa";
 import MyFirstPetSelectButton from "./MyFirstPetSelectButton";
 
 interface MyAllPetsProps {
-  pets: Tables<"pets">[] | undefined;
+  pets: Tables<"pets">[] | null | undefined;
   firstPetId: number | undefined;
 }
 
