@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { KakaoIdentityData } from "@/types/type";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useEffect } from "react";
 
 function AuthProvider({ children }: PropsWithChildren) {
@@ -11,41 +13,21 @@ function AuthProvider({ children }: PropsWithChildren) {
   const logOut = useAuthStore((state) => state.logOut);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+  const setProfile = useAuthStore((state) => state.setProfile);
+  console.log("currentUserId", currentUserId);
+  const { data: myProfile } = useQuery({
+    queryKey: ["myProfile"],
+    queryFn: api.profiles.getMyProfile,
+    enabled: !!currentUserId,
+  });
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setCurrentUserId(user?.id || null); // 로그인된 사용자가 있으면 ID 저장
-    };
+    setProfile(myProfile || null);
+  }, [myProfile]);
 
-    fetchUser();
-
-    const initializeKakaoLogInUserProfile = async (
-      userId: string,
-      kakaoInfo: KakaoIdentityData
-    ) => {
-      const { avatar_url: imageUrl, user_name: nickname } = kakaoInfo;
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("customImage, imageUrl") //
-        .eq("id", userId)
-        .single();
-
-      if (!profile?.customImage) {
-        await supabase
-          .from("profiles")
-          .upsert(
-            { id: userId, nickname, imageUrl },
-            { ignoreDuplicates: false }
-          );
-      }
-    };
-
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log("session?.user", session?.user, event);
-
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setCurrentUserId(session.user.id);
         logIn();
@@ -70,9 +52,26 @@ function AuthProvider({ children }: PropsWithChildren) {
 
       initializeAuth();
     });
-  }, [setCurrentUserId]);
+  }, []);
 
   return children;
+}
+async function initializeKakaoLogInUserProfile(
+  userId: string,
+  kakaoInfo: KakaoIdentityData
+) {
+  const { avatar_url: imageUrl, user_name: nickname } = kakaoInfo;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("customImage, imageUrl") //
+    .eq("id", userId)
+    .single();
+
+  if (!profile?.customImage) {
+    await supabase
+      .from("profiles")
+      .upsert({ id: userId, nickname, imageUrl }, { ignoreDuplicates: false });
+  }
 }
 
 export default AuthProvider;

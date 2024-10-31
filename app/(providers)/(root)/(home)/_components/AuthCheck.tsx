@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import MyPets from "./MyPets";
+import HomeMyPets from "./HomeMyPets";
 import RecentDiary from "./RecentDiary";
 
 function AuthCheck() {
@@ -16,14 +16,7 @@ function AuthCheck() {
             {/* <PopularDiaries /> */}
           </div>
           <div className="w-[47%] h-full flex flex-col gap-7">
-            <div className="rounded-2xl bg-whitePoint p-5 h-72">
-              OO과(와) 함께 한지
-            </div>
-            <div className="rounded-2xl bg-whitePoint p-5 h-72">OO의 생일</div>
-            <div className="rounded-2xl bg-whitePoint p-5 h-full overflow-y-hidden">
-              <h2 className="fixed">나의 반려동물</h2>
-              <MyPets />
-            </div>
+            <HomeMyPets />
           </div>
         </div>
       ) : (

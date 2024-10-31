@@ -88,7 +88,7 @@ function HomeCalendar() {
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          height="420px"
+          // height="420px"
           headerToolbar={{
             start: "prev",
             center: "title",
