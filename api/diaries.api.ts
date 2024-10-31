@@ -29,10 +29,12 @@ async function deleteDiary(diaryId: string) {
   return deleteDiary;
 }
 
-async function getDiaryUserProfile() {
-  const data = await supabase
+async function getRecentDiaries() {
+  const { data } = await supabase
     .from("diaries")
-    .select("*, author:profiles(id, imageUrl, nickname), comments(id)");
+    .select("*, author:profiles(*), comments(id)")
+    .order("createdAt", { ascending: false })
+    .limit(8);
 
   return data;
 }
@@ -70,7 +72,7 @@ const diariesApi = {
   getPublicDiaries,
   getDiary,
   deleteDiary,
-  getDiaryUserProfile,
+  getRecentDiaries,
   getDiaryDetail,
   getDiaries,
   getDiaryWithLikes,
