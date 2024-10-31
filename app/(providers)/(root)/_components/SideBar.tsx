@@ -11,7 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaBookOpen,
-  FaHeart,
   FaSignInAlt,
   FaSignOutAlt,
   FaUserPlus,
@@ -81,12 +80,7 @@ function SideBar() {
               >
                 <FaBookBookmark /> 내 일기
               </Link>
-              <Link
-                className="flex gap-x-3 items-center mb-5"
-                href={"/my-pets"}
-              >
-                <FaHeart /> 내 반려동물들
-              </Link>
+
               <button
                 className="flex gap-x-3 items-center"
                 onClick={handleClickLogOut}

@@ -42,7 +42,7 @@ function AllPets() {
   const { data: pets = [] } = useQuery({
     queryKey: ["pets"],
     enabled: !!currentUserId,
-    queryFn: () => api.pets.getMyPets(currentUserId!),
+    queryFn: () => api.pets.getMyPets(),
   });
 
   const handleClickDeletePets = (petId: number) => {
@@ -150,7 +150,7 @@ function AllPets() {
 
   const [warning, setWarning] = useState("");
 
-  const focus = (what: string) => {
+  const warningFocus = (what: string) => {
     if (what === "이름") setWarning("이름");
     if (what === "품종") setWarning("품종");
     if (what === "성별") setWarning("성별");
@@ -158,7 +158,7 @@ function AllPets() {
     if (what === "생일") setWarning("생일");
     if (what === "한 줄 소개") setWarning("한 줄 소개");
   };
-  const blur = () => {
+  const warningBlur = () => {
     setWarning("");
   };
 
@@ -168,12 +168,12 @@ function AllPets() {
         <div
           key={pet.id}
           className={`
-        ${
-          editStyle === pet.id && editingPetId !== null
-            ? "col-end-2 row-start-1"
-            : "col-end-1 "
-        }
-        `}
+          ${
+            editStyle === pet.id && editingPetId !== null
+              ? "col-end-2 row-start-1"
+              : "col-end-1"
+          }
+          `}
         >
           {/* pet card */}
           <div
@@ -201,11 +201,15 @@ function AllPets() {
               </div>
             )}
           </div>
+        </div>
+      ))}
 
-          {/* pet edit */}
+      {/* pet edit */}
+      {pets?.map((pet) => (
+        <>
           {editingPetId === pet.id && (
             <form
-              className="mt-4 flex flex-col rounded-lg items-center border p-4 w-[320px]"
+              className="col-end-2 row-start-2 flex flex-col rounded-lg items-center border p-4 w-[320px]"
               onSubmit={(e) => handleFormSubmit(e, pet.id)}
             >
               <h2 className="text-2xl ">반려동물 프로필 수정</h2>
@@ -243,8 +247,8 @@ function AllPets() {
                 type="text"
                 placeholder="이름"
                 className="w-full p-3 border rounded-lg placeholder:text-BrownPoint"
-                onFocus={() => focus("이름")}
-                onBlur={blur}
+                onFocus={() => warningFocus("이름")}
+                onBlur={warningBlur}
               />
 
               {/* 품종 */}
@@ -262,16 +266,16 @@ function AllPets() {
                 type="text"
                 placeholder="품종"
                 className="w-full p-3 border rounded-lg placeholder:text-BrownPoint"
-                onFocus={() => focus("품종")}
-                onBlur={blur}
+                onFocus={() => warningFocus("품종")}
+                onBlur={warningBlur}
               />
 
               {/* 성별 */}
               <div className="my-2">{warning === "성별" && warning}</div>
               <div
                 className="flex gap-x-4 w-full"
-                onFocus={() => focus("성별")}
-                onBlur={blur}
+                onFocus={() => warningFocus("성별")}
+                onBlur={warningBlur}
               >
                 <button
                   type="button"
@@ -319,8 +323,8 @@ function AllPets() {
                   name="weight"
                   type="number"
                   className="border rounded-lg p-3 w-full"
-                  onFocus={() => focus("몸무게")}
-                  onBlur={blur}
+                  onFocus={() => warningFocus("몸무게")}
+                  onBlur={warningBlur}
                 />
 
                 <input
@@ -334,8 +338,8 @@ function AllPets() {
                   name="birth"
                   type="date"
                   className="border rounded-lg p-3 w-full"
-                  onFocus={() => focus("생일")}
-                  onBlur={blur}
+                  onFocus={() => warningFocus("생일")}
+                  onBlur={warningBlur}
                 />
               </div>
 
@@ -354,8 +358,8 @@ function AllPets() {
                 type="text"
                 placeholder="한 줄 소개"
                 className="border rounded-lg mb-4 p-3 w-full placeholder:text-BrownPoint"
-                onFocus={() => focus("한 줄 소개")}
-                onBlur={blur}
+                onFocus={() => warningFocus("한 줄 소개")}
+                onBlur={warningBlur}
               />
 
               {/* 수정, 삭제 */}
@@ -373,9 +377,10 @@ function AllPets() {
               </div>
             </form>
           )}
-        </div>
+        </>
       ))}
-      <div className="w-[320px] border rounded-lg p-4 col-end-1">
+
+      <div className="col-end-1 w-[320px] border rounded-lg p-4">
         <PetProfile />
       </div>
     </div>

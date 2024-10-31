@@ -37,7 +37,6 @@ export type resetProfile = {
 export type Pet = {
   id: number;
   weight: number;
-  age: number;
   gender: string;
   name: string;
   comment: string;
