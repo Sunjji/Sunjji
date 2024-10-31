@@ -209,7 +209,7 @@ const PetProfile = () => {
           <div className="flex gap-x-4 w-full">
             <button
               type="button"
-              className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+              className={`border px-8 py-3 rounded-lg hover:border-BrownPoint
                   ${selectedGender === "왕자" && "border-BrownPoint"}
                   transition`}
               onClick={() => selectGender("왕자")}
@@ -218,7 +218,7 @@ const PetProfile = () => {
             </button>
             <button
               type="button"
-              className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+              className={`border px-8 py-3 rounded-lg hover:border-BrownPoint
                   ${selectedGender === "공주" && "border-BrownPoint"}
                   transition`}
               onClick={() => selectGender("공주")}
@@ -227,7 +227,7 @@ const PetProfile = () => {
             </button>
             <button
               type="button"
-              className={`border px-12 py-3 rounded-lg hover:border-BrownPoint
+              className={`border px-8 py-3 rounded-lg hover:border-BrownPoint
                   ${selectedGender === "중성" && "border-BrownPoint"}
                   transition`}
               onClick={() => selectGender("중성")}

@@ -1,16 +1,20 @@
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-function DiariesProfile() {
-  const currentUserId = useAuthStore((state) => state.currentUserId);
+interface DiaryBoxProps {
+  diary: Exclude<
+    Awaited<ReturnType<typeof api.diaries.getPublicDiaries>>,
+    null
+  >[number];
+}
 
-  const [profile, setProfile] = useState<Tables<"profiles"> | null>(null);
-  const [pets, setPets] = useState<Tables<"pets"> | null>(null);
+function DiariesProfile({ diary }: DiaryBoxProps) {
+  const [pets, setPets] = useState<Tables<"pets">>();
 
   // 나이 계산 함수
   function calculateAge(birthDate: string): string {
@@ -24,45 +28,29 @@ function DiariesProfile() {
 
   useEffect(() => {
     (async () => {
-      if (currentUserId) {
-        const { data: profiles, error } = await supabase
-          .from("profiles")
+      if (diary.author?.firstPetId) {
+        const { data: pets, error: petsError } = await supabase
+          .from("pets")
           .select("*")
-          .eq("id", currentUserId)
+          .eq("id", diary.author?.firstPetId)
           .single();
-
-        if (error) {
-          console.log("diary error", error);
-          return;
+        if (petsError) {
+          return console.log("pets error", petsError);
         }
-        setProfile(profiles);
-
-        if (profiles?.firstPetId) {
-          const { data: pets, error: petsError } = await supabase
-            .from("pets")
-            .select("*")
-            .eq("id", profiles.firstPetId)
-            .single();
-
-          if (petsError) {
-            console.log("pets error", petsError);
-            return;
-          }
-          setPets(pets);
-        }
+        setPets(pets);
       }
     })();
-  }, [currentUserId]);
+  }, [diary]);
 
   return (
     <div className="flex items-center p-2 text-BrownPoint text-sm">
       <img
         className="inline-block rounded-full bg-white object-cover w-[40px] h-[40px]"
-        src={profile?.imageUrl || ""}
+        src={diary.author?.imageUrl || ""}
         alt="프로필 이미지"
       />
       <div className="ml-2">
-        <p className="font-bold inline-block">{profile?.nickname}</p>
+        <p className="font-bold inline-block">{diary.author?.nickname}</p>
         <p className="font-bold ml-2 text-xs inline-block">
           {pets?.name} · {pets?.breed} · {pets?.gender}
         </p>

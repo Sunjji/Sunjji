@@ -21,7 +21,7 @@ function DiaryBox({ diary }: DiaryBoxProps) {
     <Link className="text-BrownPoint" href={`/diaries/${diary.id}`}>
       <div className="relative group rounded-[8px] bg-whitePoint hover:border-BrownPoint transition">
         <div className="flex items-center py-2">
-          <DiariesProfile />
+          <DiariesProfile diary={diary} />
         </div>
         {/* 이미지를 비율에 맞춰서 표시 */}
         <div className="aspect-w-4 aspect-h-3 w-full">

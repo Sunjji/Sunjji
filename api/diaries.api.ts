@@ -30,7 +30,7 @@ async function deleteDiary(diaryId: string) {
 }
 
 async function getDiaryUserProfile() {
-  const { data } = await supabase
+  const data = await supabase
     .from("diaries")
     .select("*, author:profiles(id, imageUrl, nickname), comments(id)");
 
@@ -47,12 +47,21 @@ async function getDiaryDetail(diaryId: string) {
   return { data, error };
 }
 
+async function getDiaries() {
+  const { data, error } = await supabase
+    .from("diaries")
+    .select("*, author:profiles(*)");
+
+  return { data, error };
+}
+
 const diariesApi = {
   getPublicDiaries,
   getDiary,
   deleteDiary,
   getDiaryUserProfile,
   getDiaryDetail,
+  getDiaries,
 };
 
 export default diariesApi;
