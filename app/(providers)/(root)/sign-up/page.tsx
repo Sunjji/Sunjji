@@ -81,14 +81,6 @@ function SignUpPage() {
     router.push("/");
     return toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
   };
-  const handleClickKakaoSignUp = async () => {
-    const { data } = await supabase.auth.signInWithOAuth({
-      provider: "kakao",
-    });
-
-    if (data)
-      return toast("💚 회원가입에 성공하였습니다", getToastOptions("success"));
-  };
 
   return (
     <main className="flex justify-center">
@@ -128,7 +120,9 @@ function SignUpPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <p className="mb-5">비밀번호는 8자 특수문자(!@#$%^&*) 포함입니다</p>
+          <p className="mb-5 text-red-500">
+            비밀번호는 8자 특수문자(!@#$%^&*) 포함입니다
+          </p>
         </li>
         <li>
           <h2 className="font-bold">비밀번호 확인</h2>
@@ -144,12 +138,6 @@ function SignUpPage() {
           onClick={handleClickSignUpPage}
         >
           회원가입하기
-        </button>
-        <button
-          className="bg-yellow-400 p-2 px-10 rounded-sm"
-          onClick={handleClickKakaoSignUp}
-        >
-          카카오로 로그인하기
         </button>
       </ul>
     </main>

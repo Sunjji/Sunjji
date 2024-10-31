@@ -32,31 +32,29 @@ function MyPets() {
   const petsData = result[0].data;
   const firstPetData = result[1].data;
 
-  // 첫 번째 반려동물 정보를 로컬 스토리지에서 불러오기
   useEffect(() => {
     const storedPetId = localStorage.getItem("firstPetId");
     if (storedPetId) {
-      setFirstPetId(Number(storedPetId)); // 문자열을 숫자로 변환하여 상태에 설정
+      setFirstPetId(Number(storedPetId));
     }
   }, []);
 
-  // firstPetId가 변경될 때 로컬 스토리지에 저장
   useEffect(() => {
     if (firstPetId !== null) {
-      localStorage.setItem("firstPetId", firstPetId.toString()); // 숫자를 문자열로 변환하여 저장
-      setFirstPetIdState(firstPetId); // Zustand 상태에도 업데이트
+      localStorage.setItem("firstPetId", firstPetId.toString());
+      setFirstPetIdState(firstPetId);
     }
   }, [firstPetId]);
-
-  // firstPetId를 서버에서 가져온 값으로 업데이트
   useEffect(() => {
-    if (firstPetData && firstPetData.length > 0) {
-      setFirstPetId(firstPetData[0].firstPetId); // 첫 번째 반려동물 ID로 업데이트
+    const firstPetData = result[1].data;
+
+    if (firstPetData && firstPetData.data && firstPetData.data.length > 0) {
+      setFirstPetId(firstPetData.data[0].firstPetId);
     }
   }, [firstPetData]);
 
-  const handlePetSelect = (petId) => {
-    setFirstPetId(petId); // 사용자가 선택한 반려동물의 ID로 업데이트
+  const handlePetSelect = (petId: number) => {
+    setFirstPetId(petId);
   };
 
   return (
@@ -75,6 +73,7 @@ function MyPets() {
             <p>
               {pet.weight}kg / {pet.age}개월
             </p>
+            <MyFirstPetSelectButton petId={pet.id} onSelect={handlePetSelect} />
           </div>
         ))
       ) : (
