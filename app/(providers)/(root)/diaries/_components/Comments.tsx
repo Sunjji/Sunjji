@@ -3,9 +3,11 @@
 "use client";
 
 import api from "@/api/api";
+import LogInModal from "@/components/LoginModal";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useParams } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -20,7 +22,7 @@ function Comments() {
   const [newContent, setNewContent] = useState("");
   const [comments, setComments] = useState<CustomComment[]>([]);
   const currentUserId = useAuthStore((state) => state.currentUserId);
-
+  const openModal = useModalStore((state) => state.openModal);
   const refetchComments = async () => {
     // supabase에서 댓글 다시 가져오기
     const { comments, error } = await api.comments.getComments(
@@ -40,6 +42,11 @@ function Comments() {
 
   const handleClickComment: ComponentProps<"button">["onClick"] = async (e) => {
     e.preventDefault();
+
+    if (!currentUserId) {
+      toast("💛 로그인을 해주세요", getToastOptions("warning"));
+      return openModal(<LogInModal />);
+    }
 
     if (!newContent)
       return toast("💛 댓글을 작성하여 주세요", getToastOptions("warning"));

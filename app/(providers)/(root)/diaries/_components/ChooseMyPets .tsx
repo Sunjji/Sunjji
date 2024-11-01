@@ -16,13 +16,12 @@ type ChooseMyPetsProps = {
 function ChooseMyPets({ setSelectedPetIds }: ChooseMyPetsProps) {
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const [profiles, setProfiles] = useState<Tables<"profiles">>();
-  // const [myPets, setMyPets] = useState<Tables<"pets">[]>([]);
   const closeModal = useModalStore((state) => state.closeModal);
 
   const { data: myPets1 = [] } = useQuery({
     queryKey: ["pets"],
     enabled: !!currentUserId,
-    queryFn: () => api.pets.getMyPets(currentUserId!),
+    queryFn: () => api.pets.getMyPets(),
   });
 
   useEffect(() => {
@@ -55,10 +54,6 @@ function ChooseMyPets({ setSelectedPetIds }: ChooseMyPetsProps) {
     setSelectedPetIds((selectedPets) => [...selectedPets, pets.id]);
     closeModal();
   };
-
-  // useEffect(() => {
-  //   (async () => {})();
-  // }, [currentUserId]);
 
   return (
     <Modal>
