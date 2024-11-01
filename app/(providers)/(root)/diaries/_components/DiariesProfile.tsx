@@ -4,6 +4,7 @@
 import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -16,6 +17,12 @@ interface DiaryBoxProps {
 
 function DiariesProfile({ diary }: DiaryBoxProps) {
   const [pets, setPets] = useState<Tables<"pets">>();
+
+  const { data: popularDiaries = [] } = useQuery({
+    queryKey: ["diaries", { type: "popular" }],
+    queryFn: api.diaries.getPopularDiaries,
+  });
+  const popular = popularDiaries.map((data) => data.id);
 
   // 나이 계산 함수
   function calculateAge(birthDate: string): string {
@@ -51,7 +58,18 @@ function DiariesProfile({ diary }: DiaryBoxProps) {
         alt="프로필 이미지"
       />
       <div className="ml-2">
-        <p className="font-bold inline-block">{diary.author?.nickname}</p>
+        <p className="font-bold flex gap-x-4">
+          {diary.author?.nickname}
+
+          {/* 인기있는 일기라면 불 이모지 붙여주기 */}
+          {popular.includes(diary.id) ? (
+            <img
+              className="w-5 h-5"
+              src="https://em-content.zobj.net/source/apple/391/fire_1f525.png"
+              alt="이달의 인기 일기 이모지"
+            />
+          ) : null}
+        </p>
         <p className="font-bold ml-2 text-xs inline-block">
           {pets?.name} · {pets?.breed} · {pets?.gender}
         </p>
