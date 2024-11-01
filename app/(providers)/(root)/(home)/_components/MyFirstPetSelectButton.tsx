@@ -4,6 +4,8 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useCallback, useEffect, useState } from "react";
 import { IoIosMore } from "react-icons/io";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 
 interface SelectButtonProps {
   petId: number;
@@ -37,7 +39,7 @@ function MyFirstPetSelectButton({ petId, onSelect }: SelectButtonProps) {
 
     onSelect(petId);
 
-    alert("대표 반려동물을 정했다");
+    toast("💚 대표 반려동물을 정했습니다", getToastOptions("success"));
     setShowSelectButton(false);
   };
 

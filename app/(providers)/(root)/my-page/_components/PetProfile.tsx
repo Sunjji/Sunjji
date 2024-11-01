@@ -157,14 +157,14 @@ const PetProfile = () => {
       {formVisible ? null : (
         <button
           onClick={() => setFormVisible(true)}
-          className="text-2xl font-bold w-full h-full bg-white"
+          className="text-2xl font-bold h-[74px] w-full bg-white border rounded-lg py-2"
         >
           +
         </button>
       )}
 
       {formVisible && (
-        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center border rounded-lg py-2 bg-white">
           <h2 className="text-2xl">반려동물 등록</h2>
 
           {imagePreviewUrl && (
