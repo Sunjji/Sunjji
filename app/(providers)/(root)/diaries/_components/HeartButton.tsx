@@ -97,7 +97,7 @@ function HeartButton({ diaryId }: HeartButtonProps) {
         <FaRegHeart className="mt-[2px] w-[25px] h-[25px] text-BrownPoint" />
       )}
       {/* 좋아요 수에 따라 값이 변경 */}
-      <p>{like}</p>
+      <h2 className="pl-1 font-bold">{like}</h2>
     </button>
   );
 }
