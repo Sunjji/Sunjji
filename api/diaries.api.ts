@@ -1,4 +1,6 @@
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
+import dayjs from "dayjs";
 
 async function getPublicDiaries() {
   const response = await supabase
@@ -75,6 +77,29 @@ async function getPopularDiaries() {
   return diariesWithLikesCount;
 }
 
+async function getMyDiariesOnMonth(month: number) {
+  const profile = useAuthStore.getState().profile;
+  if (!profile) return;
+
+  const startDateTimeOfCurrentMonth = dayjs()
+    .month(month)
+    .startOf("month")
+    .toISOString();
+  const endDateTimeOfCurrentMonth = dayjs()
+    .month(month)
+    .endOf("month")
+    .toISOString();
+
+  const { data: myDiaries = [] } = await supabase
+    .from("diaries")
+    .select("*, likes(id), author:profiles(*), comments(id)")
+    .eq("authorId", profile.id)
+    .gte("createdAt", startDateTimeOfCurrentMonth)
+    .lte("createdAt", endDateTimeOfCurrentMonth);
+
+  return myDiaries;
+}
+
 const diariesApi = {
   getPublicDiaries,
   getDiary,
@@ -83,6 +108,7 @@ const diariesApi = {
   getDiaryDetail,
   getDiaries,
   getPopularDiaries,
+  getMyDiariesOnMonth,
 };
 
 export default diariesApi;
