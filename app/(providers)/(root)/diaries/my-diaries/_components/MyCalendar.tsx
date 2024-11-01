@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import DiaryBox from "../../_components/DiaryBox";
-import "../_style/Calendar.css";
 
 function MyCalendar() {
   const calendarRef = useRef<FullCalendar>(null);
