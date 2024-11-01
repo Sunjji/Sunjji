@@ -15,9 +15,9 @@ function HomePage() {
 
   return (
     <Page title={title}>
+      {/* 메인 컨텐츠 */}
       <div className="w-full grid grid-cols-3 gap-x-10 grow overflow-hidden">
         <HomePopularDiaries />
-
         {isAuthInitialized ? (
           isLoggedIn ? (
             <HomeMyPets />
@@ -27,10 +27,11 @@ function HomePage() {
         ) : (
           <div></div>
         )}
+      </div>
 
-        <div className="rounded-r-3xl bg-whitePoint p-5">
-          <HomeCalendar />
-        </div>
+      {/* 오른쪽 끝에 위치할 HomeCalendar */}
+      <div className="absolute top-0 right-0 mt-10 mr-10 w-[350px] h-[calc(100%-80px)] rounded-tr-3xl rounded-r-3xl bg-whitePoint">
+        <HomeCalendar />
       </div>
     </Page>
   );

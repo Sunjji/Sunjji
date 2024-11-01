@@ -84,7 +84,7 @@ function HomeCalendar() {
 
   return (
     <>
-      <div className="rounded-[8px] bg-whitePoint w-full">
+      <div className="p-3 rounded-[8px] bg-whitePoint w-full">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
