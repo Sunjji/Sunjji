@@ -81,6 +81,13 @@ function SideBar() {
                 <FaBookBookmark /> 내 일기
               </Link>
 
+              <Link
+                className="flex gap-x-3 items-center mb-5"
+                href={"/my-page"}
+              >
+                설정하기
+              </Link>
+
               <button
                 className="flex gap-x-3 items-center"
                 onClick={handleClickLogOut}
