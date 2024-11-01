@@ -46,8 +46,11 @@ function AllPets() {
   });
 
   const handleClickDeletePets = (petId: number) => {
-    deletePets(petId);
-    toast("💚 반려동물이 삭제 되었습니다", getToastOptions("success"));
+    deletePets(petId, {
+      onSuccess: () => {
+        toast("💚 반려동물이 삭제되었습니다", getToastOptions("success"));
+      },
+    });
   };
 
   const [editingPetId, setEditingPetId] = useState<number | null>(null);
@@ -163,21 +166,19 @@ function AllPets() {
   };
 
   return (
-    <div className="overflow-y-auto h-[410px] grid gap-4 text-BrownPoint text-sm text-center">
+    <div className="grid grid-cols-2 gap-4 text-BrownPoint text-sm text-center overflow-y-auto max-h-[420px]">
       {pets?.map((pet) => (
         <div
           key={pet.id}
-          className={`cursor-pointer
-          ${
+          className={`cursor-pointer ${
             editStyle === pet.id && editingPetId !== null
-              ? "col-end-2 row-start-1"
-              : "col-end-1"
-          }
-          `}
+              ? "col-span-1 row-span-1"
+              : "col-span-1"
+          }`}
         >
           {/* pet card */}
           <div
-            className="flex gap-x-4 items-center border rounded-lg p-4 w-[320px] bg-white"
+            className="flex gap-x-4 items-center border rounded-lg p-4 bg-white w-full"
             onClick={() => handleEditClick(pet)}
           >
             <img
@@ -203,13 +204,15 @@ function AllPets() {
           </div>
         </div>
       ))}
-
+      <div className="col-span-1 row-span-1">
+        <PetProfile />
+      </div>
       {/* pet edit */}
       {pets?.map((pet) => (
         <>
           {editingPetId === pet.id && (
             <form
-              className="col-end-1 row-start-2 flex flex-col rounded-lg items-center border p-4 w-[320px] bg-white"
+              className="col-span-1 row-span-1 flex flex-col rounded-lg items-center border p-4 bg-white w-full"
               onSubmit={(e) => handleFormSubmit(e, pet.id)}
             >
               <h2 className="text-2xl ">반려동물 프로필 수정</h2>
@@ -364,6 +367,15 @@ function AllPets() {
 
               {/* 수정, 삭제 */}
               <div className="flex gap-x-4 w-full">
+                <button
+                  className="w-full p-3 border rounded-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClickDeletePets(pet.id);
+                  }}
+                >
+                  삭제하기
+                </button>
                 <button className="w-full p-3 border rounded-lg" type="submit">
                   수정하기
                 </button>
@@ -379,10 +391,6 @@ function AllPets() {
           )}
         </>
       ))}
-
-      <div className="col-end-1 w-[320px] border rounded-lg py-2 bg-white">
-        <PetProfile />
-      </div>
     </div>
   );
 }
