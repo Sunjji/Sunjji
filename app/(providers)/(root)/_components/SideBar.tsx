@@ -16,6 +16,7 @@ import {
   FaUserPlus,
 } from "react-icons/fa";
 import { FaBookBookmark, FaHouse } from "react-icons/fa6";
+import { IoMdSettings } from "react-icons/io";
 import { toast } from "react-toastify";
 import { getToastOptions } from "./getToastOptions";
 import UserProfile from "./UserProfile";
@@ -85,7 +86,7 @@ function SideBar() {
                 className="flex gap-x-3 items-center mb-5"
                 href={"/my-page"}
               >
-                설정하기
+                <IoMdSettings /> 설정하기
               </Link>
 
               <button

@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-type ButtonProps = { buttonLabel: string };
+type ButtonProps = {
+  setCategory: Dispatch<SetStateAction<string>>;
+  category: string;
+  buttonLabel: string;
+};
 
-function Button({ buttonLabel }: ButtonProps) {
+function Button({ setCategory, category, buttonLabel }: ButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
@@ -17,7 +21,11 @@ function Button({ buttonLabel }: ButtonProps) {
       onClick={() => handleClick()}
       type="button"
       className={`border px-3 py-2 rounded-[8px] w-full
-        ${isClicked ? "bg-BrownPoint text-point" : "text-BrownPoint bg-point"}
+        ${
+          category === buttonLabel
+            ? "bg-BrownPoint text-point"
+            : "text-BrownPoint bg-point"
+        }
         transition`}
     >
       {buttonLabel}

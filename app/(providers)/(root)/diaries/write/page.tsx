@@ -27,6 +27,7 @@ function DiaryWritePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [memo, setMemo] = useState("");
+  const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
   const [selectedPetIds, setSelectedPetIds] = useState<number[]>([]);
@@ -150,12 +151,10 @@ function DiaryWritePage() {
                 />
                 <div className="flex flex-col">
                   <p>
-                    {firstPet?.name} · {firstPet?.gender}
+                    {firstPet?.name} · {firstPet?.breed} · {firstPet?.gender}
                   </p>
 
-                  <p>
-                    {firstPet?.weight} / {firstPet?.age}
-                  </p>
+                  <p>{firstPet?.weight}</p>
                 </div>
               </div>
             </Link>
@@ -170,12 +169,10 @@ function DiaryWritePage() {
                   />
                   <div className="flex flex-col">
                     <p>
-                      {pet.name} · {pet.gender}
+                      {pet.name} · {pet.breed} · {pet.gender}
                     </p>
 
-                    <p>
-                      {pet.weight} / {pet.age}
-                    </p>
+                    <p>{pet.weight}</p>
                   </div>
                 </div>
               </Link>
@@ -202,11 +199,23 @@ function DiaryWritePage() {
           <div className="col-span-1">
             <div className="flex gap-x-4 mb-4 ">
               {/* 미완성 */}
-              <Button buttonLabel="일기" />
+              <Button
+                setCategory={setCategory}
+                category={category}
+                buttonLabel="일기"
+              />
 
-              <Button buttonLabel="사고 뭉치" />
+              <Button
+                setCategory={setCategory}
+                category={category}
+                buttonLabel="사고 뭉치"
+              />
 
-              <Button buttonLabel="자랑 일기" />
+              <Button
+                setCategory={setCategory}
+                category={category}
+                buttonLabel="자랑 일기"
+              />
             </div>
 
             {/* 제목 10글자 넘으면 ...으로 바꿔주기 */}

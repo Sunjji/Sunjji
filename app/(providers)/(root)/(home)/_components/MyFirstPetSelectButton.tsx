@@ -30,12 +30,10 @@ function MyFirstPetSelectButton({ petId, onSelect }: SelectButtonProps) {
   );
 
   const handleClickSelectButton = async () => {
-    const asr = await supabase
+    await supabase
       .from("profiles")
       .update({ firstPetId: petId })
       .eq("id", currentUserId!);
-
-    console.log(asr);
 
     onSelect(petId);
 
