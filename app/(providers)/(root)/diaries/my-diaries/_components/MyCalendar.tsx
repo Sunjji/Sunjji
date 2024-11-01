@@ -18,24 +18,24 @@ function MyCalendar() {
 
   const { data: myDiaries } = useQuery({
     queryKey: ["myDiaries", { month }],
-    queryFn: () => api.diaries.getMyDiariesOnMonth(month),
+    queryFn: () => api.diaries.getMyDiariesOnMonth(month!),
     enabled: !!isLoggedIn && !!profile && !!month,
   });
 
   const handleClickNext = () => {
-    const currentMonth =
-      dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+    const currentMonth = dayjs(calendarRef.current?.getApi().getDate()).month();
+    console.log(currentMonth);
     setMonth(currentMonth);
   };
   const handleClickPrev = () => {
-    const currentMonth =
-      dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+    const currentMonth = dayjs(calendarRef.current?.getApi().getDate()).month();
+
+    console.log(currentMonth);
     setMonth(currentMonth);
   };
 
   useEffect(() => {
-    const currentMonth =
-      dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+    const currentMonth = dayjs(calendarRef.current?.getApi().getDate()).month();
     setMonth(currentMonth);
   }, []);
 
