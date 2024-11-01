@@ -32,7 +32,9 @@ function HomeMyPets() {
           "대표펫을 불러오는 중..."
         ) : myFirstPet ? (
           <>
-            <h6>{myFirstPet.name}와(과) 함께 한지</h6>
+            <h6 className="text-xl font-bold text-[#A1776280]">
+              {myFirstPet.name}와 함께 한지
+            </h6>
             <strong className="text-BrownPoint text-5xl self-center">
               213일
             </strong>
@@ -47,7 +49,9 @@ function HomeMyPets() {
           "대표펫을 불러오는 중..."
         ) : myFirstPet ? (
           <>
-            <h6>{myFirstPet.name}의 생일</h6>
+            <h6 className="text-xl font-bold text-[#A1776280]">
+              {myFirstPet.name}의 생일
+            </h6>
             <strong className="text-BrownPoint text-5xl self-center">
               {daysCountToFirstPetBirthDay}
             </strong>
@@ -58,7 +62,7 @@ function HomeMyPets() {
       </section>
 
       <section className="row-span-2 rounded-2xl bg-whitePoint p-5 h-full overflow-y-hidden">
-        <h6>나의 반려동물들</h6>
+        <h6 className="text-xl font-bold text-[#A1776280]">나의 반려동물들</h6>
 
         {isMyPetsLoading ? (
           "내 반려동물들을 불러오는 중..."

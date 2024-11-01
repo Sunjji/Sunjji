@@ -11,7 +11,9 @@ function HomePopularDiaries() {
 
   return (
     <section className="rounded-2xl bg-whitePoint p-5 h-full flex flex-col justify-between max-h-full overflow-hidden">
-      <h6 className="mb-4">이달의 인기 일기</h6>
+      <h6 className="mb-4 text-2xl font-bold text-[#A1776280]">
+        이달의 인기 일기
+      </h6>
       <ul className="overflow-scroll grow max-h-full flex flex-col gap-y-5">
         {popularDiaries.map((diary) => (
           <li key={diary.id}>
