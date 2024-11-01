@@ -1,76 +1,63 @@
 "use client";
+import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import { useEffect, useRef } from "react";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import DiariesProfile from "../../_components/DiariesProfile";
 import "../_style/Calendar.css";
 
-type FullCalendarEvent = {
-  title: string;
-  date: string;
-  url: string;
-};
-
 function MyCalendar() {
+  const IMAGE_BASE_URL =
+    "https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/";
+
   // const router = useRouter();
-  // const [events, setEvents] = useState<FullCalendarEvent[]>([]);
-  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) return; // 로그인 상태가 아닐 때는 데이터를 불러오지 않음
-
-  //   (async () => {
-  //     const { data } = await supabase.auth.getUser();
-  //     const authorId = data.user?.id;
-
-  //     const response = await supabase
-  //       .from("diaries")
-  //       .select()
-  //       .eq("authorId", authorId);
-
-  //     const diaries = response.data;
-
-  //     const events = diaries?.map((diary) => ({
-  //       title: diary.title,
-  //       date: dayjs(diary.createdAt).format("YYYY-MM-DD"),
-  //       url: `/diaries/${diary.id}`,
-  //     }));
-  //     if (!events) return;
-
-  //     setEvents(events);
-  //   })();
-  // }, [isLoggedIn]);
-
-  // const handleClickCreateDiary = (arg) => {
-  //   router.push(`diaries/write`);
-  // };
-  // // 드래그앤드롭 이벤트 핸들러
-  // const handleDropEvent = async (info: EventDragStopArg) => {
-  //   const newDate = info.event.startStr;
-  //   const splitedUrl = info.event._def.url.split("/");
-  //   const diaryId = splitedUrl[splitedUrl.length - 1];
-  //   const { error } = await supabase
-  //     .from("diaries")
-  //     .update({ createdAt: newDate })
-  //     .eq("id", diaryId);
-  // };
-  const calendarRef = useRef<FullCalendar>(null);
-
-  function handleClickNext() {
-    console.log("Next", calendarRef.current?.getApi().getDate());
-  }
-  function handleClickPrev() {
-    console.log("Prev", calendarRef.current?.getApi().getDate());
-  }
-
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const [month, setMonth] = useState(null); //달
+  const [myDiarys, setMyDiarys] = useState<
+    { id: string; title: string; content: string }[] | null
+  >(null); // 다이어리 상태
   useEffect(() => {
-    window.document
-      .querySelector("[title='Previous month']")
-      ?.addEventListener("click", handleClickPrev);
-    window.document
-      .querySelector("[title='Next month']")
-      ?.addEventListener("click", handleClickNext);
-  }, []);
+    if (!isLoggedIn) return; // 로그인 상태가 아닐 때는 데이터를 불러오지 않음
+
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const authorId = data.user?.id;
+      const calendarRef = useRef<FullCalendar>(null);
+      const [diaryData, setDiaryDate] = useState<
+        { id: string; title: string; content: string }[] | null
+      >(null); //다이어리
+
+      const handleClickNext = () => {
+        const currentMonth =
+          dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+        console.log(currentMonth);
+        setMonth(currentMonth);
+      };
+      const handleClickPrev = () => {
+        const currentMonth =
+          dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+        console.log(currentMonth);
+        setMonth(currentMonth);
+      };
+
+      const currentMonth =
+        dayjs(calendarRef.current?.getApi().getDate()).month() + 1;
+      console.log(currentMonth);
+      setMonth(currentMonth);
+
+      const myDiarys = await supabase
+        .from("diaries")
+        .select("*")
+        .eq("authorId", authorId)
+        .like("created_at", `%-${currentMonth}-%`);
+
+      setMyDiarys(myDiarys);
+    })();
+  }, [isLoggedIn, month]);
 
   return (
     <>
@@ -78,7 +65,6 @@ function MyCalendar() {
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          ref={calendarRef}
           height="auto"
           headerToolbar={{
             start: "prev",
@@ -89,6 +75,47 @@ function MyCalendar() {
           locale={"ko"}
           contentHeight={0}
         />
+
+        {myDiarys?.map((diary) => (
+          <Link className="text-BrownPoint" href={`/diaries/${diary.id}`}>
+            <div className="relative group rounded-[8px] bg-whitePoint hover:border-BrownPoint transition border pb-4">
+              <div className="flex items-center py-2">
+                <DiariesProfile diary={diary} />
+              </div>
+              {/* 이미지를 비율에 맞춰서 표시 */}
+              <div className="aspect-w-4 aspect-h-3 w-full">
+                <img
+                  className="object-cover w-full h-full"
+                  src={`${IMAGE_BASE_URL}/${diary.imageUrl}`}
+                  alt="일기 사진"
+                />
+              </div>
+              {/* 좋아요 댓글 버튼 */}
+              <div className=" flex gap-2 pt-3 z-0 relative px-4">
+                <HeartButton diaryId={diary.id} />
+                <CommentButton commentsCount={diary.comments.length} />
+              </div>
+
+              <div className="grow flex justify-between items-center px-4">
+                <div className="mt-[10px] mb-1 font-semibold">
+                  <p>{diary.title}</p>
+                </div>
+                <div className=" text-sm font-bold pr-2">
+                  {dayjs(diary.createdAt).format("YYYY.MM.DD A hh:mm")}
+                </div>
+              </div>
+
+              <div className="mt-2 px-4">
+                {/* 18글자까지만 보여주고, 글자가 길면 "..." 표시 */}
+                <p>
+                  {diary.content.length > 18
+                    ? diary.content.slice(0, 18) + "..."
+                    : diary.content}
+                </p>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
     </>
   );
