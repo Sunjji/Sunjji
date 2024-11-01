@@ -51,11 +51,7 @@ function SideBar() {
   return (
     <nav className="p-5 pr-0 w-[200px] min-h-screen fixed z-10">
       <Link href={"/"}>
-        <img
-          className="w-[250px] mb-5"
-          src="http://localhost:3000/assets/img/logo.png"
-          alt="logo"
-        />
+        <img className="w-[250px] mb-5" src="/assets/img/logo.png" alt="logo" />
       </Link>
       <Link href={"/my-page"} className="font-bold text-2xl">
         {isLoggedIn ? <UserProfile /> : null}
