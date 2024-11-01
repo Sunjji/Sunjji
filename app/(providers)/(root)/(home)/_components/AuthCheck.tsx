@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "@/zustand/auth.store";
 import HomeMyPets from "./HomeMyPets";
-import RecentDiary from "./RecentDiary";
+import HomeRecentDiaries from "./HomeRecentDiaries";
 
 function AuthCheck() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -26,7 +26,7 @@ function AuthCheck() {
           </div>
           <div className="rounded-2xl bg-whitePoint p-5 w-[47%] h-full overflow-y-auto max-h-[66vh]">
             <h2>현재 뜨고 있는 최신 일기</h2>
-            <RecentDiary />
+            <HomeRecentDiaries />
           </div>
         </div>
       )}
