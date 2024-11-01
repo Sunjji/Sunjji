@@ -32,7 +32,7 @@ function HomeCalendar() {
       const response = await supabase
         .from("diaries")
         .select()
-        .eq("authorId", authorId);
+        .eq("authorId", authorId!);
 
       const diaries = response.data;
 
@@ -47,13 +47,13 @@ function HomeCalendar() {
     })();
   }, [isLoggedIn]);
 
-  const handleClickCreateDiary = (arg) => {
+  const handleClickCreateDiary = () => {
     router.push(`diaries/write`);
   };
   // 드래그앤드롭 이벤트 핸들러
   const handleDropEvent = async (info: EventDragStopArg) => {
     const newDate = info.event.startStr;
-    const splitedUrl = info.event._def.url.split("/");
+    const splitedUrl = (info.event as any)._def.url.split("/");
     const diaryId = splitedUrl[splitedUrl.length - 1];
     try {
       const { error } = await supabase
@@ -70,12 +70,12 @@ function HomeCalendar() {
       console.error("날짜 업데이트 오류:", error);
     }
   };
-  const handleDayCellContent = (arg) => {
+  const handleDayCellContent = (arg: any) => {
     const dayNumber = arg.dayNumberText.replace("일", "");
     return dayNumber;
   };
 
-  const handleDayHeaderContent = (arg) => {
+  const handleDayHeaderContent = (arg: any) => {
     // 요일 배열
     const weekdays = ["ㅤ일", "ㅤ월", "ㅤ화", "ㅤ수", "ㅤ목", "ㅤ금", "ㅤ토"];
     // 요일 인덱스를 구하여 반환
