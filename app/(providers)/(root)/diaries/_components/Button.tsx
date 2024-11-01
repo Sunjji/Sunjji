@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-"use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 type ButtonProps = {
   setCategory: Dispatch<SetStateAction<string>>;
@@ -10,10 +9,8 @@ type ButtonProps = {
 };
 
 function Button({ setCategory, category, buttonLabel }: ButtonProps) {
-  const [isClicked, setIsClicked] = useState(false);
-
   const handleClick = () => {
-    isClicked ? setIsClicked(false) : setIsClicked(true);
+    setCategory(buttonLabel);
   };
 
   return (

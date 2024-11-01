@@ -5,6 +5,7 @@
 
 import api from "@/api/api";
 import Page from "@/app/(providers)/(root)/_components/Page/Page";
+import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
@@ -25,6 +26,8 @@ function DiaryDetailPage() {
   const { diaryId } = params;
   const [diary, setDiary] = useState<CustomDiary>();
 
+  const [firstPet, setFirstPet] = useState<Tables<"pets">>();
+
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const router = useRouter();
 
@@ -42,6 +45,22 @@ function DiaryDetailPage() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const firstPetId = diary?.author?.firstPetId;
+      if (!firstPetId) return console.log("firstPetId none");
+
+      const { data: pets, error } = await supabase
+        .from("pets")
+        .select("*")
+        .eq("id", firstPetId)
+        .single();
+      if (!pets) return console.log("pets error", error);
+      setFirstPet(pets);
+      console.log(pets);
+    })();
+  }, [currentUserId, diary]);
 
   const handleClickDeleteButton = async () => {
     await api.diaries.getDiary(diaryId.toString());
@@ -122,11 +141,9 @@ function DiaryDetailPage() {
                   {diary.author?.nickname}
                 </p>
                 <p className="col-span-2">
-                  {diary.author?.firstPetId} · {diary.author?.firstPetId}
+                  {firstPet?.name} · {firstPet?.breed} · {firstPet?.gender}
                 </p>
-                <p className="col-span-3">
-                  {diary.author?.firstPetId}kg / {diary.author?.firstPetId}세
-                </p>
+                <p className="col-span-3">{firstPet?.weight}kg</p>
               </div>
             </div>
           </div>

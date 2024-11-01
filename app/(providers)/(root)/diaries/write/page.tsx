@@ -114,6 +114,7 @@ function DiaryWritePage() {
         isPublic,
         imageUrl: result.data?.fullPath || "",
         comment: memo,
+        category,
       })
       .select();
 

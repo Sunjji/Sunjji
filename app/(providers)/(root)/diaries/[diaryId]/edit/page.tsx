@@ -104,10 +104,11 @@ function DiaryEditPage() {
       await supabase
         .from("diaries")
         .update({
-          title: title, // 제목
-          content: content, // 내용
+          title, // 제목
+          content, // 내용
+          category, // 카테고리
+          isPublic, // 공개/비공개
           comment: memo, // 메모
-          isPublic: isPublic, // 공개/비공개
         })
         .eq("id", Number(diaryId));
       toast("💚 일기가 수정 되었습니다", getToastOptions("success"));
@@ -125,11 +126,16 @@ function DiaryEditPage() {
       await supabase
         .from("diaries")
         .update({
-          imageUrl: result.data?.fullPath,
+          imageUrl: result.data?.fullPath, // 사
+          title, // 제목
+          content, // 내용
+          category, // 카테고리
+          isPublic, // 공개/비공개
+          comment: memo, // 메모
         })
         .eq("id", Number(diaryId));
 
-      toast("💚 사진이 변경 되었습니다", getToastOptions("success"));
+      toast("💚 일기가 수정 되었습니다", getToastOptions("success"));
       router.push("/diaries");
     }
   };
@@ -222,7 +228,6 @@ function DiaryEditPage() {
               />
             </div>
 
-            {/* 제목 10글자 넘으면 ...으로 바꿔주기 */}
             <div className="flex flex-col gap-y-4">
               <textarea
                 onChange={(e) => setTitle(e.target.value)}
