@@ -68,7 +68,7 @@ function SignUpPage() {
 
     console.log(storage.data.fullPath);
 
-    await supabase.auth.signInWithPassword({
+    await supabase.auth.signUp({
       email,
       password,
     }); // 회원가입 후 로그인

@@ -65,6 +65,10 @@ function AllPets() {
     birth: "",
   });
 
+  const previewImageUrl = formState.imageFile
+    ? URL.createObjectURL(formState.imageFile)
+    : null;
+
   const handleFormSubmit = async (e: React.FormEvent, petId: number) => {
     e.preventDefault();
 
@@ -216,12 +220,20 @@ function AllPets() {
               onSubmit={(e) => handleFormSubmit(e, pet.id)}
             >
               <h2 className="text-2xl ">반려동물 프로필 수정</h2>
-              {formState.imageUrl && (
+              {previewImageUrl ? (
                 <img
-                  src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${formState.imageUrl}`}
+                  src={previewImageUrl}
                   alt={pet.name}
                   className="w-32 h-32 rounded-full object-cover my-4"
                 />
+              ) : (
+                formState.imageUrl && (
+                  <img
+                    src={`https://kudrchaizgkzyjzrkhhy.supabase.co/storage/v1/object/public/${formState.imageUrl}`}
+                    alt={pet.name}
+                    className="w-32 h-32 rounded-full object-cover my-4"
+                  />
+                )
               )}
               <label htmlFor="image" className="w-full p-3 border rounded-lg">
                 사진 수정하기
