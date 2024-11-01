@@ -2,9 +2,12 @@
 
 import LogInModal from "@/components/LoginModal";
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { getToastOptions } from "../../_components/getToastOptions";
 
 interface HeartButtonProps {
   diaryId: number;
@@ -14,6 +17,7 @@ function HeartButton({ diaryId }: HeartButtonProps) {
   const [like, setLike] = useState(0); // 좋아요 수
   const [isLike, setIsLike] = useState<boolean | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const currentUserId = useAuthStore((state) => state.currentUserId);
   const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
@@ -58,12 +62,16 @@ function HeartButton({ diaryId }: HeartButtonProps) {
     event.stopPropagation();
     event.preventDefault();
 
+    // 로그인 하지 않았을 경우 로그인 모달 띄우기
+    if (!currentUserId) {
+      toast("💛 로그인을 해주세요", getToastOptions("warning"));
+      return openModal(<LogInModal />);
+    }
+
     // 좋아요 여부가 아직 저장되지 않았을 경우 return
     if (isLike === null) return;
 
-    // 로그인 하지 않았을 경우 로그인 모달 띄우기
     if (!userId) {
-      openModal(<LogInModal />);
       return;
     }
 
